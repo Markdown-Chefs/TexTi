@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
     try {
         const token = await sign(payload, config.SECRET)
 
-        return res.status(200).cookie('token', token, {httpOnly: true}).json({
+        return res.status(200).cookie('token', token, { httpOnly: true, sameSite: 'strict', secure: config.NODE_ENV !== 'development' }).json({
             success: true,
             message: 'Logged in succefully',
         });
@@ -64,7 +64,7 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        return res.status(200).clearCookie('token', { httpOnly: true }).json({
+        return res.status(200).clearCookie('token', { httpOnly: true, sameSite: 'strict', secure: config.NODE_ENV !== 'development'}).json({
             success: true,
             message: 'Logged out succefully',
         });

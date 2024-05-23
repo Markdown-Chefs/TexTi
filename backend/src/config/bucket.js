@@ -5,6 +5,7 @@ module.exports = {
     SERVER_URL: process.env.SERVER_URL,
     CLIENT_URL: process.env.CLIENT_URL,
     SECRET: process.env.SECRET,
+    NODE_ENV: process.env.NODE_ENV,
 
     DATABASE_USER: process.env.DATABASE_USER,
     DATABASE_HOST: process.env.DATABASE_HOST,
