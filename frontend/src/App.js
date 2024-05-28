@@ -9,6 +9,7 @@ import Home from "./pages/home";
 import Register from "./pages/register";
 import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
+import Editor from "./pages/editor";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = () => {
@@ -35,6 +36,7 @@ function App() {
 
                 <Route element={<PrivateRoute></PrivateRoute>}>
                     <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
+                    <Route path="/editor" element={<Editor></Editor>}></Route>
                 </Route>
 
                 <Route element={<RestrictedRoute></RestrictedRoute>}>
