@@ -24,13 +24,10 @@ function Home() {
                     </div>
                 </header>
 
-
-
                 <div className="feature-container">
                         <div className="feature-image">
                             <img src={ EnhancedProductivity} alt=''/>
                         </div>
-                        
                         <div className="feature-text">
                             <h2>Why TexTi?</h2>
                             <ol class="list-group">
@@ -68,8 +65,13 @@ function Home() {
                                         </div>
                                     </div>
                                 </li>
-                                </ol>
+                            </ol>
                         </div>
+                </div>
+                <div className="editor-container">
+                    <h1>Discover the Power of Markdown!</h1>
+                    <p>Ever wondered how to make your text beautifully formatted with minimal effort? Dive into the world of Markdown and transform your writing!</p>
+                    <NavLink to='editor' className="editor-link">Try Our Markdown Editor Now!</NavLink>
                 </div>
             </div>
         </>

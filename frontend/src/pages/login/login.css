@@ -7,7 +7,7 @@
     justify-content: center;
     font-family: 'Open Sans';
     align-items: center;
-    background-color: #f0f0f0; /* Light background for the whole page */
+    background-color: #f0f0f0; 
     margin: 0;
 }
 
@@ -95,9 +95,9 @@
     display: flex;
     align-items: center;
     width: 600px;
-    height: 400px; /* Adjust the height as needed */
+    height: 400px; 
     padding: 30px;
-    margin-left: 470px; /* Create space for the login container to overlap */
+    margin-left: 470px; 
 }
 
 .welcome-content h1 {
@@ -105,7 +105,7 @@
 }
 
 .welcome-content {
-    text-align: center; /* Align text to the left */
+    text-align: center; 
 }
 
 .welcome-section img {

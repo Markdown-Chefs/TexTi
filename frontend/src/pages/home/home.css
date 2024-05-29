@@ -79,12 +79,12 @@
 
   .icon-text-wrapper {
     display: flex;
-    align-items: start; /* Align items to the top */
-    gap: 20px; /* Space between icon and text */
+    align-items: start; 
+    gap: 20px; 
 }
 
 .icon-text-wrapper img {
-    width: 50px; /* Set the icon size as needed */
+    width: 50px; 
     margin-top: 10px;;
     height: auto;
 }
@@ -94,12 +94,12 @@
 }
 
 ul {
-    list-style: none; /* Removes default bullet points */
+    list-style: none; 
     padding: 0;
 }
 
 li {
-    padding: 10px 0; /* Adds space between list items */
+    padding: 10px 0; 
 }
 
   .list-group-item:hover {
@@ -107,18 +107,34 @@ li {
     
   }
   
-  .tech-stack {
-    padding: 50px 20px;
-    background-color: #f8f9fa;
-    text-align: center;
-  }
-  
-  .tech-stack ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .tech-stack ul li {
-    font-size: 1.2rem;
-    margin-bottom: 10px
-  }
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 50px;
+  background-color: #f8f9fa;
+}
+
+.editor-container h1 {
+  font-size: 2.5em;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.editor-container p {
+  font-size: 1.2em;
+  color: #666;
+  margin-bottom: 30px;
+  max-width: 60%;
+}
+
+.editor-link {
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 5px;
+}
