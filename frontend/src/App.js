@@ -31,10 +31,6 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={
-                   <Home></Home> }>
-                </Route>
-
                 <Route element={<PrivateRoute></PrivateRoute>}>
                     <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
                 </Route>
@@ -42,6 +38,7 @@ function App() {
                 <Route element={<RestrictedRoute></RestrictedRoute>}>
                     <Route path="/register" element={<Register></Register>}></Route>
                     <Route path="/login" element={<Login></Login>}></Route>
+                    <Route path="/" element={<Home></Home>}></Route>
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -15,7 +15,7 @@ const AppBar = () => {
       </div>
       <div className="navbar-nav flex-row">
         <a className="nav-link" href="#">Home</a>
-        <a className="nav-link" href="#">Link</a>
+         {/* <a className="nav-link" href="#">Link</a>
         <div className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Dropdown
@@ -25,12 +25,15 @@ const AppBar = () => {
             <li><a className="dropdown-item" href="#">Another action</a></li>
             <li><hr className="dropdown-divider" /></li>
             <li><a className="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div>
-        <span> | </span>
+          </ul> 
+        </div> */}
         <NavLink to='/login' className='nav-linklogin'>
             Sign in
           </NavLink>
+        <span> | </span>
+          <NavLink to='/register' className='nav-linklogin'>
+          Sign up
+        </NavLink>
       </div>
     </div>
   );
