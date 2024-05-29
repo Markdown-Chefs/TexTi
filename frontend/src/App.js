@@ -5,9 +5,9 @@ import {
     Route,
     Outlet,
 } from "react-router-dom";
-import Home from "./pages/home";
-import Register from "./pages/register";
-import Login from "./pages/login";
+import Home from "./pages/home/home";
+import Register from "./pages/register/register";
+import Login from "./pages/login/login";
 import Dashboard from "./pages/dashboard";
 import { useSelector } from "react-redux";
 
@@ -31,8 +31,6 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home></Home>}></Route>
-
                 <Route element={<PrivateRoute></PrivateRoute>}>
                     <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
                 </Route>
@@ -40,6 +38,7 @@ function App() {
                 <Route element={<RestrictedRoute></RestrictedRoute>}>
                     <Route path="/register" element={<Register></Register>}></Route>
                     <Route path="/login" element={<Login></Login>}></Route>
+                    <Route path="/" element={<Home></Home>}></Route>
                 </Route>
             </Routes>
         </BrowserRouter>
