@@ -1,10 +1,13 @@
-import Navbar from "./navbar";
+import Navbar from "./Navbar/navbar";
+import styles from './layout.css'
 
 const Layout = ({ children }) => {
     return (
-        <div>
+        <div className="container">
             <Navbar />
-            <div className="container">{children}</div>
+            <div className="content">
+                {children}
+            </div>
         </div>
     );
 }
