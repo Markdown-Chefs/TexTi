@@ -53,10 +53,12 @@ function Dashboard() {
 
     const deleteNote = async () => {
         try {
-            const response = await onDeleteNote(listOfNotes[selectedNoteIndex].note_id, listOfNotes[selectedNoteIndex].title);
+            if (selectedNoteIndex !== -1) {
+                const response = await onDeleteNote(listOfNotes[selectedNoteIndex].note_id, listOfNotes[selectedNoteIndex].title);
 
-            if (response.status === 200) {
-                listOfUserNotes();
+                if (response.status === 200) {
+                    listOfUserNotes();
+                }
             }
         } catch (error) {
             console.log(error);
