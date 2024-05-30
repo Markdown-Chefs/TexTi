@@ -3,19 +3,19 @@ const { hash } = require('bcryptjs');
 const { sign } = require('jsonwebtoken');
 const config = require('../config/bucket');
 
-exports.getUsers = async (req, res) => {
-    try {
-        const { rows } = await db.query('SELECT username, email FROM USERS');
+// exports.getUsers = async (req, res) => {
+//     try {
+//         const { rows } = await db.query('SELECT username, email FROM USERS');
         
-        return res.status(200).json({
-            success: true,
-            users: rows,
-        });
+//         return res.status(200).json({
+//             success: true,
+//             users: rows,
+//         });
 
-    } catch (err) {
-        console.log(err.message);
-    }
-}
+//     } catch (err) {
+//         console.log(err.message);
+//     }
+// }
 
 exports.register = async (req, res) => {
     const { username, email, password } = req.body;
