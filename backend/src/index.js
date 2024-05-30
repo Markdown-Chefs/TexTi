@@ -14,9 +14,11 @@ app.use(cors({ origin:config.CLIENT_URL, credentials: true }));
 
 // import routes
 const authRoutes = require('./routes/auth');
+const notesRoutes = require('./routes/notes');
 
 // initialise routes
 app.use('/api', authRoutes);
+app.use('/api', notesRoutes);
 
 app.listen(config.PORT, () => {
     console.log(`The app is running at http://localhost:${config.PORT}`)
