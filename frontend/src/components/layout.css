@@ -78,16 +78,15 @@
     font-size: 20px;
   }
 
-  .list-group {
+  .list-group2 {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    flex-direction: row;
     padding: 0;
     list-style: none;
   }
 
-  .list-group-item {
+  .list-group2-item {
     display: flex;
     flex-direction: column;
     background-image: url('./../components/assets/note-icon2.png');
@@ -103,7 +102,7 @@
     width:200px
 }
 
-.list-group-item-success {
+.list-group2-item-success {
     background-color: rgba(217, 227, 236, 0.5) !important;
 }
 

@@ -105,7 +105,7 @@ function Dashboard() {
                     </div>
 
                     {/* List out all user's note */}
-                    <ul className="list-group">
+                    <ul className="list-group2">
                         {listOfNotes.length === 0 ? (
                             <p>No notes found</p>
                         ) : (
@@ -114,8 +114,8 @@ function Dashboard() {
                                 key={note.note_id} 
                                 className={
                                     selectedNoteIndex === index
-                                        ? "list-group-item list-group-item-success"
-                                        : "list-group-item"
+                                        ? "list-group2-item list-group2-item-success"
+                                        : "list-group2-item"
                                 }
                                 onClick={() => {
                                     setSelectedNoteIndex(index);
