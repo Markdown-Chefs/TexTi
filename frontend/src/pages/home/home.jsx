@@ -71,7 +71,7 @@ function Home() {
                 <div className="editor-container">
                     <h1>Discover the Power of Markdown!</h1>
                     <p>Ever wondered how to make your text beautifully formatted with minimal effort? Dive into the world of Markdown and transform your writing!</p>
-                    <NavLink to='editor' className="editor-link">Try Our Markdown Editor Now!</NavLink>
+                    <NavLink to='/editor' className="editor-link">Try Our Markdown Editor Now!</NavLink>
                 </div>
             </div>
         </>

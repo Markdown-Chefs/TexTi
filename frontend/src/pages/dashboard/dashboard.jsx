@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 // import { fetchProtectedInfo, onLogout } from "../api/auth";
-import { onLogout } from "../api/auth";
-import { fetchListOfNotes, onCreateNote, onDeleteNote } from "../api/notes";
-import { unAuthenticateUser } from "../redux/slices/authSlice";
-import Layout from "../components/layout";
+import { onLogout } from "../../api/auth";
+import { fetchListOfNotes, onCreateNote, onDeleteNote } from "../../api/notes";
+import { unAuthenticateUser } from "../../redux/slices/authSlice";
+import Layout from "../../components/layout";
+import "./dashboard.css"
+
 
 function Dashboard() {
     const dispatch = useDispatch();
@@ -80,6 +82,9 @@ function Dashboard() {
 
     // useEffect(() => {protectedInfo()}, []);
     useEffect(() => {listOfUserNotes()}, []);
+    // useEffect(() => {
+    //     console.log(JSON.parse(localStorage.getItem('userInfo')).username);
+    // })
     
     return (loading ? (
             <Layout>
@@ -88,11 +93,18 @@ function Dashboard() {
         ) : (
             <div>
                 <Layout>
-                    <h1>Dashboard</h1>
                     {/* <h2>{protectedData}</h2> */}
+                    <div className="top">
+                        <button onClick={() => createNote()} className="create-note">Create New Note</button>
+                        <button onClick={() => deleteNote()} className="delete-note">Delete Selected Note</button>
+                    </div>
+                    <div className="header-container">
+                        <div className="line"></div>
+                        <div className="header-text">MY NOTES</div>
+                        <div className="line"></div>
+                    </div>
 
                     {/* List out all user's note */}
-                    <h2>List of notes:</h2>
                     <ul className="list-group">
                         {listOfNotes.length === 0 ? (
                             <p>No notes found</p>
@@ -109,18 +121,14 @@ function Dashboard() {
                                     setSelectedNoteIndex(index);
                                 }}
                             >
-                                    <h4>
-                                        {note.title}
-                                    </h4>
+                                <div className="note-title"> 
+                                    {note.title}
+                                </div>
                             </li>
                             ))
                         )}
                     </ul>
-
-                    <button onClick={() => createNote()} className="btn btn-primary">Create New Note</button>
-                    <button onClick={() => deleteNote()} className="btn btn-primary">Delete Selected Note</button>
                     <br />
-                    <button onClick={() => logout()} className="btn btn-primary">Logout</button>
                 </Layout>
             </div>
         ));
