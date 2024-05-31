@@ -42,7 +42,7 @@ function Dashboard() {
         
         try {
             const response = await onCreateNote({noteTitle: title});
-            console.log(response);
+            // console.log(response);
             if (response.status === 201) {
                 setListOfNotes([...listOfNotes, response.data.noteCreated]);
             }

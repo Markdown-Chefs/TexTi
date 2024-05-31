@@ -30,10 +30,10 @@ function Home() {
                         </div>
                         <div className="feature-text">
                             <h2>Why TexTi?</h2>
-                            <ol class="list-group">
+                            <ol className="list-group">
                                 <li className="list-group-item d-flex justify-content-between align-items-start">
                                     <div className="ms-2 me-auto">
-                                        <div class="icon-text-wrapper">
+                                        <div className="icon-text-wrapper">
                                             <img src={FolderIcon} alt=''/>
                                             <div className="text">
                                                 <div className="fw-bold">Folder-Structured Management</div>
@@ -44,7 +44,7 @@ function Home() {
                                 </li>
                                 <li className="list-group-item d-flex justify-content-between align-items-start">
                                     <div className="ms-2 me-auto">
-                                        <div class="icon-text-wrapper">
+                                        <div className="icon-text-wrapper">
                                             <img src={TextEditorIcon} alt=''/>
                                             <div className="text">
                                             <div className="fw-bold">Markdown Text Editor</div>
@@ -56,7 +56,7 @@ function Home() {
                                 </li>
                                 <li className="list-group-item d-flex justify-content-between align-items-start">
                                     <div className="ms-2 me-auto">
-                                        <div class="icon-text-wrapper">
+                                        <div className="icon-text-wrapper">
                                             <img src={SearchIcon} alt=''/>
                                             <div className="text">
                                                 <div className="fw-bold">Advanced Search Capabilities</div>
