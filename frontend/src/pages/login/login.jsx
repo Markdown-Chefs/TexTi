@@ -24,10 +24,10 @@ function Login() {
     const onSubmit = async (event) => {
         event.preventDefault();
         try {
-            await onLogin(values);
+            const response = await onLogin(values);
             dispatch(authenticateUser());
             localStorage.setItem('isAuth', 'true');
-
+            localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
         } catch (error) {
             setError(error.response.data.errors[0].msg);
         }

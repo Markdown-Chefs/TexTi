@@ -53,6 +53,7 @@ exports.login = async (req, res) => {
         return res.status(200).cookie('token', token, { httpOnly: true, sameSite: 'strict', secure: config.NODE_ENV !== 'development' }).json({
             success: true,
             message: 'Logged in succefully',
+            userInfo: { username: user.username },
         });
     } catch (err) {
         console.log(err.message);

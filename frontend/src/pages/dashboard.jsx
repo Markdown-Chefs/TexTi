@@ -13,12 +13,12 @@ function Dashboard() {
     const [listOfNotes, setListOfNotes] = useState([]); // [{note_id: 1, title: 'example'}, ...]
     const [selectedNoteIndex, setSelectedNoteIndex] = useState(-1);
 
-
     const logout = async () => {
         try {
             await onLogout();
             dispatch(unAuthenticateUser());
             localStorage.removeItem('isAuth');
+            localStorage.removeItem('userInfo');
         } catch (error) {
             console.log(error.response);
         }
