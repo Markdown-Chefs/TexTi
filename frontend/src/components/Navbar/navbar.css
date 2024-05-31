@@ -2,7 +2,7 @@
 
 
 .navbar {
-  width: 250px;
+  width: 10%;
   background-color: #f8f9fa;
   font-family: 'Open Sans';
   display: flex;
@@ -44,45 +44,11 @@
   white-space: nowrap;
 }
 
-.create-note-button {
-  margin-top: 10px;
-  width: 70%; 
-  padding: 10px;
-  font-size: 15px;
-  font-weight: bold;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.3s, transform 0.3s;
-  align-items: center;
-}
-
-.create-note-button:hover {
-  background-color: #555; 
-  transform: scale(1.05);
-}
-
-.create-note-button:active {
-  background-color: #333; 
-  transform: scale(1); 
-}
-
-.create-note-button img {
-  width: 15px;
-  height: 15px;
-  margin-right: 5px;
-  transform: translateY(-1.5px);
-}
-
 .nav-links {
   /* margin-top: 10px;
   border-top: 1px solid #dee2e6;  */
   width: 100%;
   flex-grow: 1;
-  height:80vh;
 }
 
 .nav-link {

@@ -4,8 +4,9 @@ import { useDispatch } from "react-redux";
 import { onLogout } from "../../api/auth";
 import { fetchListOfNotes, onCreateNote, onDeleteNote } from "../../api/notes";
 import { unAuthenticateUser } from "../../redux/slices/authSlice";
-import Layout from "../../components/layout";
 import "./dashboard.css"
+import Navbar from "../../components/navbar/navbar";
+import CustomPrompt from "../../components/customPrompt/customPrompt";
 
 
 function Dashboard() {
@@ -14,6 +15,21 @@ function Dashboard() {
     // const [protectedData, setProtectedData] = useState(null);
     const [listOfNotes, setListOfNotes] = useState([]); // [{note_id: 1, title: 'example'}, ...]
     const [selectedNoteIndex, setSelectedNoteIndex] = useState(-1);
+    const [isPromptOpen, setIsPromptOpen] = useState(false);
+
+    const handleOpenPrompt = () => {
+      setIsPromptOpen(true);
+    };
+  
+    const handleClosePrompt = () => {
+      setIsPromptOpen(false);
+    };
+
+    const handleConfirmPrompt = (noteTitle) => {
+        createNote(noteTitle);
+        setIsPromptOpen(false);
+      };
+  
 
     const logout = async () => {
         try {
@@ -39,8 +55,8 @@ function Dashboard() {
     //     }
     // }
 
-    const createNote = async () => {
-        const title = prompt("Note's Title: ");
+    const createNote = async (title) => {
+        // const title = prompt("Note's Title: ");
         
         try {
             const response = await onCreateNote({noteTitle: title});
@@ -87,15 +103,23 @@ function Dashboard() {
     // })
     
     return (loading ? (
-            <Layout>
+            <>
+            <Navbar/>
                 <h1>Loading...</h1>
-            </Layout>
+            </>
         ) : (
-            <div>
-                <Layout>
-                    {/* <h2>{protectedData}</h2> */}
+            <>
+               <Navbar />
+               <div className="dashboard-page">
                     <div className="top">
-                        <button onClick={() => createNote()} className="create-note">Create New Note</button>
+                    <button onClick={handleOpenPrompt} className="create-note">Create New Note</button>
+                    <CustomPrompt
+        open={isPromptOpen}
+        onClose={handleClosePrompt}
+        onConfirm={handleConfirmPrompt}
+        child="Create New Note"
+        placeHolder="Enter note title"
+      />
                         <button onClick={() => deleteNote()} className="delete-note">Delete Selected Note</button>
                     </div>
                     <div className="header-container">
@@ -104,8 +128,9 @@ function Dashboard() {
                         <div className="line"></div>
                     </div>
 
+                    <div className="notes-section" onClick={() => setSelectedNoteIndex(-1)}>
                     {/* List out all user's note */}
-                    <ul className="list-group2">
+                    <ul className="list-group2"  onClick={() => setSelectedNoteIndex(-1)}>
                         {listOfNotes.length === 0 ? (
                             <p>No notes found</p>
                         ) : (
@@ -117,7 +142,8 @@ function Dashboard() {
                                         ? "list-group2-item list-group2-item-success"
                                         : "list-group2-item"
                                 }
-                                onClick={() => {
+                                onClick={(e) => {
+                                    e.stopPropagation();
                                     setSelectedNoteIndex(index);
                                 }}
                             >
@@ -128,9 +154,10 @@ function Dashboard() {
                             ))
                         )}
                     </ul>
+                    </div>
                     <br />
-                </Layout>
-            </div>
+                </div>
+            </>
         ));
 }
 

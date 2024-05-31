@@ -54,8 +54,6 @@ const Navbar = () => {
       <img src={TexTi_logo} alt='Profile' className='profile-pic' />
       <span className='username'> {username} </span>
     </div>
-    <button onClick={() => createNote()} className="create-note-button">
-      <img src={ PlusIcon } alt='PlusIcon' />  New Note</button>
     <div className='nav-links'>
       <NavLink to='/' className='nav-link'>
         <img src={NoteIcon} alt='NoteIcon' className='note-img'/>
