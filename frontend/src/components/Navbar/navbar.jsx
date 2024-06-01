@@ -8,7 +8,7 @@ import { onLogout } from "../../api/auth";
 import { useDispatch } from "react-redux";
 import { unAuthenticateUser } from "../../redux/slices/authSlice";
 import { onCreateNote } from "../../api/notes";
-import PlusIcon from '../assets/plus-icon.png'
+import editorIcon from "../assets/editor-icon.png"
 import NoteIcon from '../assets/note-icon.png'
 
 const Navbar = () => {
@@ -57,9 +57,12 @@ const Navbar = () => {
     <div className='nav-links'>
       <NavLink to='/' className='nav-link'>
         <img src={NoteIcon} alt='NoteIcon' className='note-img'/>
-        My Notes
+        Notes
       </NavLink>
-      <NavLink to='/editor' className='nav-link'> Editor</NavLink>
+      <NavLink to='/editor' className='nav-link'> 
+         <img src={editorIcon} alt='editorIcon' className='editor-img'/>
+      Editor
+      </NavLink>
     </div>
     <div onClick={() => logout()} className='logout-link'>
       <img src={LogoutIcon} alt='LogoutIcon' /> Sign out </div>

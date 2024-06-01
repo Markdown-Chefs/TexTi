@@ -7,6 +7,7 @@ import { unAuthenticateUser } from "../../redux/slices/authSlice";
 import "./dashboard.css"
 import Navbar from "../../components/navbar/navbar";
 import CustomPrompt from "../../components/customPrompt/customPrompt";
+import ConfirmPrompt from "../../components/customPrompt/confirmPrompt";
 
 
 function Dashboard() {
@@ -16,6 +17,7 @@ function Dashboard() {
     const [listOfNotes, setListOfNotes] = useState([]); // [{note_id: 1, title: 'example'}, ...]
     const [selectedNoteIndex, setSelectedNoteIndex] = useState(-1);
     const [isPromptOpen, setIsPromptOpen] = useState(false);
+    const [isConfirmPromptOpen, setIsConfirmPromptOpen] = useState(false);
 
     const handleOpenPrompt = () => {
       setIsPromptOpen(true);
@@ -25,12 +27,31 @@ function Dashboard() {
       setIsPromptOpen(false);
     };
 
-    const handleConfirmPrompt = (noteTitle) => {
+    const handleCreateNoteConfirmPrompt = (noteTitle) => {
         createNote(noteTitle);
         setIsPromptOpen(false);
       };
-  
 
+    const handleDeleteNoteConfirmPrompt = () => {
+        deleteNote();
+        setIsConfirmPromptOpen(false);
+    }
+
+    const handleOpenConfirmPrompt = () => {
+        setIsConfirmPromptOpen(true);
+      };
+  
+      const handleCloseConfirmPrompt = () => {
+        setIsConfirmPromptOpen(false);
+      };
+
+    const getSelectedNoteTitle = () => {
+        if (selectedNoteIndex !== -1 && listOfNotes[selectedNoteIndex]) {
+            return listOfNotes[selectedNoteIndex].title;
+        }
+        return "";
+    }
+  
     const logout = async () => {
         try {
             await onLogout();
@@ -116,11 +137,17 @@ function Dashboard() {
                     <CustomPrompt
         open={isPromptOpen}
         onClose={handleClosePrompt}
-        onConfirm={handleConfirmPrompt}
+        onConfirm={handleCreateNoteConfirmPrompt}
         child="Create New Note"
         placeHolder="Enter note title"
       />
-                        <button onClick={() => deleteNote()} className="delete-note">Delete Selected Note</button>
+                        <button onClick={handleOpenConfirmPrompt} className="delete-note" disabled={selectedNoteIndex === -1}>Delete Selected Note </button>
+                        <ConfirmPrompt
+            open={isConfirmPromptOpen}
+            onClose={handleCloseConfirmPrompt}
+            onConfirm={handleDeleteNoteConfirmPrompt}
+            child={"Delete " + getSelectedNoteTitle()}
+        />
                     </div>
                     <div className="header-container">
                         <div className="line"></div>

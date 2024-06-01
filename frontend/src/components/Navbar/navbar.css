@@ -66,6 +66,11 @@
   margin-right: 5px;
 }
 
+.editor-img {
+  width: 20px;
+  margin-right: 10px;
+}
+
 .nav-link:hover {
   background-color: #e9ecef;
 }
