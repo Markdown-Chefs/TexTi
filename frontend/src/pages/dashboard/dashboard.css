@@ -92,34 +92,41 @@
     padding: 0;
     list-style: none;
     max-width: 100%;
+    text-align: center;
 }
 
 .list-group2-item {
     display: flex;
+    /* flex-wrap: wrap; */
     flex-direction: column;
-    background-image: url('./../../components/assets/note-icon2.png');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    padding: 20px;
-    border: none;
+    align-items: center;
+    color: black;
     transition: background-color 0.3s;
-    height: 10vw;
-    width: 10vw;
+    height: auto;
+    width: 12vw;
     max-width: 200px;
     max-height: 200px;
 }
 
 
 .list-group2-item-success {
-    background-color: rgba(217, 227, 236, 0.5) !important;
+    background-color: rgba(226, 226, 226, 0.5) !important;
+}
+
+.file-img {
+    height: auto;
+    width: 100%;
+    max-width: 150px;
 }
 
 .note-title {
-    margin-top: 14vh;
     font-size: 20px;
-    text-align: center;
     font-weight: bold;
     color:#333;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    width: 100%;
+    text-align: center;
 }
 

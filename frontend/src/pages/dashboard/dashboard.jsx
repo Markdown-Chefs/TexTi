@@ -8,6 +8,7 @@ import "./dashboard.css"
 import Navbar from "../../components/navbar/navbar";
 import CustomPrompt from "../../components/customPrompt/customPrompt";
 import ConfirmPrompt from "../../components/customPrompt/confirmPrompt";
+import fileIcon from "./../../components/assets/note-icon2.png"
 
 
 function Dashboard() {
@@ -173,7 +174,9 @@ function Dashboard() {
                                     e.stopPropagation();
                                     setSelectedNoteIndex(index);
                                 }}
+                                
                             >
+                                <img src={fileIcon} alt="fileIcon" className="file-img"/>
                                 <div className="note-title"> 
                                     {note.title}
                                 </div>
