@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.dashboard-page {
+    margin-left: 11%;
+    max-width: 90%;
+}
+.top {
+    margin-top: 10px;
+}
+
+.create-note {
+    margin-top: 5px;
+    width: 15%; 
+    margin-left: 30px;
+    padding: 7px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: white;
+    color: #000;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+    align-items: center;
+  }
+  
+.create-note:hover {
+    background-color: black; 
+    transform: scale(1.05);
+    color:white;
+}
+
+.create-note:active {
+    background-color: black; 
+    color:white;
+    transform: scale(1); 
+}
+
+.delete-note {
+    width: 15%; 
+    margin-left: 65%;
+    padding: 7px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+    align-items: center;
+  }
+
+.delete-note:hover {
+    background-color: black; 
+    transform: scale(1.05);
+    color:white;
+}
+
+
+.header-container {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+.line {
+    flex: 1;
+    height: 1px;
+    background-color: #000; 
+    margin: 0 10px; 
+  }
+  
+.header-text {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.notes-section {
+    height: 80vh;
+    max-width: 100%;
+}
+
+.list-group2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 0;
+    list-style: none;
+    max-width: 100%;
+    text-align: center;
+}
+
+.list-group2-item {
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    align-items: center;
+    color: black;
+    transition: background-color 0.3s;
+    height: auto;
+    width: 12vw;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+
+.list-group2-item-success {
+    background-color: rgba(226, 226, 226, 0.5) !important;
+}
+
+.file-img {
+    height: auto;
+    width: 100%;
+    max-width: 150px;
+}
+
+.note-title {
+    font-size: 20px;
+    font-weight: bold;
+    color:#333;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+    width: 100%;
+    text-align: center;
+}
+

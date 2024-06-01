@@ -8,7 +8,7 @@ import {
 import Home from "./pages/home/home";
 import Register from "./pages/register/register";
 import Login from "./pages/login/login";
-import Dashboard from "./pages/dashboard";
+import Dashboard from "./pages/dashboard/dashboard";
 import Editor from "./pages/editor";
 import { useSelector } from "react-redux";
 
@@ -34,7 +34,6 @@ function App() {
             <Routes>
                 <Route element={<PrivateRoute></PrivateRoute>}>
                     <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
-                    <Route path="/editor" element={<Editor></Editor>}></Route>
                 </Route>
 
                 <Route element={<RestrictedRoute></RestrictedRoute>}>
@@ -42,6 +41,8 @@ function App() {
                     <Route path="/login" element={<Login></Login>}></Route>
                     <Route path="/" element={<Home></Home>}></Route>
                 </Route>
+
+                <Route path="/editor" element={<Editor></Editor>}></Route>
             </Routes>
         </BrowserRouter>
     );
