@@ -4,7 +4,10 @@ const { compare } = require('bcryptjs');
 
 const password = check('password').isLength({ min: 6, max: 30 }).withMessage('Password must be between 6 and 30 characters.');
 const email = check('email').isEmail().withMessage('Please provide valid email.');
-const username = check('username').isLength({ min: 4, max: 30 }).withMessage('Username must be between 4 and 30 characters.')
+const username = check('username')
+    .isLength({ min: 4, max: 30 }).withMessage('Username must be between 4 and 30 characters.')
+    .matches(/^[A-Za-z0-9]/).withMessage('Username must start with an alphanumeric character.')
+    .matches(/^[A-Za-z0-9-_]*$/).withMessage('Username may only include alphanumeric characters, underscores, or dashes.');
 
 // check if email exists
 const emailExists = check('email').custom(async (value) => {
