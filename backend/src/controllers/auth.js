@@ -23,8 +23,8 @@ exports.register = async (req, res) => {
         const hashedPassword = await hash(password, 10);
 
         await db.query('INSERT INTO users (email, username, password_hash) VALUES ($1, $2, $3)', [
-            email,
-            username,
+            email.toLowerCase(),
+            username.toLowerCase(),
             hashedPassword
         ])
 

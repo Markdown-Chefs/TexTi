@@ -12,7 +12,7 @@ const username = check('username')
 // check if email exists
 const emailExists = check('email').custom(async (value) => {
     const { rows } = await db.query('SELECT * from users WHERE email = $1', [
-        value,
+        value.toLowerCase(),
     ]);
     if (rows.length) {
         throw new Error('Email already exists');
@@ -22,7 +22,7 @@ const emailExists = check('email').custom(async (value) => {
 // check if username exists
 const userNameExists = check('username').custom(async (value) => {
     const { rows } = await db.query('SELECT * from users WHERE username = $1', [
-        value,
+        value.toLowerCase(),
     ]);
     if (rows.length) {
         throw new Error('Username already exists');
@@ -32,7 +32,7 @@ const userNameExists = check('username').custom(async (value) => {
 // login validation
 const loginCheck = check('email').custom(async (value, { req }) => {
     const user = await db.query('SELECT * from users WHERE email = $1', [
-        value // can also be req.body.email
+        value.toLowerCase() // can also be req.body.email
     ]);
     
     if (!user.rows.length) {
