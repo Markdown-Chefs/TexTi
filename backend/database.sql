@@ -13,7 +13,7 @@ CREATE TABLE users (
 -- create notes table
 CREATE TABLE notes (
   note_id SERIAL PRIMARY KEY,
-  title VARCHAR(255) UNIQUE NOT NULL DEFAULT 'untitled',
+  title VARCHAR(255) NOT NULL DEFAULT 'untitled',
   content TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   user_id INT NOT NULL REFERENCES users(user_id) -- foreign key

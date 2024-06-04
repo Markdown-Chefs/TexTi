@@ -57,15 +57,20 @@ exports.deleteUserNote = async (req, res) => {
     try {
         // console.log(note_id, title);
         // console.log(req.body);
-        await db.query(`DELETE FROM notes WHERE title = $1 AND note_id = $2`, [
+        let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
+        const userID = response.rows[0].user_id;
+        console.log(userID);
+        await db.query(`DELETE FROM notes WHERE title = $1 AND note_id = $2 AND user_id = $3`, [
             title,
-            note_id
+            note_id,
+            userID,
         ]);
 
         return res.status(200).json({
             success: true,
             message: 'Note deleted',
         });
+
     } catch (err) {
         console.log(err.message);
         return res.status(500).json({
