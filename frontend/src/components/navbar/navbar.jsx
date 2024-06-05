@@ -51,8 +51,10 @@ const Navbar = () => {
   return (
     <nav className='navbar flex-column'>
     <div className='profile'>
-      <img src={TexTi_logo} alt='Profile' className='profile-pic' />
-      <span className='username'> {username} </span>
+      <NavLink to='/settings' className='nav-links' style={{ color: 'inherit', textDecoration: 'inherit'}}>
+        <img src={TexTi_logo} alt='Profile' className='profile-pic' />
+        <span className='username'> {username} </span>
+      </NavLink>
     </div>
     <div className='nav-links'>
       <NavLink to='/' className='nav-link'>

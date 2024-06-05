@@ -22,3 +22,24 @@ export async function onLogout() {
 export async function fetchProtectedInfo() {
     return await axios.get('http://localhost:8000/api/protected');
 }
+
+export async function onChangeUsername(newUsernameData) {
+    return await axios.post(
+        'http://localhost:8000/api/change-username',
+        newUsernameData,
+    );
+}
+
+export async function onChangeEmail(newEmailData) {
+    return await axios.post(
+        'http://localhost:8000/api/change-email',
+        newEmailData,
+    );
+}
+
+export async function onChangePassword(newPasswordData) {
+    return await axios.post(
+        'http://localhost:8000/api/change-password',
+        newPasswordData,
+    );
+}

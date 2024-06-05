@@ -21,17 +21,17 @@ function Dashboard() {
     const [isConfirmPromptOpen, setIsConfirmPromptOpen] = useState(false);
 
     const handleOpenPrompt = () => {
-      setIsPromptOpen(true);
+        setIsPromptOpen(true);
     };
   
     const handleClosePrompt = () => {
-      setIsPromptOpen(false);
+        setIsPromptOpen(false);
     };
 
     const handleCreateNoteConfirmPrompt = (noteTitle) => {
         createNote(noteTitle);
         setIsPromptOpen(false);
-      };
+    };
 
     const handleDeleteNoteConfirmPrompt = () => {
         deleteNote();
@@ -40,11 +40,11 @@ function Dashboard() {
 
     const handleOpenConfirmPrompt = () => {
         setIsConfirmPromptOpen(true);
-      };
+    };
   
       const handleCloseConfirmPrompt = () => {
         setIsConfirmPromptOpen(false);
-      };
+    };
 
     const getSelectedNoteTitle = () => {
         if (selectedNoteIndex !== -1 && listOfNotes[selectedNoteIndex]) {
@@ -127,7 +127,7 @@ function Dashboard() {
     return (loading ? (
             <>
             <Navbar/>
-                <h1>Loading...</h1>
+            <h1>Loading...</h1>
             </>
         ) : (
             <>
