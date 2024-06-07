@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // for markdown preview
 import { Marked } from "marked";
@@ -20,8 +20,7 @@ import { EditorView } from "@codemirror/view";
     // support for latex
     // support for GFM alerts
 
-function Editor() {
-
+function Editor({ content="" }) {
     const marked = new Marked(
         markedHighlight({
             gfm: true,
@@ -34,7 +33,7 @@ function Editor() {
         }),
     );
     
-    const [mdString, setMdString] = useState("");
+    const [mdString, setMdString] = useState(content);
     const handleChange = (event) => {
         // setMdString(event.target.value);
         // console.log(event);
@@ -45,6 +44,10 @@ function Editor() {
         const rawMarkup = marked.parse(mdString);
         return parse(rawMarkup);
     };
+
+    useEffect(() => {
+        setMdString(content)
+    }, [content]);
 
     return (
         <>

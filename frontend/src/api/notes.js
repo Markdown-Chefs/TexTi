@@ -23,3 +23,8 @@ export async function onDeleteNote(note_id, note_title) {
         }
     );
 }
+
+export async function fetchNoteContent(note_id) {
+    const url = 'http://localhost:8000/api/note/' + note_id
+    return await axios.get(url);
+}
