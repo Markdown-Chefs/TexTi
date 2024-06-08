@@ -17,7 +17,6 @@ const titleExists = check('noteTitle').custom(async (value, { req }) => {
 })
 
 // VALIDATION FOR FETCHING NOTE
-// const noteID = check('noteID').isInt().withMessage("Note not found.");
 
 const fetchNoteCheck = check('noteID')
     .isInt().withMessage("Note not found.").bail()
@@ -30,7 +29,7 @@ const fetchNoteCheck = check('noteID')
             throw new Error('Note not found.');
         }
 
-        const response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [
+        const response = await db.query('SELECT user_id FROM users WHERE username = $1', [
             req.user.username
         ]);
         const userID = response.rows[0].user_id;
