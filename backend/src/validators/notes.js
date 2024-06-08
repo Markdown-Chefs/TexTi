@@ -21,20 +21,21 @@ const titleExists = check('noteTitle').custom(async (value, { req }) => {
 const fetchNoteCheck = check('noteID')
     .isInt().withMessage("Note not found.").bail()
     .custom(async (value, { req }) => {
-        const { rows } = await db.query('SELECT * FROM notes WHERE note_id = $1', [
-            value
+
+        const { rows } = await db.query(
+            `SELECT notes.note_id, users.username
+            FROM notes
+            INNER JOIN users
+            ON users.user_id = notes.user_id
+            WHERE notes.note_id = $1`, [
+                value
         ]);
 
         if (!rows.length) {
             throw new Error('Note not found.');
         }
 
-        const response = await db.query('SELECT user_id FROM users WHERE username = $1', [
-            req.user.username
-        ]);
-        const userID = response.rows[0].user_id;
-
-        if (rows[0].user_id !== userID) {
+        if (rows[0].username !== req.user.username) {
             throw new Error('Access Denied.');
         }
     })
