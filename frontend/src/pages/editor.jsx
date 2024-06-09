@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { updateNoteContent } from "../api/notes";
+import { debounce } from "lodash";
 
 // for markdown preview
 import { Marked } from "marked";
@@ -20,7 +22,7 @@ import { EditorView } from "@codemirror/view";
     // support for latex
     // support for GFM alerts
 
-function Editor({ content="" }) {
+function Editor({ noteID, content="" }) {
     const marked = new Marked(
         markedHighlight({
             gfm: true,
@@ -35,8 +37,6 @@ function Editor({ content="" }) {
     
     const [mdString, setMdString] = useState(content);
     const handleChange = (event) => {
-        // setMdString(event.target.value);
-        // console.log(event);
         setMdString(event);
     }
 
@@ -45,9 +45,24 @@ function Editor({ content="" }) {
         return parse(rawMarkup);
     };
 
+    const saveUserNoteContent = useCallback(debounce(async () => {
+        try {
+            const response = await updateNoteContent(noteID, mdString);
+        } catch (error) {
+            console.log(error.response);
+            console.log("Failed to save note.");
+        }
+    }));
+
+    // initialise content from database
     useEffect(() => {
         setMdString(content)
     }, [content]);
+
+    // save content to database
+    useEffect(() => {
+        saveUserNoteContent();
+    }, [mdString, saveUserNoteContent]);
 
     return (
         <>

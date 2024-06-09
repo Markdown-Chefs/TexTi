@@ -79,10 +79,8 @@ exports.deleteUserNote = async (req, res) => {
     }
 }
 
-exports.fetchUserNote = async (req, res) => {
+exports.fetchUserNoteContent = async (req, res) => {
     try {
-        let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
-        const userID = response.rows[0].user_id;
         const { rows } = await db.query(`SELECT content FROM notes WHERE note_id = $1`, [
             req.params.noteID
         ]);
@@ -90,6 +88,27 @@ exports.fetchUserNote = async (req, res) => {
             success: true,
             // message: 'HELLO',
             content: rows[0].content,
+        });
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+                error: err.message,
+        });
+    }
+}
+
+exports.saveUserNoteContent = async (req, res) => {
+    try {
+        await db.query(
+            `UPDATE notes SET content = $1
+            WHERE note_id = $2`, [
+                req.body.updatedContent,
+                req.params.noteID
+        ]);
+
+        return res.status(200).json({
+                success: true,
+                message: 'Note content updated successfully.',
         });
     } catch (err) {
         console.log(err.message);

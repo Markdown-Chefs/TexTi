@@ -28,3 +28,13 @@ export async function fetchNoteContent(note_id) {
     const url = 'http://localhost:8000/api/note/' + note_id
     return await axios.get(url);
 }
+
+export async function updateNoteContent(note_id, content) {
+    const url = 'http://localhost:8000/api/note/' + note_id
+    return await axios.put(
+        url,
+        {
+            updatedContent: content
+        }
+    );
+}

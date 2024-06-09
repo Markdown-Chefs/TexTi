@@ -40,7 +40,10 @@ const fetchNoteCheck = check('noteID')
         }
     })
 
+// const saveNoteCheck = check('noteID')
+
 module.exports = {
     createNoteValidation: [noteTitle, titleExists],
     fetchNoteValidation: [fetchNoteCheck],
+    saveNoteValidation: [fetchNoteCheck],
 }

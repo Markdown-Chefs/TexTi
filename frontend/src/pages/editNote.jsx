@@ -8,36 +8,37 @@ function NoteEditor() {
     const { noteID } = useParams();
     const [noteContent, setNoteContent] = useState('');
     const [noteContentError, setNoteContentError] = useState('');
+    const [loading, setLoading] = useState(true); // prevent render before response from server, important
 
     const fetchUserNoteContent = async () => {
         try {
             const response = await fetchNoteContent(noteID);
             if (response.status === 200) {
                 setNoteContent(response.data.content);
+                setLoading(false);
             }
         } catch (error) {
             setNoteContentError(error.response.data.errors[0].msg);
             console.log(error.response);
+            setLoading(false);
         }
     }
 
-    // check if note exists
-    // verify user have access to notes
-    //      user log in (yes):
-    //          if yes: send back content
-    //          if no : send "no access"
-    //      user log in (no) :
-    //          check allow public access
+    const renderEditorOrError = () => {
+        return noteContentError ? 
+            (<h1>{noteContentError}</h1>) :
+            (<Editor noteID={noteID} content={noteContent} />);
+    }
 
     useEffect(() => {fetchUserNoteContent()});
 
-    return (noteContentError ? (
+    return (loading ? (
         <>
-            <h1>{noteContentError}</h1>
+            <h1>Loading...</h1>
         </>
     ) : (
         <>
-            <Editor content={noteContent} />
+            {renderEditorOrError()}
         </>
     ));
 }
