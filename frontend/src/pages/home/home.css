@@ -127,7 +127,7 @@
     letter-spacing: var(--subheading-letter-spacing);
     line-height: var(--subheading-line-height);
     position: absolute;
-    top: 329px;
+    top: 65%;
     width: 100%;
   }
   
@@ -182,7 +182,7 @@
     letter-spacing: 0;
     line-height: 27px;
     position: absolute;
-    top: 150px;
+    top: 55%;
     width: 618px;
   }
   
