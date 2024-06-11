@@ -18,7 +18,7 @@ const titleExists = check('noteTitle').custom(async (value, { req }) => {
 
 // VALIDATION FOR FETCHING NOTE
 
-const fetchNoteCheck = check('noteID')
+const fetchNoteCheck = check('noteID') // check for: valid note id, user that request has permission
     .isInt().withMessage("Note not found.").bail()
     .custom(async (value, { req }) => {
 
@@ -40,10 +40,31 @@ const fetchNoteCheck = check('noteID')
         }
     })
 
-// const saveNoteCheck = check('noteID')
+const targetUserCheck = check('usernameToShare').custom(async (value, { req }) => {
+    if (value === req.user.username) {
+        throw new Error('Owner already has view and edit access.');
+    }
+
+    const { rows } = await db.query(`SELECT user_id FROM users WHERE username = $1`, [
+        value
+    ]);
+
+    if (!rows.length) {
+        throw new Error('User does not exists.');
+    }
+})
+const viewPermissionCheck = check('can_view').isBoolean().withMessage('Invalid permission parameter.');
+const editPermissionCheck = check('can_edit').isBoolean().withMessage('Invalid permission parameter.');
+const permissionConflictCheck = check('can_view').custom(async (value, { req }) => {
+    if (!value && req.body.can_edit) { // cannot view but can edit
+        throw new Error('User must be able to view note to edit note.');
+    }
+})
 
 module.exports = {
     createNoteValidation: [noteTitle, titleExists],
     fetchNoteValidation: [fetchNoteCheck],
     saveNoteValidation: [fetchNoteCheck],
+    fetchNotePermValidation: [fetchNoteCheck],
+    updateNotePermValidation: [fetchNoteCheck, targetUserCheck, viewPermissionCheck, editPermissionCheck, permissionConflictCheck],
 }

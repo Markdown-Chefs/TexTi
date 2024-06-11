@@ -19,12 +19,12 @@ CREATE TABLE notes (
   user_id INT NOT NULL REFERENCES users(user_id) -- foreign key
 );
 
--- test insert into notes table
-INSERT INTO notes (title, content, user_id) VALUES ('note 1', 'content 1', 1);
-
--- select all notes own by a user
-SELECT users.user_id, users.username, notes.*
-FROM users
-INNER JOIN notes
-ON users.user_id = notes.user_id
-WHERE users.username = 'test1';
+-- create permission table
+CREATE TABLE note_permission (
+  perm_id SERIAL PRIMARY KEY,
+  owner_id INT NOT NULL REFERENCES users(user_id),
+  note_id INT NOT NULL REFERENCES notes(note_id),
+  user_id INT NOT NULL REFERENCES users(user_id), -- user that grant permission by owner
+  can_view BOOLEAN NOT NULL DEFAULT FALSE,
+  can_edit BOOLEAN NOT NULL DEFAULT FALSE
+);
