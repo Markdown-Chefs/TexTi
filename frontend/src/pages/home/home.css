@@ -3,41 +3,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 .main-page {
-    color: #333;
+    font-family: "Inter-ExtraBold", Helvetica;
   }
   
   .header {
-    background-color: #f8f9fa;
     padding: 60px 20px;
     text-align: center;
   }
   
   .intro {
-    max-width: 60%;
-    margin: 0 auto;
-    font-family: 'Open Sans';
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 284px;
+    position: relative;
+   
   }
   
   .intro h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
+    color: #000000;
+    font-size: 64px;
+    font-weight: 800;
+    letter-spacing: -1.28px;
+    line-height: normal;
+    margin-top: -1px;
+    position: relative;
+    text-align: center;
+    width: fit-content;
   }
-  
-  .intro h1 .highlight {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .intro p {
-    font-size: 1.25rem;
-    margin-bottom: 30px;
-    line-height: 1.5;
+
+  .intro .subheading {
+    color: #828282;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 36px;
+    position: relative;
+    text-align: center;
+    width: fit-content;
+    max-width: 50%;
   }
   
   .signup-prompt {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 30px;
+    color:#453a3a;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 36px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
   }
   
   .signup-prompt .highlight-link {
@@ -49,92 +66,149 @@
     text-decoration: underline;
   }
 
-  .feature-container {
+  .box {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 20px;
   }
-
-  .feature-container .feature-image {
-    width: 500px;
-    max-width: 40%;
-    margin-right: 20px;
-    height: 550px;
-  }
-
-  .feature-text h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    font-family: 'Playfair Display';
-    font-weight: bold;
-    text-align: Left;
-  }
-
-  .list-group-item {
-    color:#73777a;
-    font-size: 1 rem;
-    
-  }
-
-  .icon-text-wrapper {
-    display: flex;
-    align-items: start; 
-    gap: 20px; 
-}
-
-.icon-text-wrapper img {
-    width: 50px; 
-    margin-top: 10px;;
-    height: auto;
-}
-
-.text-content {
-    max-width: 800px;
-}
-
-ul {
-    list-style: none; 
-    padding: 0;
-}
-
-li {
-    padding: 10px 0; 
-}
-
-  .list-group-item:hover {
-    color: #333;
-    
+  
+  .box .features {
+    height: 40px;
+    width: 1200px;
   }
   
-.editor-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 50px;
-  background-color: #f8f9fa;
-}
+  .box .overlap {
+    height: 940px;
+    position: relative;
+  }
+  
+  .box .feature {
+    height: 512px;
+    left: 0;
+    position: absolute;
+    top: 268px;
+    max-width: 50%;
+  }
+  
+  .box .folder {
+    height: 512px;
+    left: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    width: 624px;
+  }
+  
+  .box .text-wrapper {
+    color: #000000;
+    font-family: var(--h1-font-family);
+    font-size: var(--h1-font-size);
+    font-style: var(--h1-font-style);
+    font-weight: var(--h1-font-weight);
+    height: 143px;
+    left: 656px;
+    letter-spacing: var(--h1-letter-spacing);
+    line-height: var(--h1-line-height);
+    position: relative;
+    top: 189px;
+    white-space: pre-line; 
+   
+  }
+  
+  .box .div {
+    color: #828282;
+    font-family: var(--subheading-font-family);
+    font-size: var(--subheading-font-size);
+    font-style: var(--subheading-font-style);
+    font-weight: var(--subheading-font-weight);
+    height: 83px;
+    left: 656px;
+    letter-spacing: var(--subheading-letter-spacing);
+    line-height: var(--subheading-line-height);
+    position: absolute;
+    top: 329px;
+    width: 100%;
+  }
+  
+  .box .feature-2 {
+    height: 490px;
+    left: 24px;
+    position: absolute;
+    top: -45px;
+  }
+  
+  .box .button {
+    text-decoration: none;
+    display: flex;
+    background-color: #000000;
+    border-radius: 8px;
+    box-shadow: 0px 1px 2px #0000000d;
+    padding: 12px 24px;
+    position: absolute;
+    top: 228px;
+    color: #ffffff;
+    font-family: var(--button-text-font-family);
+    font-size: var(--button-text-font-size);
+    font-style: var(--button-text-font-style);
+    font-weight: var(--button-text-font-weight);
+    letter-spacing: var(--button-text-letter-spacing);
+    line-height: var(--button-text-line-height);
+    margin: 0; 
+    white-space: nowrap;
+    width: fit-content;
+  }
 
-.editor-container h1 {
-  font-size: 2.5em;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
+  .box .button:hover {
+    color:black;
+    background-color: white;
+    border: 1px solid black;
+  }
+  
+  .box .overlap-group {
+    height: 265px;
+    left: 0;
+    position: absolute;
+    width: 626px;
+  }
+  
+  .box .text-wrapper-2 {
+    color: #828282;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 18px;
+    font-weight: 400;
+    height: 85px;
+    left: 8px;
+    letter-spacing: 0;
+    line-height: 27px;
+    position: absolute;
+    top: 150px;
+    width: 618px;
+  }
+  
+  .box .text-wrapper-3 {
+    color: #000000;
+    font-family: var(--h1-font-family);
+    font-size: var(--h1-font-size);
+    font-style: var(--h1-font-style);
+    font-weight: var(--h1-font-weight);
+    height: 223px;
+    left: 0;
+    letter-spacing: var(--h1-letter-spacing);
+    line-height: var(--h1-line-height);
+    position: absolute;
+    top: 0;
+    width: 624px;
+  }
+  
+  .box .multitasking {
+    height: 490px;
+    left: 676px;
+    object-fit: cover;
+    position: absolute;
+    top: -45px;
+    width: 580px;
+  }
 
-.editor-container p {
-  font-size: 1.2em;
-  color: #666;
-  margin-bottom: 30px;
-  max-width: 60%;
-}
-
-.editor-link {
-  text-decoration: none;
-  padding: 10px 20px;
-  background-color: #333;
-  color: #fff;
-  border-radius: 5px;
-}
+  
+ 

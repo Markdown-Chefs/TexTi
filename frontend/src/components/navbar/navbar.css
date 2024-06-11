@@ -52,6 +52,7 @@
 }
 
 .nav-link {
+  
   display: block;
   padding: 15px;
   font-size:15px;
@@ -105,21 +106,4 @@
 
 .logout-link:hover {
   background-color: #e9ecef;
-}
-
-.app-bar .navbar {
-  width: auto;
-  background-color: transparent;
-  flex-direction: row;
-  position: relative;
-  height: auto;
-  padding: 0;
-}
-
-.app-bar .nav-link {
-  display: inline-block;
-  padding: 0 15px;
-  color: black !important;
-  text-align: left;
-  border-bottom: none;
 }

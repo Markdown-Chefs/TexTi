@@ -14,6 +14,7 @@ import "highlight.js/styles/stackoverflow-light.css";
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { EditorView } from "@codemirror/view";
+import AppBar from "../components/appbar/simpleAppBar"
 
 // TODO: use highlightJS instead for codemirror
 // TODO: markedJS:
@@ -66,13 +67,14 @@ function Editor({ noteID, content="" }) {
 
     return (
         <>
+        <AppBar />
         <div style={{ display: "flex", overflow: "hidden", height: "100vh" }}>
             <div style={{ width: "50%", height: "100%", flex: 1, overflowY: "auto" }}>
                 <CodeMirror
                     id="editor"
                     // minHeight="100vh"
                     // height="auto"
-                    theme={"dark"}
+                    theme={"light"}
                     value={mdString}
                     basicSetup={{
                         tabSize: 4,
