@@ -38,15 +38,14 @@ function Home() {
                         <NavLink to='/editor' className="button">
                             Try Our Markdown Editor Now!
                         </NavLink>
-                        <div className="overlap-group">
-                        <p className="text-wrapper-2">
+                        <div className="text-wrapper-2">
                             Ever wondered how to make your text beautifully formatted with minimal effort? Dive into the world of
                             Markdown and transform your writing!
-                        </p>
-                        <p className="text-wrapper-3">Discover the Power of Markdown</p>
                         </div>
                         <img className="multitasking" alt="Multitasking" src={Multitasking} />
-                    </div>
+                        <div className="text-wrapper-3">Discover the Power of Markdown</div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
