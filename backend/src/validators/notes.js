@@ -18,7 +18,86 @@ const titleExists = check('noteTitle').custom(async (value, { req }) => {
 
 // VALIDATION FOR FETCHING NOTE
 
-const fetchNoteCheck = check('noteID') // check for: valid note id, user that request has permission
+const canViewCheck = check('noteID') // check for: valid note id, is owner or can_view or can_edit
+    .isInt().withMessage("Note not found.").bail()
+    .custom(async (value, { req }) => {
+
+        const { rows } = await db.query(
+            `SELECT notes.note_id, users.username, users.user_id
+            FROM notes
+            INNER JOIN users
+            ON users.user_id = notes.user_id
+            WHERE notes.note_id = $1`, [
+                value
+        ]);
+
+        if (!rows.length) {
+            throw new Error('Note not found.');
+        }
+
+        const ownerID = rows[0].user_id;
+        if (rows[0].username !== req.user.username) { // not owner
+            const response = await db.query(
+                `SELECT note_permission.*, users.username
+                FROM note_permission
+                INNER JOIN users
+                ON note_permission.user_id = users.user_id
+                WHERE note_permission.note_id = $1 AND note_permission.owner_id = $2 AND users.username = $3`, [
+                    value,
+                    ownerID,
+                    req.user.username
+                ]);
+            if (!response.rows.length) { // no permission record
+                throw new Error('Access Denied.');
+            }
+            if (!response.rows[0].can_view && !response.rows[0].can_edit) { // have permission record but not allowed
+                throw new Error('Access Denied.');
+            }
+        }
+    })
+
+const canEditCheck = check('noteID') // check for: valid note id, is owner or can_edit
+.isInt().withMessage("Note not found.").bail()
+.custom(async (value, { req }) => {
+
+    const { rows } = await db.query(
+        `SELECT notes.note_id, users.username, users.user_id
+        FROM notes
+        INNER JOIN users
+        ON users.user_id = notes.user_id
+        WHERE notes.note_id = $1`, [
+            value
+    ]);
+
+    if (!rows.length) {
+        throw new Error('Note not found.');
+    }
+
+    const ownerID = rows[0].user_id;
+    if (rows[0].username !== req.user.username) { // not owner
+        const response = await db.query(
+            `SELECT note_permission.*, users.username
+            FROM note_permission
+            INNER JOIN users
+            ON note_permission.user_id = users.user_id
+            WHERE note_permission.note_id = $1 AND note_permission.owner_id = $2 AND users.username = $3`, [
+                value,
+                ownerID,
+                req.user.username
+            ]);
+        if (!response.rows.length) { // no permission record
+            throw new Error('Access Denied.');
+        }
+        if (response.rows[0].can_view && !response.rows[0].can_edit) {
+            throw new Error('Access Denied. Can view but not edit');
+        }
+        if (!response.rows[0].can_view && !response.rows[0].can_edit) {
+            throw new Error('Access Denied. Permission revoked.');
+        }
+    }
+})
+
+const fetchNotePermCheck = check('noteID') // check for valid noteID and owner only
     .isInt().withMessage("Note not found.").bail()
     .custom(async (value, { req }) => {
 
@@ -35,14 +114,14 @@ const fetchNoteCheck = check('noteID') // check for: valid note id, user that re
             throw new Error('Note not found.');
         }
 
-        if (rows[0].username !== req.user.username) {
+        if (rows[0].username !== req.user.username) { // not owner
             throw new Error('Access Denied.');
         }
     })
 
 const targetUserCheck = check('usernameToShare').custom(async (value, { req }) => {
     if (value === req.user.username) {
-        throw new Error('Owner already has view and edit access.');
+        throw new Error('Cannot modify your own permission.');
     }
 
     const { rows } = await db.query(`SELECT user_id FROM users WHERE username = $1`, [
@@ -63,8 +142,8 @@ const permissionConflictCheck = check('can_view').custom(async (value, { req }) 
 
 module.exports = {
     createNoteValidation: [noteTitle, titleExists],
-    fetchNoteValidation: [fetchNoteCheck],
-    saveNoteValidation: [fetchNoteCheck],
-    fetchNotePermValidation: [fetchNoteCheck],
-    updateNotePermValidation: [fetchNoteCheck, targetUserCheck, viewPermissionCheck, editPermissionCheck, permissionConflictCheck],
+    fetchNoteContentValidation: [canViewCheck],
+    saveNoteContentValidation: [canEditCheck],
+    fetchNotePermValidation: [fetchNotePermCheck],
+    updateNotePermValidation: [fetchNotePermCheck, targetUserCheck, viewPermissionCheck, editPermissionCheck, permissionConflictCheck],
 }
