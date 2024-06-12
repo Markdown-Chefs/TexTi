@@ -89,7 +89,7 @@ const canEditCheck = check('noteID') // check for: valid note id, is owner or ca
             throw new Error('Access Denied.');
         }
         if (response.rows[0].can_view && !response.rows[0].can_edit) {
-            throw new Error('Access Denied. Can view but not edit');
+            throw new Error('Access Denied. View only.');
         }
         if (!response.rows[0].can_view && !response.rows[0].can_edit) {
             throw new Error('Access Denied. Permission revoked.');
