@@ -59,7 +59,7 @@ exports.deleteUserNote = async (req, res) => {
         // console.log(req.body);
         let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
         const userID = response.rows[0].user_id;
-        // console.log(userID);
+        console.log(userID);
         await db.query(`DELETE FROM notes WHERE title = $1 AND note_id = $2 AND user_id = $3`, [
             title,
             note_id,
@@ -71,45 +71,6 @@ exports.deleteUserNote = async (req, res) => {
             message: 'Note deleted',
         });
 
-    } catch (err) {
-        console.log(err.message);
-        return res.status(500).json({
-                error: err.message,
-        });
-    }
-}
-
-exports.fetchUserNoteContent = async (req, res) => {
-    try {
-        const { rows } = await db.query(`SELECT content FROM notes WHERE note_id = $1`, [
-            req.params.noteID
-        ]);
-        return res.status(200).json({
-            success: true,
-            // message: 'HELLO',
-            content: rows[0].content,
-        });
-    } catch (err) {
-        console.log(err.message);
-        return res.status(500).json({
-                error: err.message,
-        });
-    }
-}
-
-exports.saveUserNoteContent = async (req, res) => {
-    try {
-        await db.query(
-            `UPDATE notes SET content = $1
-            WHERE note_id = $2`, [
-                req.body.updatedContent,
-                req.params.noteID
-        ]);
-
-        return res.status(200).json({
-                success: true,
-                message: 'Note content updated successfully.',
-        });
     } catch (err) {
         console.log(err.message);
         return res.status(500).json({

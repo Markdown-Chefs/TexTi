@@ -16,34 +16,6 @@ const titleExists = check('noteTitle').custom(async (value, { req }) => {
     }
 })
 
-// VALIDATION FOR FETCHING NOTE
-
-const fetchNoteCheck = check('noteID')
-    .isInt().withMessage("Note not found.").bail()
-    .custom(async (value, { req }) => {
-
-        const { rows } = await db.query(
-            `SELECT notes.note_id, users.username
-            FROM notes
-            INNER JOIN users
-            ON users.user_id = notes.user_id
-            WHERE notes.note_id = $1`, [
-                value
-        ]);
-
-        if (!rows.length) {
-            throw new Error('Note not found.');
-        }
-
-        if (rows[0].username !== req.user.username) {
-            throw new Error('Access Denied.');
-        }
-    })
-
-// const saveNoteCheck = check('noteID')
-
 module.exports = {
     createNoteValidation: [noteTitle, titleExists],
-    fetchNoteValidation: [fetchNoteCheck],
-    saveNoteValidation: [fetchNoteCheck],
 }

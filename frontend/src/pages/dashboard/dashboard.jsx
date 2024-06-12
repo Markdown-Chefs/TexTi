@@ -118,11 +118,6 @@ function Dashboard() {
         }
     }
 
-    const handleOpenNote = () => {
-        const noteWindow = window.open('http://localhost:3000/note/' + listOfNotes[selectedNoteIndex].note_id, '_blank', 'noopener,noreferrer');
-        if (noteWindow) {noteWindow.opener = null;}
-    }
-
     // useEffect(() => {protectedInfo()}, []);
     useEffect(() => {listOfUserNotes()}, []);
     // useEffect(() => {
@@ -177,7 +172,6 @@ function Dashboard() {
                                 }
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    if (index === selectedNoteIndex) {handleOpenNote();}
                                     setSelectedNoteIndex(index);
                                 }}
                                 
