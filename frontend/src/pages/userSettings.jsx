@@ -170,7 +170,7 @@ function UserSettings() {
         }
     }
 
-    useEffect(() => {protectedInfo()}, []);
+    useEffect(() => {protectedInfo()});
 
     return (loading ? (
         <>
