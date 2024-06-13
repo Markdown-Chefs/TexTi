@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchNoteContent } from "../api/notes";
 
-import Editor from "./editor";
+import Editor from "./editor/editor";
 
 function NoteEditor() {
     const { noteID } = useParams();
@@ -39,6 +39,7 @@ function NoteEditor() {
     ) : (
         <>
             {renderEditorOrError()}
+            
         </>
     ));
 }

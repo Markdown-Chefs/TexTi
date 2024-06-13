@@ -9,7 +9,7 @@ import Home from "./pages/home/home";
 import Register from "./pages/register/register";
 import Login from "./pages/login/login";
 import Dashboard from "./pages/dashboard/dashboard";
-import Editor from "./pages/editor";
+import Editor from "./pages/editor/editor";
 import UserSettings from "./pages/userSettings";
 import NoteEditor from "./pages/editNote";
 import { useSelector } from "react-redux";

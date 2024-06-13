@@ -16,7 +16,7 @@ const AppBar = () => {
         </div>
         <div className="appbar-nav flex-row">
           <a className="appbar-nav-link" href="#">
-            <div className="text-wrapper"> Home </div> </a>
+            <NavLink to ='/' className="text-wrapper"> Home </NavLink> </a>
           {/* <div className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <div className="text-wrapper"> Links </div> 

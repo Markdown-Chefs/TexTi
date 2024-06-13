@@ -55,6 +55,7 @@
   }
 
   .text-wrapper {
+    text-decoration: none;
     color: #000000;
     font-family: var(--body-text-font-family);
     font-size: var(--body-text-font-size);

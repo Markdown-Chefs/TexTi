@@ -1,0 +1,77 @@
+.editor-navbar {
+    background-color: white;
+    padding: 10px 20px;
+    font-family: "Inter", Helvetica;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
+
+  
+  .editor-navbar-brand {
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+    font-family: var(--small-text-font-family);
+    font-size: var(--small-text-font-size);
+    font-style: var(--small-text-font-style);
+    font-weight: var(--small-text-font-weight);
+    letter-spacing: var(--small-text-letter-spacing);
+    line-height: var(--small-text-line-height);
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+  }
+  
+  .editor-navbar-brand img {
+    width: 60px ;
+    margin-right: 15px;
+    margin-left: 20px;
+  }
+
+
+
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.mode-button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.mode-button img {
+    transition: filter 0.3s ease;
+}
+
+.mode-button:hover {
+    background-color: black;
+
+}
+
+.mode-button img:hover {
+    filter: invert(1);
+}
+
+.mode-button.active {
+    background-color: black;
+}
+
+.mode-button.active img {
+    filter: invert(1);
+}
