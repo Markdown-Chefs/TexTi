@@ -58,7 +58,7 @@ function Editor({ noteID, content="" }) {
             console.log(error.response);
             console.log("Failed to save note.");
         }
-    }, 300), [mdString]);
+    }, 300));
 
     // initialise content from database
     useEffect(() => {
