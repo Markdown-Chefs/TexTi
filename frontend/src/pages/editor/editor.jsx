@@ -38,9 +38,11 @@ function Editor({ noteID, content="" }) {
     
     const [mdString, setMdString] = useState(content);
     const [mode, setMode] = useState("both"); 
+    const [isDirty, setIsDirty] = useState(false);
 
     const handleChange = (event) => {
         setMdString(event);
+        setIsDirty(true);
     }
 
     const getMarkdownText = () => {
@@ -51,11 +53,12 @@ function Editor({ noteID, content="" }) {
     const saveUserNoteContent = useCallback(debounce(async () => {
         try {
             const response = await updateNoteContent(noteID, mdString);
+            console.log('saving');
         } catch (error) {
             console.log(error.response);
             console.log("Failed to save note.");
         }
-    }));
+    }, 300), [mdString]);
 
     // initialise content from database
     useEffect(() => {
@@ -66,6 +69,19 @@ function Editor({ noteID, content="" }) {
     useEffect(() => {
         saveUserNoteContent();
     }, [mdString, saveUserNoteContent]);
+
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        }
+    }, [isDirty]);
 
     return (
         <>
