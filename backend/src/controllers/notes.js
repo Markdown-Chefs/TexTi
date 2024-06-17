@@ -118,3 +118,94 @@ exports.saveUserNoteContent = async (req, res) => {
         });
     }
 }
+
+exports.updateNotePermission = async (req, res) => {
+    try {
+        let response = await db.query(
+            `SELECT user_id, username 
+            FROM users 
+            WHERE username = $1 OR username = $2
+            ORDER BY CASE username
+                        WHEN $1 THEN 1
+                        WHEN $2 THEN 2
+                        ELSE 3
+                     END;`, [
+            req.user.username,
+            req.body.usernameToShare
+        ]);
+
+        // check have record or not
+        let check_exists = await db.query('SELECT owner_id FROM note_permission WHERE owner_id = $1 AND note_id = $2 AND user_id = $3', [
+            response.rows[0].user_id,
+            req.body.noteID,
+            response.rows[1].user_id,
+        ])
+
+        if (check_exists.rows.length) {
+            await db.query(`UPDATE note_permission SET can_view = $1, can_edit = $2 WHERE owner_id = $3 AND note_id = $4 AND user_id = $5`, [
+                req.body.can_view,
+                req.body.can_edit,
+                response.rows[0].user_id,
+                req.body.noteID,
+                response.rows[1].user_id,
+                ]);
+        } else {
+            await db.query(`INSERT INTO note_permission (owner_id, note_id, user_id, can_view, can_edit) VALUES ($1, $2, $3, $4, $5)`, [
+                response.rows[0].user_id,
+                req.body.noteID,
+                response.rows[1].user_id,
+                req.body.can_view,
+                req.body.can_edit,
+            ]);
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Note permission updated successfully.',
+        });
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+                error: err.message,
+        });
+    }
+}
+
+exports.fetchNotePermission = async (req, res) => {
+    try {
+        let response = await db.query('SELECT user_id FROM users WHERE username = $1', [req.user.username]);
+        const ownerID = response.rows[0].user_id;
+        let view_arr = [];
+        let edit_arr = [];
+        const { rows } = await db.query(
+            `SELECT users.username, note_permission.user_id, note_permission.can_view, note_permission.can_edit 
+            FROM note_permission
+            INNER JOIN users
+            ON note_permission.user_id = users.user_id
+            WHERE note_permission.owner_id = $1 AND note_permission.note_id = $2`, [
+                ownerID,
+                req.body.noteID,
+        ]);
+
+        for (let x in rows) {
+            if (rows[x].can_view && !rows[x].can_edit) {
+                view_arr.push(rows[x].username);
+            } else if (rows[x].can_view && rows[x].can_edit) {
+                edit_arr.push(rows[x].username);
+            }
+        }
+
+        return res.status(200).json({
+            success: true,
+            listOfUsers: {
+                can_view: view_arr,
+                can_edit: edit_arr,
+            },
+        });
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+                error: err.message,
+        });
+    }
+}
