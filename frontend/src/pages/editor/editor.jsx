@@ -15,6 +15,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { EditorView } from "@codemirror/view";
 import AppBar from "../../components/appbar/editorNavbar"
+import { exportMarkdown, exportStyledHTML, exportRawHTML } from "../../components/exportNote";
 
 // TODO: use highlightJS instead for codemirror
 // TODO: markedJS:
@@ -23,7 +24,7 @@ import AppBar from "../../components/appbar/editorNavbar"
     // support for latex
     // support for GFM alerts
 
-function Editor({ noteID, content="" }) {
+function Editor({ noteID, noteTitle="", content="" }) {
     const marked = new Marked(
         markedHighlight({
             gfm: true,
@@ -53,12 +54,15 @@ function Editor({ noteID, content="" }) {
     const saveUserNoteContent = useCallback(debounce(async () => {
         try {
             const response = await updateNoteContent(noteID, mdString);
-            console.log('saving');
         } catch (error) {
             console.log(error.response);
             console.log("Failed to save note.");
         }
     }, 300));
+
+    useEffect(() => {
+        document.title = noteTitle + ' - TexTi';
+    });
 
     // initialise content from database
     useEffect(() => {
@@ -85,6 +89,16 @@ function Editor({ noteID, content="" }) {
 
     return (
         <>
+        <div className="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Export
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" onClick={() => exportMarkdown(noteTitle, mdString)}>Markdown</a></li>
+                <li><a class="dropdown-item" href="#" onClick={() => exportStyledHTML(noteTitle, mdString)}>HTML</a></li>
+                <li><a class="dropdown-item" href="#" onClick={() => exportRawHTML(noteTitle, mdString)}>Raw HTML</a></li>
+            </ul>
+        </div>
         <AppBar setMode={setMode} />
         <div style={{ display: "flex", overflow: "hidden", height: "100vh" }}>
             {mode !== "preview" && (

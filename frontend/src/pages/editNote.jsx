@@ -6,6 +6,7 @@ import Editor from "./editor/editor";
 
 function NoteEditor() {
     const { noteID } = useParams();
+    const [noteTitle, setNoteTitle] = useState('');
     const [noteContent, setNoteContent] = useState('');
     const [noteContentError, setNoteContentError] = useState('');
     const [loading, setLoading] = useState(true); // prevent render before response from server, important
@@ -14,6 +15,7 @@ function NoteEditor() {
         try {
             const response = await fetchNoteContent(noteID);
             if (response.status === 200) {
+                setNoteTitle(response.data.title);
                 setNoteContent(response.data.content);
                 setLoading(false);
             }
@@ -27,7 +29,7 @@ function NoteEditor() {
     const renderEditorOrError = () => {
         return noteContentError ? 
             (<h1>{noteContentError}</h1>) :
-            (<Editor noteID={noteID} content={noteContent} />);
+            (<Editor noteID={noteID} noteTitle={noteTitle} content={noteContent} />);
     }
 
     useEffect(() => {fetchUserNoteContent()});
