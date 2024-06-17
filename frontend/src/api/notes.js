@@ -38,3 +38,36 @@ export async function updateNoteContent(note_id, content) {
         }
     );
 }
+
+export async function fetchNotePermission(note_id) {
+    return await axios.get(
+        'http://localhost:8000/api/note-permission',
+        {
+            noteID: note_id,
+        }
+    );
+}
+
+/* Response of fetchNotePermission
+
+{
+    success: true,
+    listOfUsers: {
+        can_view: [list of user with view permission],
+        can_edit: [list of user with view and edit permission]
+    }
+}
+
+*/
+
+export async function updateNotePermission(note_id, target_username, can_view, can_edit) {
+    return await axios.post(
+        'http://localhost:8000/api/note-permission',
+        {
+            noteID: note_id, // integer
+            usernameToShare: target_username, // string
+            can_view: can_view, // boolean
+            can_edit: can_edit // boolean
+        }
+    );
+}
