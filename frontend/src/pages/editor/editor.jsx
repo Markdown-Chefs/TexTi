@@ -24,7 +24,8 @@ import { exportMarkdown, exportStyledHTML, exportRawHTML } from "../../component
     // support for latex
     // support for GFM alerts
 
-function Editor({ noteID, noteTitle="", content="" }) {
+
+function Editor({ noteID, noteTitle="", content="", canEdit, trial, fetchUserNotePermission}) {
     const marked = new Marked(
         markedHighlight({
             gfm: true,
@@ -99,7 +100,7 @@ function Editor({ noteID, noteTitle="", content="" }) {
                 <li><a class="dropdown-item" href="#" onClick={() => exportRawHTML(noteTitle, mdString)}>Raw HTML</a></li>
             </ul>
         </div>
-        <AppBar setMode={setMode} />
+        <AppBar setMode={setMode} trial = { trial } fetchUserNotePermission = {fetchUserNotePermission}/>
         <div style={{ display: "flex", overflow: "hidden", height: "100vh" }}>
             {mode !== "preview" && (
                 <div style={{ width: "50%", height: "100%", flex: 1, overflowY: "auto"}}>

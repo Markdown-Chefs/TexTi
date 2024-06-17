@@ -10,18 +10,20 @@ import { unAuthenticateUser } from "../../redux/slices/authSlice";
 import { onCreateNote } from "../../api/notes";
 import editorIcon from "../assets/editor-icon.png"
 import NoteIcon from '../assets/note-icon.png'
+import useUser from '../../hooks/useUser';
 
 const Navbar = () => {
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
+  const { username, userId } = useUser();
   const dispatch = useDispatch();
   const [listOfNotes, setListOfNotes] = useState([]); // [{note_id: 1, title: 'example'}, ...]
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    if (userInfo && userInfo.username) {
-      setUsername(userInfo.username);
-    }
-  }, []); 
+  // useEffect(() => {
+  //   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  //   if (userInfo && userInfo.username) {
+  //     setUsername(userInfo.username);
+  //   }
+  // }, []); 
 
   const logout = async () => {
     try {
