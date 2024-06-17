@@ -1,6 +1,7 @@
 import { Marked } from "marked";
 import { markedHighlight } from "marked-highlight";
 import hljs from "highlight.js";
+import jsPDF from "jspdf";
 
 function handleExport(noteTitle, blob, noteFormat) {
     if (!noteTitle) {
@@ -74,4 +75,55 @@ export function exportRawHTML(noteTitle, noteContent) {
 
     const blob = new Blob([htmlContent], { type: 'text/html' });
     handleExport(noteTitle, blob, 'html')
+}
+
+export async function exportPDF(noteTitle, noteContent) {
+    const marked = new Marked(
+        markedHighlight({
+            gfm: true,
+            langPrefix: 'hljs language-',
+            highlight(code, lang, info) {
+                const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+                return hljs.highlight(code, { language }).value;
+            }
+        }),
+    );
+
+    const doc = new jsPDF({
+        orientation: 'p',
+        unit: 'pt',
+        format: 'a4',
+        margins: { top: 10, bottom: 10, left: 10, right: 10 }
+    });
+
+    const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>${noteTitle}</title>
+</head>
+<body>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; }
+        pre, code {
+            font-family: monospace;
+            width: 570px;
+        }
+     </style>
+    ${marked.parse(noteContent)}
+</body>
+</html>`;
+
+    doc.setDocumentProperties({
+        title: noteTitle,
+    });
+
+    await doc.html(htmlContent, {
+        callback: function (doc) {
+            doc.save(`${noteTitle}.pdf`);
+        },
+        x: 10,
+        y: 10,
+        // windowWidth: 800
+    });
 }

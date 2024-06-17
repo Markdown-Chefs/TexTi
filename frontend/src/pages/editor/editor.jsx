@@ -15,7 +15,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { EditorView } from "@codemirror/view";
 import AppBar from "../../components/appbar/editorNavbar"
-import { exportMarkdown, exportStyledHTML, exportRawHTML } from "../../components/exportNote";
+import { exportMarkdown, exportPDF, exportStyledHTML, exportRawHTML } from "../../components/exportNote";
 
 // TODO: use highlightJS instead for codemirror
 // TODO: markedJS:
@@ -95,6 +95,7 @@ function Editor({ noteID, noteTitle="", content="" }) {
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#" onClick={() => exportMarkdown(noteTitle, mdString)}>Markdown</a></li>
+                <li><a class="dropdown-item" href="#" onClick={() => exportPDF(noteTitle, mdString)}>PDF</a></li>
                 <li><a class="dropdown-item" href="#" onClick={() => exportStyledHTML(noteTitle, mdString)}>HTML</a></li>
                 <li><a class="dropdown-item" href="#" onClick={() => exportRawHTML(noteTitle, mdString)}>Raw HTML</a></li>
             </ul>
