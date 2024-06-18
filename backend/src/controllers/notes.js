@@ -60,12 +60,16 @@ exports.deleteUserNote = async (req, res) => {
         let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
         const userID = response.rows[0].user_id;
         // console.log(userID);
+
+        await db.query(`DELETE FROM note_permission WHERE note_id = $1`, [note_id]);
+
         await db.query(`DELETE FROM notes WHERE title = $1 AND note_id = $2 AND user_id = $3`, [
             title,
             note_id,
             userID,
         ]);
 
+       
         return res.status(200).json({
             success: true,
             message: 'Note deleted',
@@ -81,14 +85,38 @@ exports.deleteUserNote = async (req, res) => {
 
 exports.fetchUserNoteContent = async (req, res) => {
     try {
-        const { rows } = await db.query(`SELECT title, content FROM notes WHERE note_id = $1`, [
+        const { rows } = await db.query(`SELECT title, content, user_id FROM notes WHERE note_id = $1`, [
             req.params.noteID
         ]);
+
+        const perm = {
+            isOwner: false,
+            canView: false,
+            canEdit: false
+        };
+        const currUserInfo = await db.query(`SELECT username, user_id FROM users WHERE username = $1`, [req.user.username]);
+
+        if (currUserInfo.rows[0].user_id === rows[0].user_id) {
+            perm.isOwner = true;
+            perm.canView = true;
+            perm.canEdit = true;
+        } else {
+            const dbPerm = await db.query(`SELECT can_view, can_edit FROM note_permission WHERE user_id = $1 AND note_id = $2`, [currUserInfo.rows[0].user_id, req.params.noteID]);
+            if (dbPerm.rows.length) {
+                if (dbPerm.rows[0].can_view) {
+                    perm.canView = true;
+                }
+                if (dbPerm.rows[0].can_edit) {
+                    perm.canEdit = true;
+                }
+            }
+        }
+
         return res.status(200).json({
             success: true,
-            // message: 'HELLO',
             title: rows[0].title,
             content: rows[0].content,
+            permission: perm,
         });
     } catch (err) {
         console.log(err.message);

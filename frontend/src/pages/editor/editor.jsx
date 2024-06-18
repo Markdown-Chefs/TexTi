@@ -17,6 +17,7 @@ import { EditorView } from "@codemirror/view";
 import AppBar from "../../components/appbar/editorNavbar"
 import { exportMarkdown, exportStyledHTML, exportRawHTML } from "../../components/exportNote";
 
+
 // TODO: use highlightJS instead for codemirror
 // TODO: markedJS:
     // hide meta info
@@ -25,7 +26,7 @@ import { exportMarkdown, exportStyledHTML, exportRawHTML } from "../../component
     // support for GFM alerts
 
 
-function Editor({ noteID, noteTitle="", content="", canEdit, trial, fetchUserNotePermission}) {
+function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fetchUserNotePermission}) {
     const marked = new Marked(
         markedHighlight({
             gfm: true,
@@ -43,8 +44,10 @@ function Editor({ noteID, noteTitle="", content="", canEdit, trial, fetchUserNot
     const [isDirty, setIsDirty] = useState(false);
 
     const handleChange = (event) => {
-        setMdString(event);
-        setIsDirty(true);
+        if (canEdit) {
+            setMdString(event);
+            setIsDirty(true);
+        } 
     }
 
     const getMarkdownText = () => {
@@ -61,46 +64,75 @@ function Editor({ noteID, noteTitle="", content="", canEdit, trial, fetchUserNot
         }
     }, 300));
 
+    const handleExporting = (format) => {
+        if (format == "markdown") {
+            exportMarkdown(noteTitle, mdString);
+        } else if (format == "styledhtml") {
+            exportStyledHTML(noteTitle, mdString);
+        } else {
+            exportRawHTML(noteTitle, mdString);
+        }
+
+    }
+
     useEffect(() => {
         document.title = noteTitle + ' - TexTi';
     });
 
     // initialise content from database
     useEffect(() => {
+        
         setMdString(content)
     }, [content]);
 
     // save content to database
     useEffect(() => {
-        saveUserNoteContent();
-    }, [mdString, saveUserNoteContent]);
-
-    useEffect(() => {
-        const handleBeforeUnload = (e) => {
-            if (isDirty) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
-        };
-        window.addEventListener('beforeunload', handleBeforeUnload);
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
+        if (canEdit) {
+            saveUserNoteContent();
         }
-    }, [isDirty]);
+    }, [mdString, saveUserNoteContent]);
+    
+
+    // useEffect(() => {
+    //     const handleBeforeUnload = (e) => {
+    //         if (isDirty) {
+    //             e.preventDefault();
+    //             e.returnValue = '';
+    //         }
+    //     };
+    //     window.addEventListener('beforeunload', handleBeforeUnload);
+    //     return () => {
+    //         window.removeEventListener('beforeunload', handleBeforeUnload);
+    //     }
+    // }, [isDirty]);
+
+    const editorExtensions = [
+        markdown({ base: markdownLanguage }),
+        EditorView.lineWrapping,
+        EditorView.theme({
+            "&": {
+                fontSize: "12pt",
+                border: "1px solid #c0c0c0"
+            },
+            ".cm-content": {
+                fontFamily: "Menlo, Monaco, Lucida Console, monospace",
+                minHeight: "200px"
+            },
+            ".cm-scroller": {
+                overflow: "auto",
+                minHeight: "100vh",
+            }
+        })
+    ];
+
+    if (!canEdit) {
+        editorExtensions.push(EditorView.editable.of(false)); // Add the read-only extension conditionally
+    }
+
 
     return (
         <>
-        <div className="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Export
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onClick={() => exportMarkdown(noteTitle, mdString)}>Markdown</a></li>
-                <li><a class="dropdown-item" href="#" onClick={() => exportStyledHTML(noteTitle, mdString)}>HTML</a></li>
-                <li><a class="dropdown-item" href="#" onClick={() => exportRawHTML(noteTitle, mdString)}>Raw HTML</a></li>
-            </ul>
-        </div>
-        <AppBar setMode={setMode} trial = { trial } fetchUserNotePermission = {fetchUserNotePermission}/>
+        <AppBar noteTitle={noteTitle} setMode={setMode} trial = { trial } canEdit = {canEdit} isOwner = {isOwner} fetchUserNotePermission = {fetchUserNotePermission} handleExporting = {handleExporting}/>
         <div style={{ display: "flex", overflow: "hidden", height: "100vh" }}>
             {mode !== "preview" && (
                 <div style={{ width: "50%", height: "100%", flex: 1, overflowY: "auto"}}>
@@ -116,24 +148,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, trial, fetchUserNot
                             // history: true,                
                         }}
                         onChange={handleChange}
-                        extensions={[
-                            markdown({ base: markdownLanguage }),
-                            EditorView.lineWrapping,
-                            EditorView.theme({
-                                "&": {
-                                    fontSize: "12pt",
-                                    border: "1px solid #c0c0c0"
-                                },
-                                ".cm-content": {
-                                    fontFamily: "Menlo, Monaco, Lucida Console, monospace",
-                                    minHeight: "200px"
-                                },
-                                ".cm-scroller": {
-                                    overflow: "auto",
-                                    minHeight: "100vh",
-                                }
-                            }),
-                        ]}
+                        extensions={editorExtensions}
                     />
                 </div>
             )}
