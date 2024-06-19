@@ -13,11 +13,6 @@ function NoteEditor() {
     const [loading, setLoading] = useState(true); // prevent render before response from server, important
     const [editList, setEditList] = useState([]);
     const [viewList, setViewList] = useState([]);
-    // const [canEdit, setCanEdit] = useState(false);
-    // const [canView, setCanView] = useState(false);
-    // const [isOwner, setIsOwner] = useState(false);
-    const { username, userId } = useUser();
-    const [targetUsername, setTargetUsername] = useState('');
     const [permission, setPermission] = useState({ isOwner: false, canView: false, canEdit: false });
    
    
@@ -42,10 +37,9 @@ function NoteEditor() {
         try {
             const response = await fetchNotePermission(noteID);
             if (response.status === 200 && response.data.success) {
-                if (permission.isOwner) {
-                    setViewList(response.data.listOfUsers.can_view || []);
-                    setEditList(response.data.listOfUsers.can_edit || []);
-                }
+                setViewList(response.data.listOfUsers.can_view || []);
+                setEditList(response.data.listOfUsers.can_edit || []);
+                
             }
         } catch (error) {
             console.error('Error fetching permission:', error);
@@ -62,8 +56,10 @@ function NoteEditor() {
 
     useEffect(() => {
         fetchUserNoteContent();
-        fetchUserNotePermission();
-    });
+        if (permission.isOwner) {
+        fetchUserNotePermission()
+        };
+    }, []);
 
     return (loading ? (
         <>

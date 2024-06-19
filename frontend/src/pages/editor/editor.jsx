@@ -90,21 +90,21 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
         if (canEdit) {
             saveUserNoteContent();
         }
-    }, [mdString, saveUserNoteContent]);
+    }, [mdString]);
     
 
-    // useEffect(() => {
-    //     const handleBeforeUnload = (e) => {
-    //         if (isDirty) {
-    //             e.preventDefault();
-    //             e.returnValue = '';
-    //         }
-    //     };
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
-    //     return () => {
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     }
-    // }, [isDirty]);
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        }
+    }, [isDirty]);
 
     const editorExtensions = [
         markdown({ base: markdownLanguage }),

@@ -21,11 +21,10 @@ const PermissionTab = ({ isOwner, showModal, closeModal, noteID, fetchUserNotePe
             if (response.status === 200) {
                 fetchUserNotePermission(); // Refresh permissions list
                 alert('Permissions updated successfully.');
-                closeModal(); 
             }
         } catch (error) {
             console.error('Error updating permissions:', error);
-            alert('Failed to update permissions.');
+            alert(error.response.data.errors[0].msg);
         }
     };
 
