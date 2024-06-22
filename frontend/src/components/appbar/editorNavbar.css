@@ -3,13 +3,13 @@
     padding: 10px 20px;
     font-family: "Inter", Helvetica;
     display: flex;
+    text-align: center;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
   }
 
-  
   .editor-navbar-brand {
     margin-left: 5px;
     display: flex;
@@ -32,6 +32,21 @@
     margin-left: 20px;
   }
 
+.permission {
+    width: 20%; 
+    color: grey;
+    font-weight: 600;
+}
+
+.permission img {
+    margin-right: 10px;
+    filter: opacity(0.5);
+}
+
+
+.note-title {
+    width: 20%
+}
 
 
 
@@ -61,7 +76,6 @@
 
 .mode-button:hover {
     background-color: black;
-
 }
 
 .mode-button img:hover {
@@ -74,4 +88,185 @@
 
 .mode-button.active img {
     filter: invert(1);
+}
+
+.export-button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.export-button:hover {
+    background-color: black;
+}
+
+.export-button img:hover {
+    filter: invert(1);
+}
+
+
+.dropdown-button {
+    position: relative;
+    display: inline-block; /* Ensure the button stays inline */
+}
+
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0px; 
+    top: 50px;
+    z-index: 1; 
+    background-color: rgba(255, 255, 255, 0.9); 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    min-width: 160px; 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+    padding: 10px 0; /* Add padding */
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px 20px; 
+    color: #333; 
+    display: block;
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1; 
+    color: #000; 
+}
+
+.permission-button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.permission-button:hover {
+    background-color: black;
+}
+
+.permission-button img {
+    margin-left: 2px;
+}
+
+.permission-button img:hover {
+    filter: invert(1);
+}
+
+/* Modal container */
+.modal {
+    display: block; /* Hidden by default */
+    position: absolute; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 500px; /* Maximum width */
+    border-radius: 10px;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Tab container */
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+/* Tab links */
+.tab-link {
+    padding: 10px 20px;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background-color: #f1f1f1;
+    margin-right: 2px;
+}
+
+.tab-link.active {
+    background-color: white;
+    border-bottom: 1px solid white;
+}
+
+/* Form elements */
+.modal-content input[type="text"],
+.modal-content input[type="checkbox"] {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: calc(100% - 22px);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.modal-content button {
+    padding: 10px 20px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modal-content button:hover {
+    background-color: #444;
+}
+
+.modal-content h3 {
+    margin-top: 0;
 }

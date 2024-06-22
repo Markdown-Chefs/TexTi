@@ -75,6 +75,7 @@ export function exportRawHTML(noteTitle, noteContent) {
 
     const blob = new Blob([htmlContent], { type: 'text/html' });
     handleExport(noteTitle, blob, 'html')
+
 }
 
 export async function exportPDF(noteTitle, noteContent) {
@@ -126,4 +127,5 @@ export async function exportPDF(noteTitle, noteContent) {
         y: 10,
         // windowWidth: 800
     });
+
 }

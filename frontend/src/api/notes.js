@@ -42,10 +42,10 @@ export async function updateNoteContent(note_id, content) {
 export async function fetchNotePermission(note_id) {
     return await axios.get(
         'http://localhost:8000/api/note-permission',
-        {
-            noteID: note_id,
+        { params: {
+            noteID: note_id
         }
-    );
+    });
 }
 
 /* Response of fetchNotePermission

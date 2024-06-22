@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 // import { fetchProtectedInfo, onLogout } from "../api/auth";
 import { onLogout } from "../../api/auth";
-import { fetchListOfNotes, onCreateNote, onDeleteNote } from "../../api/notes";
+import { fetchListOfNotes, onCreateNote, onDeleteNote, updateNotePermission } from "../../api/notes";
 import { unAuthenticateUser } from "../../redux/slices/authSlice";
 import "./dashboard.css"
 import Navbar from "../../components/navbar/navbar";
