@@ -15,7 +15,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { EditorView } from "@codemirror/view";
 import AppBar from "../../components/appbar/editorNavbar"
-import { exportMarkdown, exportStyledHTML, exportRawHTML } from "../../components/exportNote";
+import { exportMarkdown, exportPDF, exportStyledHTML, exportRawHTML } from "../../components/exportNote";
 
 
 // TODO: use highlightJS instead for codemirror
@@ -27,6 +27,7 @@ import { exportMarkdown, exportStyledHTML, exportRawHTML } from "../../component
 
 
 function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fetchUserNotePermission}) {
+
     const marked = new Marked(
         markedHighlight({
             gfm: true,
@@ -63,6 +64,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
             console.log("Failed to save note.");
         }
     }, 300));
+
 
     const handleExporting = (format) => {
         if (format == "markdown") {
