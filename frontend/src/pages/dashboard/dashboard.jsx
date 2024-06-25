@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 // import { fetchProtectedInfo, onLogout } from "../api/auth";
 import { onLogout } from "../../api/auth";
-import { fetchListOfNotes, onCreateNote, onDeleteNote, updateNotePermission } from "../../api/notes";
+import { fetchListOfNotes, onCreateNote, onDeleteNote, updateNotePermission, onPinNote } from "../../api/notes";
 import { unAuthenticateUser } from "../../redux/slices/authSlice";
 import "./dashboard.css"
 import Navbar from "../../components/navbar/navbar";
@@ -105,12 +105,54 @@ function Dashboard() {
         }
     }
 
+    const handlePinNote = async () => {
+        if (selectedNoteIndex !== -1) {
+            try {
+                const response = listOfNotes[selectedNoteIndex].pin_by_owner
+                    ? await onPinNote(listOfNotes[selectedNoteIndex].note_id, false)
+                    : await onPinNote(listOfNotes[selectedNoteIndex].note_id, true);
+                if (response.status === 200) {
+                    listOfUserNotes();
+                }
+            } catch (error) {
+                alert(error.response.data.errors[0].msg);
+            }
+        }
+    }
+
     const listOfUserNotes = async () => {
         try {
             const { data } = await fetchListOfNotes();
             // data = JSON.parse(JSON.stringify(data));
 
-            setListOfNotes(data.listOfNotes); // [{note_id: 1, title: 'example'}, ...]
+            // sort data by pin_by_owner then last_modified
+            let notesList = data.listOfNotes;
+            notesList.sort((a, b) => {
+                if (a.pin_by_owner !== b.pin_by_owner) {
+                    return a.pin_by_owner ? -1 : 1;
+                }
+                return new Date(b.last_modified) - new Date(a.last_modified);
+            });
+
+            // for testing only
+            notesList = notesList.map(note => {
+                if (note.pin_by_owner) {
+                    return {
+                        ...note,
+                        title: `[PIN] ${note.title}`
+                    };
+                }
+                return note;
+            });
+            
+            /* 
+                [ { note_id: 1, 
+                    title: 'example', 
+                    last_modified: data, 
+                    pin_by_owner: true
+                }, ...]
+            */
+            setListOfNotes(notesList);
 
             setLoading(false);
         } catch (error) {
@@ -147,6 +189,8 @@ function Dashboard() {
         child="Create New Note"
         placeHolder="Enter note title"
       />
+                        <button onClick={handlePinNote}>Pin/Unpin Note</button>
+
                         <button onClick={handleOpenConfirmPrompt} className="delete-note" disabled={selectedNoteIndex === -1}>Delete Selected Note </button>
                         <ConfirmPrompt
             open={isConfirmPromptOpen}

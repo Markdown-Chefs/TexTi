@@ -3,20 +3,17 @@ const db = require('../config/db');
 
 exports.getUserNotes = async (req, res) => {
     try {
-        // console.log(req.user);
         const userToSelect = req.user.username;
         const { rows } = await db.query(
-            `SELECT notes.note_id, notes.title
+            `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner
             FROM users
             INNER JOIN notes
             ON users.user_id = notes.user_id
             WHERE users.username = $1;`, [userToSelect]
         );
-        // console.log(typeof(rows));
         // const listOfNotes = rows.map(note => note.title); // [{ id: title }, { id:title }]
         return res.status(200).json({
             success: true,
-            // listOfNotes: listOfNotes,
             listOfNotes: rows,
         });
     } catch (err) {
@@ -53,19 +50,16 @@ exports.createUserNote = async (req, res) => {
 }
 
 exports.deleteUserNote = async (req, res) => {
-    const { note_id, title } = req.body;
+    const { noteID, title } = req.body;
     try {
-        // console.log(note_id, title);
-        // console.log(req.body);
         let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
         const userID = response.rows[0].user_id;
-        // console.log(userID);
 
-        await db.query(`DELETE FROM note_permission WHERE note_id = $1`, [note_id]);
+        await db.query(`DELETE FROM note_permission WHERE note_id = $1`, [noteID]);
 
         await db.query(`DELETE FROM notes WHERE title = $1 AND note_id = $2 AND user_id = $3`, [
             title,
-            note_id,
+            noteID,
             userID,
         ]);
 
@@ -73,6 +67,35 @@ exports.deleteUserNote = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: 'Note deleted',
+        });
+
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+                error: err.message,
+        });
+    }
+}
+
+exports.pinUserNote = async (req, res) => {
+    const { noteID, pinNote } = req.body;
+    try {
+        await db.query(
+            `UPDATE notes SET pin_by_owner = $1, last_modified = CURRENT_TIMESTAMP
+            WHERE note_id = $2`, [
+                pinNote,
+                noteID
+            ]);
+        
+        if (pinNote) {
+            return res.status(200).json({
+                success: true,
+                message: 'Note pinned',
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: 'Note unpinned',
         });
 
     } catch (err) {
@@ -129,7 +152,7 @@ exports.fetchUserNoteContent = async (req, res) => {
 exports.saveUserNoteContent = async (req, res) => {
     try {
         await db.query(
-            `UPDATE notes SET content = $1
+            `UPDATE notes SET content = $1, last_modified = CURRENT_TIMESTAMP
             WHERE note_id = $2`, [
                 req.body.updatedContent,
                 req.params.noteID
