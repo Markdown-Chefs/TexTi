@@ -118,13 +118,17 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
         EditorView.theme({
             "&": {
                 fontSize: "12pt",
-                border: "1px solid #c0c0c0"
+                border: "1px solid #c0c0c0",
+                height: "100%"
             },
             ".cm-content": {
                 fontFamily: "Menlo, Monaco, Lucida Console, monospace",
                 minHeight: "200px"
             },
-            
+            ".cm-scroller": {
+                overflow: "auto",
+                height: "100%",
+            }
         })
     ];
 
@@ -173,7 +177,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
                      </div>
                  </Split>
                 ) : mode === "edit" ? (
-                    <div style={{ width: "100%", height: "100%", overflowY: "auto" }}>
+                    <div style={{ width: "100%", height: "100%", overflow: "auto" }}>
                         <CodeMirror
                             id="editor"
                             theme={"light"}
