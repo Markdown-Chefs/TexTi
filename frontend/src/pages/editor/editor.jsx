@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { updateNoteContent } from "../../api/notes";
 import { debounce } from "lodash";
+import Split from 'react-split';
 
 // for markdown preview
 import { Marked } from "marked";
@@ -16,6 +17,7 @@ import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { EditorView } from "@codemirror/view";
 import AppBar from "../../components/appbar/editorNavbar"
 import { exportMarkdown, exportPDF, exportStyledHTML, exportRawHTML } from "../../components/exportNote";
+import './editor.css'
 
 
 // TODO: use highlightJS instead for codemirror
@@ -67,12 +69,14 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
 
 
     const handleExporting = (format) => {
-        if (format == "markdown") {
+        if (format === "markdown") {
             exportMarkdown(noteTitle, mdString);
-        } else if (format == "styledhtml") {
+        } else if (format === "styledhtml") {
             exportStyledHTML(noteTitle, mdString);
-        } else {
+        } else if (format === "rawhtml") {
             exportRawHTML(noteTitle, mdString);
+        } else {
+            exportPDF(noteTitle, mdString);
         }
 
     }
@@ -120,12 +124,11 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
                 fontFamily: "Menlo, Monaco, Lucida Console, monospace",
                 minHeight: "200px"
             },
-            ".cm-scroller": {
-                overflow: "auto",
-                minHeight: "100vh",
-            }
+            
         })
     ];
+
+    if (!trial) canEdit = true;
 
     if (!canEdit) {
         editorExtensions.push(EditorView.editable.of(false)); // Add the read-only extension conditionally
@@ -136,39 +139,67 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
         <>
         <AppBar noteTitle={noteTitle} setMode={setMode} trial = { trial } canEdit = {canEdit} isOwner = {isOwner} fetchUserNotePermission = {fetchUserNotePermission} handleExporting = {handleExporting}/>
         <div style={{ display: "flex", overflow: "hidden", height: "100vh" }}>
-            {mode !== "preview" && (
-                <div style={{ width: "50%", height: "100%", flex: 1, overflowY: "auto"}}>
-                    <CodeMirror
-                        id="editor"
-                        // minHeight="100vh"
-                        // height="auto"
-                        theme={"light"}
-                        value={mdString}
-                        basicSetup={{
-                            tabSize: 4,
-                            // searchKeymap: false,
-                            // history: true,                
+        {mode === "both" ? (
+                     <Split sizes={[50, 50]} minSize={100} gutterSize={10} direction="horizontal" className="split" style={{ display: 'flex', width: '100%' }}gutter={(index, direction) => {
+                        const gutterElement = document.createElement('div');
+                        gutterElement.className = `gutter gutter-${direction}`;
+                        return gutterElement;
+                    }}>
+                     <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
+                         <CodeMirror
+                             id="editor"
+                             theme={"light"}
+                             value={mdString}
+                             basicSetup={{
+                                 tabSize: 4,
+                             }}
+                             onChange={handleChange}
+                             extensions={editorExtensions}
+                             style={{ height: '100%', width: '100%' }}
+                         />
+                     </div>
+                     <div
+                         id="previewer"
+                         style={{
+                             textAlign: "left",
+                             width: "100%",
+                             height: "100%",
+                             overflowY: "auto",
+                             padding: "10px",
+                             margin: "10px"
+                         }}
+                     >
+                         {getMarkdownText()}
+                     </div>
+                 </Split>
+                ) : mode === "edit" ? (
+                    <div style={{ width: "100%", height: "100%", overflowY: "auto" }}>
+                        <CodeMirror
+                            id="editor"
+                            theme={"light"}
+                            value={mdString}
+                            basicSetup={{
+                                tabSize: 4,
+                            }}
+                            onChange={handleChange}
+                            extensions={editorExtensions}
+                        />
+                    </div>
+                ) : (
+                    <div
+                        id="previewer"
+                        style={{
+                            textAlign: "center",
+                            width: "100%",
+                            height: "100%",
+                            overflowY: "auto",
+                            padding: "10px",
+                            margin: "10px"
                         }}
-                        onChange={handleChange}
-                        extensions={editorExtensions}
-                    />
-                </div>
-            )}
-            {mode !== "edit" && (
-                <div
-                    id="previewer"
-                    style={{
-                        textAlign: mode === "preview" ? "center" : "left",
-                        width: mode === "preview" ? "100%" : "50%",
-                        height: "100%",
-                        flex: 1,
-                        overflowY: "auto",
-                        margin: "10px"
-                    }}
-                >
-                    {getMarkdownText()}
-                </div>
-            )}
+                    >
+                        {getMarkdownText()}
+                    </div>
+                )}
         </div>
         </>
     );

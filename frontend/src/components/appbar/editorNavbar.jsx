@@ -102,6 +102,7 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
                 </button>
                 {showMenu && (
                     <ul className="dropdown-menu show">
+                        <li><a className="dropdown-item" href="#" onClick={() => handleExportAndHideMenu("pdf")}>PDF</a></li>
                         <li><a className="dropdown-item" href="#" onClick={() => handleExportAndHideMenu("markdown")}>Markdown</a></li>
                         <li><a className="dropdown-item" href="#" onClick={() => handleExportAndHideMenu("styledhtml")}>HTML</a></li>
                         <li><a className="dropdown-item" href="#" onClick={() => handleExportAndHideMenu("rawhtml")}>Raw HTML</a></li>
