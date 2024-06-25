@@ -2,6 +2,7 @@ const { check } = require('express-validator');
 const db = require('../config/db');
 
 const noteTitle = check('noteTitle').isLength({ min: 1, max: 255 }).withMessage("Note's title must be between 1 and 255 characters.");
+const content = check('updatedContent').isString().withMessage("Note's content must be strings.");
 
 const titleExists = check('noteTitle').custom(async (value, { req }) => {
     let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
@@ -143,7 +144,7 @@ const permissionConflictCheck = check('can_view').custom(async (value, { req }) 
 module.exports = {
     createNoteValidation: [noteTitle, titleExists],
     fetchNoteContentValidation: [canViewCheck],
-    saveNoteContentValidation: [canEditCheck],
+    saveNoteContentValidation: [canEditCheck, content],
     fetchNotePermValidation: [fetchNotePermCheck],
     updateNotePermValidation: [fetchNotePermCheck, targetUserCheck, viewPermissionCheck, editPermissionCheck, permissionConflictCheck],
 }
