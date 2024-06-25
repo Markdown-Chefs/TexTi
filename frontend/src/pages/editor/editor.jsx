@@ -18,6 +18,8 @@ import { EditorView } from "@codemirror/view";
 import AppBar from "../../components/appbar/editorNavbar"
 import { exportMarkdown, exportPDF, exportStyledHTML, exportRawHTML } from "../../components/exportNote";
 import './editor.css'
+import katex from "katex";
+import 'katex/dist/katex.min.css';
 
 
 // TODO: use highlightJS instead for codemirror
@@ -41,6 +43,56 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
             }
         }),
     );
+
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        highlight: function(code, lang) {
+            const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+            return hljs.highlight(code, { language }).value;
+        },
+        gfm: true,
+        breaks: false,
+        smartLists: true,
+        smartypants: true
+    });
+
+    // Custom renderer to support LaTeX
+    const renderer = new marked.Renderer();
+
+    
+    renderer.code = function (code, lang, escaped) {
+        if (lang === 'math' || lang === 'latex') {
+            return `<div class="katex-block">${katex.renderToString(code, { throwOnError: false, displayMode: true })}</div>`;
+        }
+        return marked.Renderer.prototype.code.apply(this, arguments);
+    };
+    
+    renderer.paragraph = function (text) {
+        const inlineLatex = /\$(.+?)\$/g;
+        const blockLatex = /\$\$([\s\S]+?)\$\$/g;
+    
+        // Handle block LaTeX
+        if (blockLatex.test(text)) {
+            return text.replace(blockLatex, (match, p1) => {
+                return `<div class="katex-block">${katex.renderToString(p1, { throwOnError: false, displayMode: true })}</div>`;
+            });
+        }
+    
+        // Handle inline LaTeX
+        if (inlineLatex.test(text)) {
+            text = text.replace(inlineLatex, (match, p1) => {
+                return katex.renderToString(p1, { throwOnError: false });
+            });
+        }
+    
+        return `<p>${text}</p>`;
+    };
+
+   
+    
+    
+
+    marked.use({ renderer });
     
     const [mdString, setMdString] = useState(content);
     const [mode, setMode] = useState("both"); 
