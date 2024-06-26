@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchAllPublicNotes, importPublicNote } from "../api/notes";
+import Navbar from "../components/navbar/navbar";
 
 function PublicNotes() {
     const navigate = useNavigate();
@@ -23,6 +24,8 @@ function PublicNotes() {
 
     const DisplayPublicNotes = () => {
         return (
+        <>
+            <Navbar page="note-pool"/>
             <div className="row row-cols-1 row-cols-md-3 g-2">
                 {publicNotesFromServer.map((item, index) => (
                     <div className="col" key={item.note_id} style={{ width: "18rem" }}>
@@ -50,6 +53,7 @@ function PublicNotes() {
                     </div>
                 ))}
             </div>
+        </>
         );  
     }
 

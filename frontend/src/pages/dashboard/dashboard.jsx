@@ -211,7 +211,7 @@ function Dashboard() {
     
     return (loading ? (
             <>
-            <Navbar/>
+            <Navbar page="my-notes"/>
             <h1>Loading...</h1>
             </>
         ) : (

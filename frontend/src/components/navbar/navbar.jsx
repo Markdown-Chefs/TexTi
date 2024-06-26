@@ -2,21 +2,23 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './navbar.css'
 import TexTi_logo from '../assets/TexTi-logo.jpg'
-import LogoutIcon from '../assets/logout.webp'
+import LogoutIcon from '../assets/log-out.png'
 import { useEffect, useState } from 'react'
 import { onLogout } from "../../api/auth";
 import { useDispatch } from "react-redux";
 import { unAuthenticateUser } from "../../redux/slices/authSlice";
 import { onCreateNote } from "../../api/notes";
-import editorIcon from "../assets/editor-icon.png"
-import NoteIcon from '../assets/note-icon.png'
+import NotePoolIcon from "../assets/world_2.png"
+import NoteIcon from '../assets/user.png'
 import useUser from '../../hooks/useUser';
+import SettingIcon from '../assets/settings.png'
 
-const Navbar = () => {
+const Navbar = ( {page}) => {
   // const [username, setUsername] = useState('');
   const { username, userId } = useUser();
   const dispatch = useDispatch();
   const [listOfNotes, setListOfNotes] = useState([]); // [{note_id: 1, title: 'example'}, ...]
+  const [active, setActive] = useState(page)
 
   // useEffect(() => {
   //   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -53,27 +55,25 @@ const Navbar = () => {
   return (
     <nav className='navbar flex-column'>
     <div className='profile'>
-      <NavLink to='/settings' className='nav-links' style={{ color: 'inherit', textDecoration: 'inherit'}}>
         <img src={TexTi_logo} alt='Profile' className='profile-pic' />
         <span className='username'> {username} </span>
-      </NavLink>
     </div>
     <div className='nav-links'>
-      <NavLink to='/' className='nav-link'>
+      <NavLink to="/dashboard" className= { active === "my-notes" ? "nav-link nav-link-active" : "nav-link"}>
         <img src={NoteIcon} alt='NoteIcon' className='note-img'/>
-        Notes
+        My Notes
       </NavLink>
-      <NavLink to='/editor' className='nav-link'> 
-         <img src={editorIcon} alt='editorIcon' className='editor-img'/>
-      Editor
+      <NavLink to='/public_notes' className= { active === "note-pool" ? "nav-link nav-link-active" : "nav-link"}> 
+         <img src={NotePoolIcon} alt='NotePool' className='note-pool-img'/>
+          Note Pool
       </NavLink>
-      <NavLink to='/public_notes' className='nav-link'> 
-         <img src={'https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png'} alt='notEditorIcon' className='editor-img'/>
-      Public Note Pool
+      <NavLink to='/settings' className={ active === "settings" ? "nav-link nav-link-active" : "nav-link"}> 
+        <img src={SettingIcon} alt='Settings' className='note-pool-img'/>
+        Settings 
       </NavLink>
+      <div onClick={() => logout()} className='nav-link'>
+      <img src={LogoutIcon} alt='LogoutIcon' className='note-pool-img'/> Sign Out </div>
     </div>
-    <div onClick={() => logout()} className='logout-link'>
-      <img src={LogoutIcon} alt='LogoutIcon' /> Sign out </div>
   </nav>
   );
 };
