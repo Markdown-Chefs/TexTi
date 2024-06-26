@@ -13,7 +13,7 @@ function NoteEditor() {
     const [loading, setLoading] = useState(true); // prevent render before response from server, important
     const [editList, setEditList] = useState([]);
     const [viewList, setViewList] = useState([]);
-    const [permission, setPermission] = useState({ isOwner: false, canView: false, canEdit: false, public: false });
+    const [permission, setPermission] = useState({ isOwner: false, canView: false, canEdit: false, isPublished: false });
    
    
 
