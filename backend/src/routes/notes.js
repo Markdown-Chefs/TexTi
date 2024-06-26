@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { userAuth } = require('../middlewares/auth');
 const { createNoteValidation, fetchNoteContentValidation,saveNoteContentValidation, updateNotePermValidation, fetchNotePermValidation, deleteNoteValidation } = require('../validators/notes');
 const { validationMiddleware } = require('../middlewares/validation');
-const { getUserNotes, createUserNote, deleteUserNote, fetchUserNoteContent, saveUserNoteContent, updateNotePermission, fetchNotePermission, pinUserNote, publishUserNote, unpublishUserNote, fetchAllPublicNotes } = require('../controllers/notes');
+const { getUserNotes, createUserNote, deleteUserNote, fetchUserNoteContent, saveUserNoteContent, updateNotePermission, fetchNotePermission, pinUserNote, publishUserNote, unpublishUserNote, fetchAllPublicNotes, fetchSinglePublicNote } = require('../controllers/notes');
 const router = Router();
 
 router.get('/user-notes', userAuth, getUserNotes);
@@ -20,5 +20,6 @@ router.post('/publish-notes', userAuth, fetchNotePermValidation, validationMiddl
 router.post('/unpublish-notes', userAuth, fetchNotePermValidation, validationMiddleware, unpublishUserNote);
 
 router.get('/fetch-public-notes', userAuth, fetchAllPublicNotes);
+router.post('/import-public-notes', userAuth, fetchSinglePublicNote);
 
 module.exports = router;

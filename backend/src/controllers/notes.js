@@ -29,17 +29,20 @@ exports.createUserNote = async (req, res) => {
     try {
         // let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
         // const userID = response.rows[0].user_id;
-        await db.query(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3);`, [
+
+
+        const { rows } = await db.query(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3) RETURNING note_id, title;`, [
             noteTitle,
             "",
             req.user.user_id,
         ]);
-        response = await db.query(`SELECT note_id, title FROM notes WHERE title = $1 and user_id = $2`, [noteTitle, req.user.user_id]);
+        
+        // let response = await db.query(`SELECT note_id, title FROM notes WHERE title = $1 and user_id = $2`, [noteTitle, req.user.user_id]);
         
         return res.status(201).json({
             success: true,
             message: 'Note created',
-            noteCreated: response.rows[0],
+            noteCreated: rows[0],
         });
     } catch (err) {
         console.log(err.message);
@@ -265,9 +268,10 @@ exports.fetchNotePermission = async (req, res) => {
 
 exports.publishUserNote = async (req, res) => {
     try {
-        await db.query(`UPDATE notes SET published = TRUE WHERE note_id = $1`, [req.body.noteID]);
-        await db.query(`INSERT INTO public_note_template (note_id, user_id, username, note_public_description, note_public_tags) VALUES($1, $2, $3, $4, $5)`, [
+        const { rows } = await db.query(`UPDATE notes SET published = TRUE WHERE note_id = $1 RETURNING (title);`, [req.body.noteID]);
+        await db.query(`INSERT INTO public_note_template (note_id, title, user_id, username, note_public_description, note_public_tags) VALUES($1, $2, $3, $4, $5, $6)`, [
             req.body.noteID,
+            rows[0].title,
             req.user.user_id,
             req.user.username,
             req.body.public_note_description,
@@ -307,7 +311,7 @@ exports.unpublishUserNote = async (req, res) => {
 
 exports.fetchAllPublicNotes = async (req, res) => {
     try {
-        const { rows } = await db.query(`SELECT * FROM public_note_template`);
+        const { rows } = await db.query(`SELECT note_id, title, username, note_public_description, note_public_tags FROM public_note_template`);
 
         return res.status(200).json({
             success: true,
@@ -322,5 +326,27 @@ exports.fetchAllPublicNotes = async (req, res) => {
 }
 
 exports.fetchSinglePublicNote = async (req, res) => {
+    try {
+        let response = await db.query('SELECT title, content FROM notes WHERE note_id = $1', [req.body.noteID]);
+        const ori_content = response.rows[0].content;
+        const ori_title = response.rows[0].title;
 
+        const { rows } = await db.query(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3) RETURNING note_id, title;`, [
+            ori_title,
+            ori_content,
+            req.user.user_id,
+        ]);
+
+        return res.status(201).json({
+            success: true,
+            message: 'Note imported',
+            noteCreated: rows[0],
+        });
+
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+                error: err.message,
+        });
+    }
 }

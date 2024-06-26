@@ -40,8 +40,11 @@ CREATE TABLE note_permission (
 
 CREATE TABLE public_note_template (
   note_id INT UNIQUE NOT NULL REFERENCES notes(note_id),
-  user_id INT UNIQUE NOT NULL REFERENCES users(user_id), -- no need
-  username TEXT UNIQUE NOT NULL REFERENCES users(username),
+  title VARCHAR(255) NOT NULL,
+  user_id INT NOT NULL REFERENCES users(user_id), -- no need
+  username TEXT NOT NULL REFERENCES users(username),
   note_public_description VARCHAR(255),
   note_public_tags TEXT[]
 );
+-- ALTER TABLE public_note_template ADD title VARCHAR(255) NOT NULL;
+-- ALTER TABLE public_note_template DROP UNIQUE (col_name);

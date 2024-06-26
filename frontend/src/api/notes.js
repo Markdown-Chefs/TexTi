@@ -120,3 +120,13 @@ export async function fetchAllPublicNotes() {
     const api = 'fetch-public-notes';
     return await axios.get(backend_url + api);
 }
+
+export async function importPublicNote(note_id) {
+    const api = 'import-public-notes';
+    return await axios.post(
+        backend_url + api,
+        {
+            noteID: note_id
+        }
+    );
+}
