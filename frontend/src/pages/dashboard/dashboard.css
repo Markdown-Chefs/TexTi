@@ -86,54 +86,99 @@
 .notes-section {
     height: 80vh;
     max-width: 100%;
+    margin-top: 25px;
 }
 
-.list-group2 {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    padding: 0;
-    list-style: none;
-    max-width: 100%;
-    text-align: center;
-    gap: 10px;
-    margin-left: 30px;
-}
-
-.list-group2-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: black;
-    transition: background-color 0.3s;
+ .file-img {
     height: auto;
-    width: 20vw;
-    max-width: 250px;
-    max-height: 250px;
-    margin-left: -25px;
-    margin-right: -25px;
-}
-
-
-.list-group2-item-success {
-    background-color: rgba(226, 226, 226, 0.5) !important;
-}
-
-.file-img {
-    height: auto;
-    width: 80%;
+    width: 20px;
     max-width: 10vw;
     max-height: auto;
+    margin-right: 5px;
+}
+
+ .notes-container {
+    margin-left: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px 25px;
+}
+
+.note-card {
+    width: 250px;
+    padding: 15px;
+    flex-direction: row; 
+    align-items: flex-start; 
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    background-color: white;
+    position: relative;
+}
+
+.note-card-selected {
+    background-color: #333;
+}
+
+.note-card-selected .file-img {
+    filter: invert(1);
+}
+
+.note-card-selected .note-title {
+    color: white;
+}
+
+.note-card:hover {
+    transform: scale(1.05);
+}
+
+.note-title-container {
+    width: 100%;
+    overflow: hidden;
+    max-height: 3.6em; 
 }
 
 .note-title {
-    font-size: 20px;
-    font-weight: 800;
-    color:#333;
-    overflow: hidden;
-    text-overflow: ellipsis; 
-    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
     width: 100%;
-    text-align: center;
+    white-space: nowrap;
 }
 
+.tooltip {
+    position: absolute;
+    background: #333; 
+    color: white; 
+    font-weight: 400;
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    z-index: 10;
+    top: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    font-size: 12px;
+    opacity: 0; 
+    transition: opacity 0.3s; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent; 
+}
+
+.note-card:hover .tooltip {
+    display: block;
+    opacity: 1; 
+}

@@ -8,7 +8,7 @@ import "./dashboard.css"
 import Navbar from "../../components/navbar/navbar";
 import CustomPrompt from "../../components/customPrompt/customPrompt";
 import ConfirmPrompt from "../../components/customPrompt/confirmPrompt";
-import fileIcon from "./../../components/assets/note-icon2.png"
+import fileIcon from "./../../components/assets/file-text.png"
 
 
 function Dashboard() {
@@ -163,33 +163,35 @@ function Dashboard() {
 
                     <div className="notes-section" onClick={() => setSelectedNoteIndex(-1)}>
                     {/* List out all user's note */}
-                    <ul className="list-group2"  onClick={() => setSelectedNoteIndex(-1)}>
+                    <div className="notes-container"  onClick={() => setSelectedNoteIndex(-1)}>
                         {listOfNotes.length === 0 ? (
                             <p>No notes found</p>
                         ) : (
                             listOfNotes.map((note, index) => (
-                            <li 
+                            <div
                                 key={note.note_id} 
                                 className={
                                     selectedNoteIndex === index
-                                        ? "list-group2-item list-group2-item-success"
-                                        : "list-group2-item"
+                                        ? "note-card note-card-selected"
+                                        : "note-card"
                                 }
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    if (index === selectedNoteIndex) {handleOpenNote();}
+                                    if (index === selectedNoteIndex) { handleOpenNote(); }
                                     setSelectedNoteIndex(index);
                                 }}
-                                
                             >
-                                <img src={fileIcon} alt="fileIcon" className="file-img"/>
-                                <div className="note-title"> 
-                                    {note.title}
+                                <img src={fileIcon} alt="fileIcon" className="file-img" />
+                                <div className="note-title-container">
+                                    <div className="note-title" data-full-title={note.title}>
+                                        {note.title}
+                                    </div>
                                 </div>
-                            </li>
+                                <div className="tooltip" data-full-title={note.title}>{note.title}</div>
+                            </div>
                             ))
                         )}
-                    </ul>
+                    </div>
                     </div>
                     <br />
                 </div>
