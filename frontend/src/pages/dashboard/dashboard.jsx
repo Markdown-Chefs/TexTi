@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 // import { fetchProtectedInfo, onLogout } from "../api/auth";
 import { onLogout } from "../../api/auth";
-import { fetchListOfNotes, onCreateNote, onDeleteNote, updateNotePermission, onPinNote } from "../../api/notes";
+import { fetchListOfNotes, onCreateNote, onDeleteNote, updateNotePermission, onPinNote, updateNoteContent } from "../../api/notes";
 import { unAuthenticateUser } from "../../redux/slices/authSlice";
 import "./dashboard.css"
 import Navbar from "../../components/navbar/navbar";
@@ -19,6 +19,7 @@ function Dashboard() {
     const [selectedNoteIndex, setSelectedNoteIndex] = useState(-1);
     const [isPromptOpen, setIsPromptOpen] = useState(false);
     const [isConfirmPromptOpen, setIsConfirmPromptOpen] = useState(false);
+    const fileInputRef = useRef(null);
 
     const handleOpenPrompt = () => {
         setIsPromptOpen(true);
@@ -85,9 +86,11 @@ function Dashboard() {
             // console.log(response);
             if (response.status === 201) {
                 setListOfNotes([...listOfNotes, response.data.noteCreated]);
+                return response;
             }
         } catch (error) {
             alert(error.response.data.errors[0].msg);
+            return error.response.data.errors[0].msg;
         }
     }
 
@@ -117,6 +120,41 @@ function Dashboard() {
             } catch (error) {
                 alert(error.response.data.errors[0].msg);
             }
+        }
+    }
+
+    const handleImportNoteClick = () => {
+        fileInputRef.current.click();
+    }
+
+    const handleImportNoteChange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = async (ee) => {
+                try {
+                    const content = ee.target.result;
+                    if (!/^[\x00-\x7F]*$/.test(content.slice(0, 1000))) { // check first 1000 characters
+                        alert('The file contains non-text character!');
+                        return;
+                    }
+                    const createFileResponse = await createNote(file.name);
+                    if (createFileResponse.status === 201) {
+                        const note_id = createFileResponse.data.noteCreated.note_id;
+                        // console.log(createFileResponse.data.noteCreated.note_id);
+                        // console.log(ee.target.result);
+                        const saveImportFileResponse = await updateNoteContent(note_id, content);
+                        if (saveImportFileResponse.status !== 200) {
+                            alert('Failed to save file content!')
+                        }
+                    } else {
+                        // console.log('Failed to create import note.');
+                    }
+                } catch (error) {
+                    alert('Something went wrong!');
+                }
+            };
+            reader.readAsText(file);
         }
     }
 
@@ -189,6 +227,18 @@ function Dashboard() {
         child="Create New Note"
         placeHolder="Enter note title"
       />
+
+                    <div>
+                        <button onClick={handleImportNoteClick}>Import Note</button>
+                        <input 
+                            type="file"
+                            style={{ display: 'none' }}
+                            ref={fileInputRef}
+                            onChange={handleImportNoteChange}
+                            accept=".txt,.text,.md,.html"
+                        />
+                    </div>
+                        
                         <button onClick={handlePinNote}>Pin/Unpin Note</button>
 
                         <button onClick={handleOpenConfirmPrompt} className="delete-note" disabled={selectedNoteIndex === -1}>Delete Selected Note </button>

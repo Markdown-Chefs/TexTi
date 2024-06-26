@@ -34,7 +34,7 @@ exports.createUserNote = async (req, res) => {
             "",
             userID,
         ]);
-        response = await db.query(`SELECT note_id, title FROM notes WHERE title = $1`, [noteTitle]);
+        response = await db.query(`SELECT note_id, title FROM notes WHERE title = $1 and user_id = $2`, [noteTitle, userID]);
         
         return res.status(201).json({
             success: true,
