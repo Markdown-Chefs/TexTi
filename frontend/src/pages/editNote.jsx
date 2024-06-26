@@ -13,7 +13,7 @@ function NoteEditor() {
     const [loading, setLoading] = useState(true); // prevent render before response from server, important
     const [editList, setEditList] = useState([]);
     const [viewList, setViewList] = useState([]);
-    const [permission, setPermission] = useState({ isOwner: false, canView: false, canEdit: false });
+    const [permission, setPermission] = useState({ isOwner: false, canView: false, canEdit: false, public: false });
    
    
 
@@ -23,7 +23,7 @@ function NoteEditor() {
             if (response.status === 200) {
                 setNoteTitle(response.data.title);
                 setNoteContent(response.data.content);
-                setPermission(response.data.permission)
+                setPermission(response.data.permission);
                 setLoading(false);
             }
         } catch (error) {
@@ -50,7 +50,7 @@ function NoteEditor() {
         return noteContentError ? 
             (<h1>{noteContentError}</h1>) :
 
-            (<Editor noteID={noteID} noteTitle={noteTitle} content={noteContent} canEdit={permission.canEdit} isOwner={permission.isOwner} trial='false' fetchUserNotePermission= {fetchUserNotePermission}/>);
+            (<Editor noteID={noteID} noteTitle={noteTitle} content={noteContent} canEdit={permission.canEdit} isOwner={permission.isOwner} isPublished={permission.isPublished} trial='false' fetchUserNotePermission= {fetchUserNotePermission}/>);
 
     }
 

@@ -44,13 +44,13 @@ export async function onPinNote(note_id, pinNote) {
 
 export async function fetchNoteContent(note_id) {
     const api = 'note';
-    const url = 'http://localhost:8000/api/note/' + note_id
+    const url = backend_url + 'note/' + note_id;
     return await axios.get(url);
 }
 
 export async function updateNoteContent(note_id, content) {
     const api = 'note';
-    const url = 'http://localhost:8000/api/note/' + note_id
+    const url = backend_url + 'note/' + note_id;
     return await axios.put(
         url,
         {
@@ -92,4 +92,31 @@ export async function updateNotePermission(note_id, target_username, can_view, c
             can_edit: can_edit // boolean
         }
     );
+}
+
+export async function onPublishNote(note_id, note_description, note_tags) {
+    const api = 'publish-notes';
+    return await axios.post(
+        backend_url + api,
+        {
+            noteID: note_id,
+            public_note_description: note_description,
+            public_note_tags: note_tags
+        }
+    );
+}
+
+export async function onUnpublishNote(note_id) {
+    const api = 'unpublish-notes';
+    return await axios.post(
+        backend_url + api,
+        {
+            noteID: note_id
+        }
+    );
+}
+
+export async function fetchAllPublicNotes() {
+    const api = 'fetch-public-notes';
+    return await axios.get(backend_url + api);
 }

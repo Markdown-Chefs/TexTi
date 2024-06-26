@@ -5,7 +5,7 @@ exports.getUserNotes = async (req, res) => {
     try {
         const userToSelect = req.user.username;
         const { rows } = await db.query(
-            `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner
+            `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
             FROM users
             INNER JOIN notes
             ON users.user_id = notes.user_id
@@ -27,14 +27,14 @@ exports.getUserNotes = async (req, res) => {
 exports.createUserNote = async (req, res) => {
     const { noteTitle } = req.body;
     try {
-        let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
-        const userID = response.rows[0].user_id;
+        // let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
+        // const userID = response.rows[0].user_id;
         await db.query(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3);`, [
             noteTitle,
             "",
-            userID,
+            req.user.user_id,
         ]);
-        response = await db.query(`SELECT note_id, title FROM notes WHERE title = $1 and user_id = $2`, [noteTitle, userID]);
+        response = await db.query(`SELECT note_id, title FROM notes WHERE title = $1 and user_id = $2`, [noteTitle, req.user.user_id]);
         
         return res.status(201).json({
             success: true,
@@ -52,17 +52,14 @@ exports.createUserNote = async (req, res) => {
 exports.deleteUserNote = async (req, res) => {
     const { noteID, title } = req.body;
     try {
-        let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
-        const userID = response.rows[0].user_id;
+        // let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
+        // const userID = response.rows[0].user_id;
+
+        await db.query(`DELETE FROM public_note_template WHERE note_id = $1 AND user_id = $2`, [noteID, req.user.user_id]);
 
         await db.query(`DELETE FROM note_permission WHERE note_id = $1`, [noteID]);
 
-        await db.query(`DELETE FROM notes WHERE title = $1 AND note_id = $2 AND user_id = $3`, [
-            title,
-            noteID,
-            userID,
-        ]);
-
+        await db.query(`DELETE FROM notes WHERE note_id = $1 AND user_id = $2`, [noteID,req.user.user_id]);
        
         return res.status(200).json({
             success: true,
@@ -108,16 +105,21 @@ exports.pinUserNote = async (req, res) => {
 
 exports.fetchUserNoteContent = async (req, res) => {
     try {
-        const { rows } = await db.query(`SELECT title, content, user_id FROM notes WHERE note_id = $1`, [
+        const { rows } = await db.query(`SELECT title, content, user_id, published FROM notes WHERE note_id = $1`, [
             req.params.noteID
         ]);
 
         const perm = {
             isOwner: false,
             canView: false,
-            canEdit: false
+            canEdit: false,
+            isPublished: false,
         };
         const currUserInfo = await db.query(`SELECT username, user_id FROM users WHERE username = $1`, [req.user.username]);
+
+        if (rows[0].published) {
+            perm.isPublished = true;
+        }
 
         if (currUserInfo.rows[0].user_id === rows[0].user_id) {
             perm.isOwner = true;
@@ -224,8 +226,8 @@ exports.updateNotePermission = async (req, res) => {
 
 exports.fetchNotePermission = async (req, res) => {
     try {
-        let response = await db.query('SELECT user_id FROM users WHERE username = $1', [req.user.username]);
-        const ownerID = response.rows[0].user_id;
+        // let response = await db.query('SELECT user_id FROM users WHERE username = $1', [req.user.username]);
+        // const ownerID = response.rows[0].user_id;
         let view_arr = [];
         let edit_arr = [];
         const { rows } = await db.query(
@@ -234,7 +236,7 @@ exports.fetchNotePermission = async (req, res) => {
             INNER JOIN users
             ON note_permission.user_id = users.user_id
             WHERE note_permission.owner_id = $1 AND note_permission.note_id = $2`, [
-                ownerID,
+                req.user.user_id,
                 req.body.noteID,
         ]);
 
@@ -259,4 +261,66 @@ exports.fetchNotePermission = async (req, res) => {
                 error: err.message,
         });
     }
+}
+
+exports.publishUserNote = async (req, res) => {
+    try {
+        await db.query(`UPDATE notes SET published = TRUE WHERE note_id = $1`, [req.body.noteID]);
+        await db.query(`INSERT INTO public_note_template (note_id, user_id, username, note_public_description, note_public_tags) VALUES($1, $2, $3, $4, $5)`, [
+            req.body.noteID,
+            req.user.user_id,
+            req.user.username,
+            req.body.public_note_description,
+            req.body.public_note_tags,
+        ]);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Note published.',
+        });
+
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+                error: err.message,
+        });
+    }
+}
+
+exports.unpublishUserNote = async (req, res) => {
+    try {
+        await db.query(`UPDATE notes SET published = FALSE WHERE note_id = $1`, [req.body.noteID]);
+        await db.query(`DELETE FROM public_note_template WHERE note_id = $1 AND username = $2`, [req.body.noteID, req.user.username]);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Note unpublished.',
+        });
+
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+                error: err.message,
+        });
+    }
+}
+
+exports.fetchAllPublicNotes = async (req, res) => {
+    try {
+        const { rows } = await db.query(`SELECT * FROM public_note_template`);
+
+        return res.status(200).json({
+            success: true,
+            listOfPublicNotes: rows,
+        });
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({
+                error: err.message,
+        });
+    }
+}
+
+exports.fetchSinglePublicNote = async (req, res) => {
+
 }

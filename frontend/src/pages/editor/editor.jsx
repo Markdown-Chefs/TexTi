@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { updateNoteContent } from "../../api/notes";
+import { updateNoteContent, onPublishNote, onUnpublishNote } from "../../api/notes";
 import { debounce } from "lodash";
 import Split from 'react-split';
 
@@ -28,7 +28,7 @@ import './editor.css'
     // support for GFM alerts
 
 
-function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fetchUserNotePermission}) {
+function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublished, trial, fetchUserNotePermission}) {
 
     const marked = new Marked(
         markedHighlight({
@@ -45,6 +45,12 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
     const [mdString, setMdString] = useState(content);
     const [mode, setMode] = useState("both"); 
     const [isDirty, setIsDirty] = useState(false);
+
+    const [isAPublicNote, setIsAPublicNote] = useState(isPublished);
+    const [seePublishForm, setSeePublishForm] = useState(false);
+    const [publishNoteData, setPublishNoteData] = useState({
+
+    });
 
     const handleChange = (event) => {
         if (canEdit) {
@@ -67,7 +73,6 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
         }
     }, 300));
 
-
     const handleExporting = (format) => {
         if (format === "markdown") {
             exportMarkdown(noteTitle, mdString);
@@ -79,6 +84,43 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
             exportPDF(noteTitle, mdString);
         }
 
+    }
+
+    const handlePublishNote = () => {
+        if (window.confirm('Are you sure you want to publish this note?')) {
+            setSeePublishForm(true);
+        }
+    }
+
+    const handlePublishNoteForm = async (e) => {
+        e.preventDefault();
+        const public_note_description = e.target.public_note_description.value;
+        const public_note_tags_string = e.target.public_note_tags.value;
+        const public_note_tags_array = public_note_tags_string.split(',').map(tag => tag.trim()).filter(Boolean).slice(0, 10);
+        try {
+            const response = await onPublishNote(noteID, public_note_description, public_note_tags_array);
+            if (response.status === 200) {
+                setSeePublishForm(false);
+                setIsAPublicNote(true);
+            }
+        } catch (error) {
+            console.log(error.response);
+            console.log("Failed to published note.");
+        }
+    }
+
+    const handleUnpublishNote = async () => {
+        if (window.confirm('Are you sure you want to unpublish this note? \nNote: This action is not immediate.')) {
+            try {
+                const response = await onUnpublishNote(noteID);
+                if (response.status === 200) {
+                    setIsAPublicNote(false);
+                }
+            } catch (error) {
+                console.log(error.response);
+                console.log("Failed to unpublished note.");
+            }
+        }
     }
 
     useEffect(() => {
@@ -141,6 +183,21 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, trial, fet
 
     return (
         <>
+        {isOwner && !isAPublicNote && <button type="button" className="btn btn-outline-primary" onClick={handlePublishNote}>Publish Note</button>}
+        {isOwner && isAPublicNote && <button type="button" className="btn btn-outline-primary" onClick={handleUnpublishNote}>Unpublish Note</button>}
+        {isOwner && !isAPublicNote && seePublishForm && 
+            <form onSubmit={handlePublishNoteForm}>
+                <div className="form-group">
+                    <label htmlFor="public_note_description">Note's Description</label>
+                    <input type="text" className="form-control" id="public_note_description" />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="public_note_tags">Note's Tag (Optional)</label>
+                    <input type="text" className="form-control" id="public_note_tags" placeholder='Up to 10, seperate using ","' />
+                </div>
+                <button type="submit" className="btn btn-primary">Submit</button>
+            </form>
+        }
         <AppBar noteTitle={noteTitle} setMode={setMode} trial = { trial } canEdit = {canEdit} isOwner = {isOwner} fetchUserNotePermission = {fetchUserNotePermission} handleExporting = {handleExporting}/>
         <div style={{ display: "flex", overflow: "hidden", height: "100vh" }}>
         {mode === "both" ? (

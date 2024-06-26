@@ -31,7 +31,7 @@ const userNameExists = check('username').custom(async (value) => {
 
 // login validation
 const loginCheck = check('email').custom(async (value, { req }) => {
-    const user = await db.query('SELECT * from users WHERE email = $1', [
+    const user = await db.query(`SELECT * FROM users WHERE email = $1`, [
         value.toLowerCase() // can also be req.body.email
     ]);
     
