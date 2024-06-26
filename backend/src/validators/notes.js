@@ -98,6 +98,14 @@ const canEditCheck = check('noteID') // check for: valid note id, is owner or ca
     }
 })
 
+const isPublishedNote = check('noteID').custom(async (value) => {
+    const { rows } = await db.query(`SELECT published FROM notes WHERE note_id = $1`, [value]);
+
+    if (rows[0].published) {
+        throw new Error('Cannot delete a publised note.');
+    }
+})
+
 const fetchNotePermCheck = check('noteID') // check for valid noteID and owner only
     .isInt().withMessage("Note not found.").bail()
     .custom(async (value, { req }) => {
@@ -143,6 +151,7 @@ const permissionConflictCheck = check('can_view').custom(async (value, { req }) 
 
 module.exports = {
     createNoteValidation: [noteTitle, titleExists],
+    deleteNoteValidation: [fetchNotePermCheck, isPublishedNote],
     fetchNoteContentValidation: [canViewCheck],
     saveNoteContentValidation: [canEditCheck, content],
     fetchNotePermValidation: [fetchNotePermCheck],

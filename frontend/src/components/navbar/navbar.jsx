@@ -67,6 +67,10 @@ const Navbar = () => {
          <img src={editorIcon} alt='editorIcon' className='editor-img'/>
       Editor
       </NavLink>
+      <NavLink to='/public_notes' className='nav-link'> 
+         <img src={'https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png'} alt='notEditorIcon' className='editor-img'/>
+      Public Note Pool
+      </NavLink>
     </div>
     <div onClick={() => logout()} className='logout-link'>
       <img src={LogoutIcon} alt='LogoutIcon' /> Sign out </div>
