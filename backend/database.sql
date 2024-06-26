@@ -15,9 +15,14 @@ CREATE TABLE notes (
   note_id SERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL DEFAULT 'untitled',
   content TEXT,
+  pin_by_owner BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   user_id INT NOT NULL REFERENCES users(user_id) -- foreign key
 );
+-- ALTER TABLE notes ADD pin_by_owner BOOLEAN DEFAULT FALSE;
+-- ALTER TABLE notes ADD last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
 
 -- create permission table
 CREATE TABLE note_permission (
