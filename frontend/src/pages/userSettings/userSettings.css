@@ -1,0 +1,71 @@
+
+.settings-page {
+    margin-left: 13%;
+    max-width: 87%;
+}
+
+.settings-container {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.menu-container {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.list-group {
+    width: 100%;
+    margin-left: 2%;
+}
+
+.list-group-item {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}
+
+.list-group-item:hover,
+.list-group-item.active {
+    background-color: black;
+    color: white;
+}
+
+.form-container {
+    flex: 2;
+    width: 50%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+form button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: black;
+}
+
+form div {
+    margin-top: 10px;
+}
