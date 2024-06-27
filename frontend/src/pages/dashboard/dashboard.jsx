@@ -8,7 +8,16 @@ import "./dashboard.css"
 import Navbar from "../../components/navbar/navbar";
 import CustomPrompt from "../../components/customPrompt/customPrompt";
 import ConfirmPrompt from "../../components/customPrompt/confirmPrompt";
-import fileIcon from "./../../components/assets/file-text.png"
+import newIcon from "../../components/assets/file-plus-2.png";
+import chevronDown from "../../components/assets/chevron-down.png"
+import fileIcon from "./../../components/assets/File_dock_fill.png"
+import pinIcon from "./../../components/assets/Pin_fill.png"
+import publishIcon from "./../../components/assets/published.png"
+import plusIcon from "./../../components/assets/plus-circle.png"
+import importIcom from "./../../components/assets/import.png"
+import trashIcon from "./../../components/assets/trash-2.png"
+import pinIcon2 from "./../../components/assets/pin.png"
+import unpinIcon from "./../../components/assets/pin-off.png"
 
 
 function Dashboard() {
@@ -20,6 +29,7 @@ function Dashboard() {
     const [isPromptOpen, setIsPromptOpen] = useState(false);
     const [isConfirmPromptOpen, setIsConfirmPromptOpen] = useState(false);
     const fileInputRef = useRef(null);
+    const [newNoteMenu, setNewNoteMenu] = useState(false);
 
     const handleOpenPrompt = () => {
         setIsPromptOpen(true);
@@ -46,6 +56,10 @@ function Dashboard() {
       const handleCloseConfirmPrompt = () => {
         setIsConfirmPromptOpen(false);
     };
+
+    const toggleMenu = () => {
+        setNewNoteMenu(!newNoteMenu);
+    }
 
     const getSelectedNoteTitle = () => {
         if (selectedNoteIndex !== -1 && listOfNotes[selectedNoteIndex]) {
@@ -105,6 +119,7 @@ function Dashboard() {
             }
         } catch (error) {
             console.log(error);
+            alert(error.response.data.errors[0].msg);
         }
     }
 
@@ -171,17 +186,6 @@ function Dashboard() {
                 }
                 return new Date(b.last_modified) - new Date(a.last_modified);
             });
-
-            // for testing only
-            notesList = notesList.map(note => {
-                if (note.pin_by_owner) {
-                    return {
-                        ...note,
-                        title: `[PIN] ${note.title}`
-                    };
-                }
-                return note;
-            });
             
             /* 
                 [ { note_id: 1, 
@@ -219,29 +223,51 @@ function Dashboard() {
                <Navbar />
                <div className="dashboard-page">
                     <div className="top">
-                    <button onClick={handleOpenPrompt} className="create-note">Create New Note</button>
-                    <CustomPrompt
-        open={isPromptOpen}
-        onClose={handleClosePrompt}
-        onConfirm={handleCreateNoteConfirmPrompt}
-        child="Create New Note"
-        placeHolder="Enter note title"
-      />
+                        <div className="new-note">
+                             <button onClick={toggleMenu} className="new-note-button"> 
+                                <img src = {newIcon} alt="NewIcon" className="new-icon"></img>
+                                New 
+                                <img src = {chevronDown} alt="chevronDown" className="chevron-down"></img>
+                            </button> 
+                             {newNoteMenu && <div className="new-note-menu">
+                                <div className="menu-header"> New Note </div>
+                                <button onClick={handleOpenPrompt} className="new-note-menu-item">
+                                    <img src={plusIcon} alt="Plus Icon" className="icon"></img>
+                                    <span className="text">Create Note</span>
+                                </button>
+                                <CustomPrompt
+                                    open={isPromptOpen}
+                                    onClose={handleClosePrompt}
+                                    onConfirm={handleCreateNoteConfirmPrompt}
+                                    child="Create New Note"
+                                    placeHolder="Enter note title"
+                                />
+                                <div>
+                                    <button onClick={handleImportNoteClick} className="new-note-menu-item">
+                                        <img src = {importIcom} alt = "Import Icon" className="icon"></img>
+                                        <span className="text">Import Note</span>
+                                    </button>
+                                    <input 
+                                        type="file"
+                                        style={{ display: 'none' }}
+                                        ref={fileInputRef}
+                                        onChange={handleImportNoteChange}
+                                        accept=".txt,.text,.md,.html"
+                                    />
+                                </div>
+                             </div>}
+                        </div>
+                        <div className = "divider"> | </div>
+                        <button onClick={handleOpenConfirmPrompt} className="function-button" disabled={selectedNoteIndex === -1}>
+                            <img src={trashIcon} alt="Trash Icon"></img> </button>
+                        <button onClick={handlePinNote}  className="function-button" disabled={selectedNoteIndex === -1 || listOfNotes[selectedNoteIndex].pin_by_owner}>
+                            <img src={pinIcon2} alt="Pin Icon"></img>
+                        </button>
+                        <button onClick={handlePinNote}  className="function-button" disabled={selectedNoteIndex === -1 || !listOfNotes[selectedNoteIndex].pin_by_owner}>
+                            <img src={unpinIcon} alt="Pin-off Icon"></img>
+                        </button>
 
-                    <div>
-                        <button onClick={handleImportNoteClick}>Import Note</button>
-                        <input 
-                            type="file"
-                            style={{ display: 'none' }}
-                            ref={fileInputRef}
-                            onChange={handleImportNoteChange}
-                            accept=".txt,.text,.md,.html"
-                        />
-                    </div>
-                        
-                        <button onClick={handlePinNote}>Pin/Unpin Note</button>
-
-                        <button onClick={handleOpenConfirmPrompt} className="delete-note" disabled={selectedNoteIndex === -1}>Delete Selected Note </button>
+                       
                         <ConfirmPrompt
             open={isConfirmPromptOpen}
             onClose={handleCloseConfirmPrompt}
@@ -281,6 +307,8 @@ function Dashboard() {
                                         {note.title}
                                     </div>
                                 </div>
+                                {note.pin_by_owner && <img src={pinIcon} alt="pinIcon" className="pin-icon" />}
+                                {note.published && <img src={publishIcon} alt="publishIcon" className="publish-icon" />}
                                 <div className="tooltip" data-full-title={note.title}>{note.title}</div>
                             </div>
                             ))
