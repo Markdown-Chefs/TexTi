@@ -9,9 +9,10 @@ import Home from "./pages/home/home";
 import Register from "./pages/register/register";
 import Login from "./pages/login/login";
 import Dashboard from "./pages/dashboard/dashboard";
-import Editor from "./pages/editor";
+import Editor from "./pages/editor/editor";
 import UserSettings from "./pages/userSettings";
 import NoteEditor from "./pages/editNote";
+import PublicNotes from "./pages/publicNotes/publicNotes";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = () => {
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
                     <Route path="/settings" element={<UserSettings></UserSettings>}></Route>
                     <Route path="/note/:noteID" element={<NoteEditor></NoteEditor>} />
+                    <Route path="/public_notes" element={<PublicNotes></PublicNotes>} />
                 </Route>
 
                 <Route element={<RestrictedRoute></RestrictedRoute>}>

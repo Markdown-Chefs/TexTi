@@ -1,67 +1,155 @@
-@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 .app-bar {
     background-color: white;
     padding: 10px 20px;
+    font-family: "Inter", Helvetica;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    background-color: #ffffff;
   }
 
   
-  .navbar-brand {
+  .appbar-brand {
+    margin-left: 5px;
     display: flex;
     align-items: center;
+    color: #000000;
+    font-family: var(--small-text-font-family);
+    font-size: var(--small-text-font-size);
+    font-style: var(--small-text-font-style);
+    font-weight: var(--small-text-font-weight);
+    letter-spacing: var(--small-text-letter-spacing);
+    line-height: var(--small-text-line-height);
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
   }
   
-  .navbar-brand img {
-    width: 40px ;
-    height: 40px ;
-    margin-right: 10px;
+  .appbar-brand img {
+    width: 60px ;
+    margin-right: 15px;
+    margin-left: 20px;
   }
   
-  .navbar-nav {
+  .appbar-nav {
     display: flex ;
     align-items: center ;
     gap: 15px ;
     margin: 0 ; 
+    align-items: center;
+    display: inline-flex;
+    gap: var(--variable-collection-spacing-m);
+    justify-content: flex-end;
+  }
+
+  .appbar-nav-link:hover {
+    background-color:rgba(0, 0, 0, 0.05);
   }
   
-  .nav-link {
-    color: black !important;
+  .appbar-nav-link {
     font-weight: bold;
     display: flex;
     text-decoration: none;
   }
-  
 
-  
-  .search-form {
-    display: flex;
+  .text-wrapper {
+    text-decoration: none;
+    color: #000000;
+    font-family: var(--body-text-font-family);
+    font-size: var(--body-text-font-size);
+    font-style: var(--body-text-font-style);
+    font-weight: var(--body-text-font-weight);
+    letter-spacing: var(--body-text-letter-spacing);
+    line-height: var(--body-text-line-height);
+    position: relative;
+    white-space: nowrap;
+    width: fit-content;
+  }
+
+  .loginButton {
+    all: unset;
     align-items: center;
-  }
-  
-  .search-form input {
-    margin-right: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    padding: 5px 10px;
-  }
-  
-  .search-form button {
-    border-radius: 4px;
-    border: 1px solid #000000;
-    background-color: #000000;
-    color: white;
-    padding: 5px 10px;
+    border: 1px solid;
+    border-color: #000000;
+    border-radius: 8px;
+    box-shadow: var(--button-shadow);
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 45px;
+    gap: 8px;
+    justify-content: center;
+    padding: 14px 24px;
   }
 
-  .navbar-brand span {
-    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 24px; 
-    font-weight: bold; 
-    color: #333; 
+  .loginButton:hover {
+    background-color: black;
+    color: white;
   }
+
+
+  .registerButton {
+    all: unset;
+    align-items: center;
+    background-color: #000000;
+    border-radius: 8px;
+    color: white;
+    box-shadow: var(--button-shadow);
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    height: 45px;
+    justify-content: center;
+    padding: 14px 24px;
+    position: relative;
+    font-family: var(--small-text-font-family);
+    font-size: var(--small-text-font-size);
+  }
+
+  .registerButton:hover {
+    background-color: white;
+    border: 1px solid #000000;
+    color: black;
+  }
+  
+ 
+ 
+ 
+  :root {
+    --body-text-font-family: "Inter", Helvetica;
+    --body-text-font-size: 20px;
+    --body-text-font-style: normal;
+    --body-text-font-weight: 500;
+    --body-text-letter-spacing: 0px;
+    --body-text-line-height: 150%;
+    --button-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+    --button-text-font-family: "Inter", Helvetica;
+    --button-text-font-size: 16px;
+    --button-text-font-style: normal;
+    --button-text-font-weight: 500;
+    --button-text-letter-spacing: 1.6px;
+    --button-text-line-height: 150%;
+    --h1-font-family: "Inter", Helvetica;
+    --h1-font-size: 64px;
+    --h1-font-style: normal;
+    --h1-font-weight: 800;
+    --h1-letter-spacing: 0px;
+    --h1-line-height: 100%;
+    --small-text-font-family: "Inter", Helvetica;
+    --small-text-font-size: 16px;
+    --small-text-font-style: normal;
+    --small-text-font-weight: 500;
+    --small-text-letter-spacing: 0px;
+    --small-text-line-height: 150%;
+    --subheading-font-family: "Inter", Helvetica;
+    --subheading-font-size: 18px;
+    --subheading-font-style: normal;
+    --subheading-font-weight: 400;
+    --subheading-letter-spacing: 0px;
+    --subheading-line-height: 150%;
+    --variable-collection-spacing-m: 48px;
+  }
+  

@@ -178,6 +178,7 @@ function UserSettings() {
         </>
     ) : (
         <>
+        <Navbar page="settings"></Navbar>
         <h1>User Settings</h1>
         <br />
         <div className="settings-container" style={{ display: 'flex', alignItems: 'flex-start', padding: '20px' }}>

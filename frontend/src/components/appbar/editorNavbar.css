@@ -1,0 +1,231 @@
+.editor-navbar {
+    background-color: white;
+    padding: 10px 20px;
+    font-family: "Inter", Helvetica;
+    display: flex;
+    height: 60px;
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
+
+  .editor-navbar-brand {
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+    font-family: var(--small-text-font-family);
+    font-size: var(--small-text-font-size);
+    font-style: var(--small-text-font-style);
+    font-weight: var(--small-text-font-weight);
+    letter-spacing: var(--small-text-letter-spacing);
+    line-height: var(--small-text-line-height);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+  }
+  
+  .editor-navbar-brand img {
+    width: 40px ;
+    margin-right: 10px;
+    margin-left: 0px;
+  }
+
+.permission {
+    position: absolute;
+    left: 20%;
+    width: 10%; 
+    color: grey;
+    font-weight: 600;
+}
+
+.permission img {
+    margin-right: 10px;
+    filter: opacity(0.5);
+}
+
+
+.note-Title {
+    position: absolute;
+    width: 30%;
+    overflow: auto;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.75px;
+    left: 35%;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.mode-button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position: relative;
+}
+
+.mode-button img {
+    transition: filter 0.3s ease;
+    width: 80%;
+}
+
+.mode-button:hover {
+    background-color: black;
+}
+
+.mode-button:hover img{
+    filter: invert(1);
+}
+
+.mode-button.active {
+    background-color: black;
+}
+
+.mode-button.active img {
+    filter: invert(1);
+}
+
+.export-button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.export-button:hover {
+    background-color: black;
+}
+
+.export-button:hover img {
+    filter: invert(1);
+}
+
+.export-button img {
+    width: 80%;
+}
+
+.dropdown-button {
+    position: relative;
+    display: inline-block; 
+}
+
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0px; 
+    top: 50px;
+    z-index: 1; 
+    background-color: rgba(255, 255, 255, 0.9); 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    min-width: 160px; 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+    padding: 10px 0; 
+}
+
+.dropdown-menu-header {
+    padding: 5px 20px; 
+    font-size: 18px;
+    letter-spacing: 1px;
+    background-color: #000;
+    color: white;
+    font-weight: 700;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px 20px; 
+    color: #333; 
+    display: block;
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1; 
+    color: #000; 
+}
+
+.permission-button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.permission-button:hover {
+    background-color: black;
+}
+
+.permission-button img {
+    width: 80%;
+    margin-left: 2px;
+}
+
+.permission-button:hover img {
+    filter: invert(1);
+}
+
+.publish-button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.publish-button img {
+    width: 90%;
+}
+
+.publish-button:hover {
+    background-color: black;
+}
+
+.publish-button:hover img {
+    filter:invert(1);
+}
+
+.unpublish-button {
+    background-color: black;
+}
+
+.unpublish-button img {
+    filter: invert(1);
+}
+
+
+
