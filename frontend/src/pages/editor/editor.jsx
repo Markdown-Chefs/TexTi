@@ -100,9 +100,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
 
     const [isAPublicNote, setIsAPublicNote] = useState(isPublished);
     const [seePublishForm, setSeePublishForm] = useState(false);
-    const [publishNoteData, setPublishNoteData] = useState({
-
-    });
+    const [publishNoteData, setPublishNoteData] = useState({});
 
     const handleChange = (event) => {
         if (canEdit) {
@@ -139,9 +137,11 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
     }
 
     const handlePublishNote = () => {
-        if (window.confirm('Are you sure you want to publish this note?')) {
-            setSeePublishForm(true);
-        }
+        setSeePublishForm(true);
+    }
+
+    const closeForm = () => {
+        setSeePublishForm(false);
     }
 
     const handlePublishNoteForm = async (e) => {
@@ -157,12 +157,13 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
             }
         } catch (error) {
             console.log(error.response);
+            alert(error.response.data.errors[0].msg);
             console.log("Failed to published note.");
         }
     }
 
     const handleUnpublishNote = async () => {
-        if (window.confirm('Are you sure you want to unpublish this note? \nNote: This action is not immediate.')) {
+        if (window.confirm('Are you sure you want to unpublish this note? \nNote: This action is irreversible.')) {
             try {
                 const response = await onUnpublishNote(noteID);
                 if (response.status === 200) {
@@ -235,22 +236,24 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
 
     return (
         <>
-        {isOwner && !isAPublicNote && <button type="button" className="btn btn-outline-primary" onClick={handlePublishNote}>Publish Note</button>}
-        {isOwner && isAPublicNote && <button type="button" className="btn btn-outline-primary" onClick={handleUnpublishNote}>Unpublish Note</button>}
+        <AppBar noteTitle={noteTitle} setMode={setMode} trial = { trial } canEdit = {canEdit} isOwner = {isOwner} fetchUserNotePermission = {fetchUserNotePermission} handleExporting = {handleExporting} isAPublicNote={isAPublicNote} handlePublishNote={handlePublishNote} handleUnpublishNote={handleUnpublishNote} />
         {isOwner && !isAPublicNote && seePublishForm && 
-            <form onSubmit={handlePublishNoteForm}>
-                <div className="form-group">
-                    <label htmlFor="public_note_description">Note's Description</label>
-                    <input type="text" className="form-control" id="public_note_description" />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="public_note_tags">Note's Tag (Optional)</label>
-                    <input type="text" className="form-control" id="public_note_tags" placeholder='Up to 10, seperate using ","' />
-                </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
+            <div className="form">
+                <form onSubmit={handlePublishNoteForm}  className="note-publish-form">
+                    <div className="form-group">
+                        <div className="form-header"> Publish Your Note </div>
+                        <span className="close1" onClick={closeForm}>&times;</span>
+                        <label htmlFor="public_note_description">Note's Description</label>
+                        <input type="text" className="form-control" id="public_note_description" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="public_note_tags">Note's Tag (Optional)</label>
+                        <input type="text" className="form-control" id="public_note_tags" placeholder='Up to 10, seperate using ","' />
+                    </div>
+                    <button type="submit" className="btn submit-btn">Publish</button>
+                </form>
+            </div>
         }
-        <AppBar noteTitle={noteTitle} setMode={setMode} trial = { trial } canEdit = {canEdit} isOwner = {isOwner} fetchUserNotePermission = {fetchUserNotePermission} handleExporting = {handleExporting}/>
         <div style={{ display: "flex", overflow: "hidden", height: "100vh" }}>
         {mode === "both" ? (
                      <Split sizes={[50, 50]} minSize={100} gutterSize={10} direction="horizontal" className="split" style={{ display: 'flex', width: '100%' }}gutter={(index, direction) => {

@@ -10,18 +10,17 @@ import { useParams } from "react-router-dom";
 import LockIcon from "../assets/lock.png";
 import EditIcon from "../assets/edit.png";
 import ExportIcon from "../assets/share.png";
-import PermissionIcon from "../assets/permission.png"
+import PermissionIcon from "../assets/file-lock-2.png"
 import CopyIcon from "../assets/copy.png"
 import PermissionsTab from '../permissionTab/permissionTab';
+import PublishIcon from "../assets/published.png"
 
 
 
-const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUserNotePermission, handleExporting}) => {
+const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUserNotePermission, handleExporting, isAPublicNote, handlePublishNote, handleUnpublishNote}) => {
 
     const [activeMode, setActiveMode] = useState('both');
     const { noteID } = useParams();
-    const [targetUsername, setTargetUsername] = useState('');
-    const [permission, setPermission] = useState({ can_view: false, can_edit: false });
     const [showMenu, setShowMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
     
@@ -74,7 +73,7 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
                 <img src={LockIcon} alt="View Only"></img> 
                 View Only </div>
             }
-            <div className="note-title"> {noteTitle} </div>
+            <div className="note-Title"> {noteTitle} </div>
         </>
         }
         <div className = "buttons">
@@ -102,6 +101,7 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
                 </button>
                 {showMenu && (
                     <ul className="dropdown-menu show">
+                        <div className="dropdown-menu-header">Export to</div>
                         <li><a className="dropdown-item" href="#" onClick={() => handleExportAndHideMenu("pdf")}>PDF</a></li>
                         <li><a className="dropdown-item" href="#" onClick={() => handleExportAndHideMenu("markdown")}>Markdown</a></li>
                         <li><a className="dropdown-item" href="#" onClick={() => handleExportAndHideMenu("styledhtml")}>HTML</a></li>
@@ -112,7 +112,6 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
         <button className="permission-button" onClick={handlePermissionButtonClick}> 
             <img src={PermissionIcon} alt="Note Permission" /> 
         </button>
-       
         <PermissionsTab
         isOwner={isOwner}
         showModal={showModal}
@@ -121,9 +120,12 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
         fetchUserNotePermission={fetchUserNotePermission}
         updateNotePermission={updateNotePermission}
         />
-
+        {isOwner && !isAPublicNote && <button className="publish-button" onClick={handlePublishNote}>
+            <img src={PublishIcon} alt = "Publish Icon"></img></button>}
+        {isOwner && isAPublicNote && <button className="publish-button unpublish-button" onClick={handleUnpublishNote}> <img src={PublishIcon} alt = "Publish Icon"></img></button>}
         </div>
     </div>
+    
     );
 };
 

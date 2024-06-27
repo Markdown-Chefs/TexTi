@@ -70,7 +70,7 @@ const PermissionTab = ({ isOwner, showModal, closeModal, noteID, fetchUserNotePe
                                 required
                             />
                         </label>}
-                        <button type="submit">Update Permissions</button>
+                        <button type="submit" className="update-btn">Update Permissions</button>
                         <button className="copy-url-button" onClick={handleCopyUrl}>
                         <img src={CopyIcon} alt="Copy URL" /> Copy Note URL
                     </button>
