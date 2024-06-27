@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { userAuth } = require('../middlewares/auth');
-const { createNoteValidation, fetchNoteContentValidation,saveNoteContentValidation, updateNotePermValidation, fetchNotePermValidation, deleteNoteValidation } = require('../validators/notes');
+const { createNoteValidation, fetchNoteContentValidation,saveNoteContentValidation, updateNotePermValidation, fetchNotePermValidation, deleteNoteValidation, publishNoteValidation } = require('../validators/notes');
 const { validationMiddleware } = require('../middlewares/validation');
 const { getUserNotes, createUserNote, deleteUserNote, fetchUserNoteContent, saveUserNoteContent, updateNotePermission, fetchNotePermission, pinUserNote, publishUserNote, unpublishUserNote, fetchAllPublicNotes, fetchSinglePublicNote } = require('../controllers/notes');
 const router = Router();
@@ -16,7 +16,7 @@ router.put('/note/:noteID', userAuth, saveNoteContentValidation, validationMiddl
 router.get('/note-permission', userAuth, fetchNotePermValidation, validationMiddleware, fetchNotePermission); // owner see list of users with permission
 router.post('/note-permission', userAuth, updateNotePermValidation, validationMiddleware, updateNotePermission); // owner
 
-router.post('/publish-notes', userAuth, fetchNotePermValidation, validationMiddleware, publishUserNote);
+router.post('/publish-notes', userAuth, publishNoteValidation, validationMiddleware, publishUserNote);
 router.post('/unpublish-notes', userAuth, fetchNotePermValidation, validationMiddleware, unpublishUserNote);
 
 router.get('/fetch-public-notes', userAuth, fetchAllPublicNotes);

@@ -12,7 +12,7 @@ import Dashboard from "./pages/dashboard/dashboard";
 import Editor from "./pages/editor/editor";
 import UserSettings from "./pages/userSettings";
 import NoteEditor from "./pages/editNote";
-import PublicNotes from "./pages/publicNotes";
+import PublicNotes from "./pages/publicNotes/publicNotes";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = () => {

@@ -42,6 +42,7 @@ function Dashboard() {
     const handleCreateNoteConfirmPrompt = (noteTitle) => {
         createNote(noteTitle);
         setIsPromptOpen(false);
+        setNewNoteMenu(false);
     };
 
     const handleDeleteNoteConfirmPrompt = () => {
@@ -215,12 +216,11 @@ function Dashboard() {
     
     return (loading ? (
             <>
-            <Navbar page="my-notes"/>
             <h1>Loading...</h1>
             </>
         ) : (
             <>
-               <Navbar />
+               <Navbar page="my-notes"/>
                <div className="dashboard-page">
                     <div className="top">
                         <div className="new-note">

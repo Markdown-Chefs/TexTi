@@ -4,18 +4,18 @@ const db = require('../config/db');
 const noteTitle = check('noteTitle').isLength({ min: 1, max: 255 }).withMessage("Note's title must be between 1 and 255 characters.");
 const content = check('updatedContent').isString().withMessage("Note's content must be strings.");
 
-const titleExists = check('noteTitle').custom(async (value, { req }) => {
-    let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
-    const userID = response.rows[0].user_id;
-    const { rows } = await db.query('SELECT * from notes WHERE title = $1 AND user_id = $2', [
-        value,
-        userID,
-    ]);
+// const titleExists = check('noteTitle').custom(async (value, { req }) => {
+//     let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
+//     const userID = response.rows[0].user_id;
+//     const { rows } = await db.query('SELECT * from notes WHERE title = $1 AND user_id = $2', [
+//         value,
+//         userID,
+//     ]);
 
-    if (rows.length) {
-        throw new Error('Note already exists');
-    }
-})
+//     if (rows.length) {
+//         throw new Error('Note already exists');
+//     }
+// })
 
 // VALIDATION FOR FETCHING NOTE
 
@@ -148,12 +148,14 @@ const permissionConflictCheck = check('can_view').custom(async (value, { req }) 
         throw new Error('User must be able to view note to edit note.');
     }
 })
+const publicDescriptionCheck = check('public_note_description').isLength({ min: 0, max: 255 }).withMessage("Note's description cannot be more than 255 characters.");
 
 module.exports = {
-    createNoteValidation: [noteTitle, titleExists],
+    createNoteValidation: [noteTitle],
     deleteNoteValidation: [fetchNotePermCheck, isPublishedNote],
     fetchNoteContentValidation: [canViewCheck],
     saveNoteContentValidation: [canEditCheck, content],
     fetchNotePermValidation: [fetchNotePermCheck],
     updateNotePermValidation: [fetchNotePermCheck, targetUserCheck, viewPermissionCheck, editPermissionCheck, permissionConflictCheck],
+    publishNoteValidation: [fetchNotePermCheck, publicDescriptionCheck],
 }

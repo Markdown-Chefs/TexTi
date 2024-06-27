@@ -88,6 +88,10 @@
   margin-right: 7px;
 }
 
+.nav-link-active .note-pool-img {
+  filter: invert(1);
+}
+
 .nav-link:hover {
   background-color: black;
   color:white;
@@ -96,8 +100,6 @@
 .nav-link:hover .note-pool-img {
   filter:invert(1);
 }
-
-
 
 .nav-linklogin {
   display: block;
