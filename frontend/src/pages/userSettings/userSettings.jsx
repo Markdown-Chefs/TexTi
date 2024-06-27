@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchProtectedInfo, onLogout, onChangeUsername, onChangeEmail, onChangePassword } from "../api/auth";
+import { fetchProtectedInfo, onLogout, onChangeUsername, onChangeEmail, onChangePassword } from "../../api/auth";
 import { useDispatch } from "react-redux";
-import { unAuthenticateUser } from "../redux/slices/authSlice";
+import { unAuthenticateUser } from "../../redux/slices/authSlice";
 // import { onLogout } from "../api/auth";
-import Navbar from "../components/navbar/navbar";
+import Navbar from "../../components/navbar/navbar";
+import "./userSettings.css"
 
 
 function UserSettings() {
@@ -179,30 +180,37 @@ function UserSettings() {
     ) : (
         <>
         <Navbar page="settings"></Navbar>
-        <h1>User Settings</h1>
-        <br />
-        <div className="settings-container" style={{ display: 'flex', alignItems: 'flex-start', padding: '20px' }}>
-            <div className="menu-container" style={{ flex: 1, marginRight: '20px' }}>
-                <ul className="list-group" style={{ width: '100%', marginLeft: '2%'}}>
-                    {userSettingsAction.map((item, index) => (
-                        <li
-                            className={selectedIndex === index ? "list-group-item active" : "list-group-item"}
-                            onClick={() => {
-                                setSelectedIndex(index);
-                                setError('');
-                                setSuccess('');
-                            }}
-                            key={item}
-                        >
-                            {item}
-                        </li>
-                    ))}
-                </ul>
+        <div className="settings-page">
+            <div className="top"></div>
+            <div className="header-container">
+                <div className="line"></div>
+                <div className="header-text">Settings</div>
+                <div className="line"></div>
             </div>
-            <div className="form-container" style={{ flex: 2 }}>
-                {renderForm()}
+        
+            <div className="settings-container" >
+                <div className="menu-container" >
+                    <ul className="list-group" >
+                        {userSettingsAction.map((item, index) => (
+                            <li
+                                className={selectedIndex === index ? "list-group-item active" : "list-group-item"}
+                                onClick={() => {
+                                    setSelectedIndex(index);
+                                    setError('');
+                                    setSuccess('');
+                                }}
+                                key={item}
+                            >
+                                {item}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="form-container">
+                    {renderForm()}
+                </div>
             </div>
-        </div>
+            </div>
         </>
     ));
 }

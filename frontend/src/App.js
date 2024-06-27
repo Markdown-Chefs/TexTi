@@ -10,7 +10,7 @@ import Register from "./pages/register/register";
 import Login from "./pages/login/login";
 import Dashboard from "./pages/dashboard/dashboard";
 import Editor from "./pages/editor/editor";
-import UserSettings from "./pages/userSettings";
+import UserSettings from "./pages/userSettings/userSettings";
 import NoteEditor from "./pages/editNote";
 import PublicNotes from "./pages/publicNotes/publicNotes";
 import { useSelector } from "react-redux";
