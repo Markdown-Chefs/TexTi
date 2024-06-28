@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        return res.status(200).clearCookie('token', { httpOnly: true, sameSite: 'strict', secure: config.NODE_ENV !== 'development'}).json({
+        return res.status(200).clearCookie('token', { httpOnly: true, sameSite: config.NODE_ENV === 'development' ? 'strict' : 'none', secure: config.NODE_ENV !== 'development'}).json({
             success: true,
             message: 'Logged out succefully',
         });

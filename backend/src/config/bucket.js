@@ -11,5 +11,6 @@ module.exports = {
     DATABASE_HOST: process.env.DATABASE_HOST,
     DATABASE_NAME: process.env.DATABASE_NAME,
     DATABASE_USER_PASSWORD: process.env.DATABASE_USER_PASSWORD,
-    DATABASE_PORT: process.env.DATABASE_PORT
+    DATABASE_PORT: process.env.DATABASE_PORT,
+    DATABASE_URL: process.env.DATABASE_URL
 }
