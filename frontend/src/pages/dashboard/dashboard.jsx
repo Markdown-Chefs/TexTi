@@ -204,7 +204,7 @@ function Dashboard() {
     }
 
     const handleOpenNote = () => {
-        const noteWindow = window.open('http://localhost:3000/note/' + listOfNotes[selectedNoteIndex].note_id, '_blank', 'noopener,noreferrer');
+        const noteWindow = window.open('https://texti-client.onrender.com/note/' + listOfNotes[selectedNoteIndex].note_id, '_blank', 'noopener,noreferrer');
         if (noteWindow) {noteWindow.opener = null;}
     }
 
