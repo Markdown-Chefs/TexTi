@@ -18,6 +18,7 @@ import importIcom from "./../../components/assets/import.png"
 import trashIcon from "./../../components/assets/trash-2.png"
 import pinIcon2 from "./../../components/assets/pin.png"
 import unpinIcon from "./../../components/assets/pin-off.png"
+import Loading from "../loading/loading"
 
 
 function Dashboard() {
@@ -216,7 +217,7 @@ function Dashboard() {
     
     return (loading ? (
             <>
-            <h1>Loading...</h1>
+            <Loading/>
             </>
         ) : (
             <>
