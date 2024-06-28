@@ -248,7 +248,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
                     </div>
                     <div className="form-group">
                         <label htmlFor="public_note_tags">Note's Tag (Optional)</label>
-                        <input type="text" className="form-control" id="public_note_tags" placeholder='Up to 10, seperate using ","' />
+                        <input type="text" className="form-control" id="public_note_tags" placeholder='Up to 10, separate using ","' />
                     </div>
                     <button type="submit" className="btn submit-btn">Publish</button>
                 </form>
