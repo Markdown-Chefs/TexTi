@@ -12,10 +12,8 @@ function UserSettings() {
     const [loading, setLoading] = useState(true);
     const [protectedData, setProtectedData] = useState(null);
 
-    const userSettingsAction = ['Change Username', 'Change Email', 'Change Password'];
-    const [newUsername, setNewUsername] = useState({
-        newUsername: '',
-    });
+    const userSettingsAction = ['Change Email', 'Change Password'];
+
     const [newEmail, setNewEmail] = useState({
         newEmail: '',
     });
@@ -51,20 +49,6 @@ function UserSettings() {
         }
     }
 
-    const onSubmitUsernameChange = async (event) => {
-        event.preventDefault();
-        try {
-            const response = await onChangeUsername(newUsername);
-
-            localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
-            setError('');
-            setSuccess(response.data.message);
-            setNewUsername({newUsername: ''});
-        } catch (error) {
-            setSuccess('');
-            setError(error.response.data.errors[0].msg);
-        }
-    }
 
     const onSubmitEmailChange = async (event) => {
         event.preventDefault();
@@ -96,23 +80,6 @@ function UserSettings() {
         switch (selectedIndex) {
             case 0:
                 return (
-                    <form onSubmit={onSubmitUsernameChange}>
-                    <input 
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Enter new username"
-                        value={newUsername.newUsername}
-                        onChange={e => setNewUsername({...newUsername, newUsername: e.target.value})}
-                        required
-                    />
-                    <button type="submit">Change Username</button>
-                    <div style={{ color: 'red', margin: '10px 0'}}>{error}</div>
-                    <div style={{ color: 'green', margin: '10px 0' }}>{success}</div>
-                    </form>
-                );
-            case 1:
-                return (
                     <form onSubmit={onSubmitEmailChange}>
                     <input 
                         type="email"
@@ -128,7 +95,7 @@ function UserSettings() {
                     <div style={{ color: 'green', margin: '10px 0' }}>{success}</div>
                     </form>
                 );
-            case 2:
+            case 1:
                 return (
                     <form onSubmit={onSubmitPasswordChange}>
                     <input 
