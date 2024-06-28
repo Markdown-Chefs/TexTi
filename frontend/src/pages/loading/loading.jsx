@@ -6,3 +6,5 @@ function Loading() {
         <img rc={LoadingGif} alt="Loadind Gif"/>
     )
 }
+
+export default Loading
