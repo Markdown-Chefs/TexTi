@@ -1,9 +1,12 @@
-import LoadingGif from "./../../components/assets/loading.gif"
+import LoadingGif from "./../../components/assets/loading2.gif"
+import "./loading.css"
 
 
 function Loading() {
     return (
-        <img src={LoadingGif} alt="Loading Gif"/>
+        <div className="loading-page">
+            <img src={LoadingGif} alt="Loading Gif" className="loading-gif"/>
+        </div>
     )
 }
 

@@ -6,6 +6,7 @@ import "./publicNotes.css"
 import userIcon from "./../../components/assets/user.png"
 import importIcon from "./../../components/assets/Import1.png"
 import searchIcon from "./../../components/assets/search.png"
+import Loading from "../loading/loading";
 
 function PublicNotes() {
     const navigate = useNavigate();
@@ -98,7 +99,7 @@ function PublicNotes() {
 
     return (loading ? (
         <>
-            <h1>Loading...</h1>
+           <Loading/>
         </>
     ) : (
         <>
