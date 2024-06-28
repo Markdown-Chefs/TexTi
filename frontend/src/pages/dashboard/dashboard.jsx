@@ -204,8 +204,10 @@ function Dashboard() {
         }
     }
 
+    const frontend_url = process.env.NODE_ENV === 'production' ? 'https://texti-client.onrender.com/note/' : 'http://localhost:3000/note/';
+
     const handleOpenNote = () => {
-        const noteWindow = window.open('https://texti-client.onrender.com/note/' + listOfNotes[selectedNoteIndex].note_id, '_blank', 'noopener,noreferrer');
+        const noteWindow = window.open(frontend_url + listOfNotes[selectedNoteIndex].note_id, '_blank', 'noopener,noreferrer');
         if (noteWindow) {noteWindow.opener = null;}
     }
 
