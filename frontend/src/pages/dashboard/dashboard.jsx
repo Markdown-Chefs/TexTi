@@ -221,7 +221,103 @@ function Dashboard() {
             </>
         ) : (
             <>
-               <Loading/>
+               <Navbar page="my-notes"/>
+               <div className="dashboard-page">
+                    <div className="top">
+                        <div className="new-note">
+                             <button onClick={toggleMenu} className="new-note-button"> 
+                                <img src = {newIcon} alt="NewIcon" className="new-icon"></img>
+                                New 
+                                <img src = {chevronDown} alt="chevronDown" className="chevron-down"></img>
+                            </button> 
+                             {newNoteMenu && <div className="new-note-menu">
+                                <div className="menu-header"> New Note </div>
+                                <button onClick={handleOpenPrompt} className="new-note-menu-item">
+                                    <img src={plusIcon} alt="Plus Icon" className="icon"></img>
+                                    <span className="text">Create Note</span>
+                                </button>
+                                <CustomPrompt
+                                    open={isPromptOpen}
+                                    onClose={handleClosePrompt}
+                                    onConfirm={handleCreateNoteConfirmPrompt}
+                                    child="Create New Note"
+                                    placeHolder="Enter note title"
+                                />
+                                <div>
+                                    <button onClick={handleImportNoteClick} className="new-note-menu-item">
+                                        <img src = {importIcom} alt = "Import Icon" className="icon"></img>
+                                        <span className="text">Import Note</span>
+                                    </button>
+                                    <input 
+                                        type="file"
+                                        style={{ display: 'none' }}
+                                        ref={fileInputRef}
+                                        onChange={handleImportNoteChange}
+                                        accept=".txt,.text,.md,.html"
+                                    />
+                                </div>
+                             </div>}
+                        </div>
+                        <div className = "divider"> | </div>
+                        <button onClick={handleOpenConfirmPrompt} className="function-button" disabled={selectedNoteIndex === -1}>
+                            <img src={trashIcon} alt="Trash Icon"></img> </button>
+                        <button onClick={handlePinNote}  className="function-button" disabled={selectedNoteIndex === -1 || listOfNotes[selectedNoteIndex].pin_by_owner}>
+                            <img src={pinIcon2} alt="Pin Icon"></img>
+                        </button>
+                        <button onClick={handlePinNote}  className="function-button" disabled={selectedNoteIndex === -1 || !listOfNotes[selectedNoteIndex].pin_by_owner}>
+                            <img src={unpinIcon} alt="Pin-off Icon"></img>
+                        </button>
+
+                       
+                        <ConfirmPrompt
+            open={isConfirmPromptOpen}
+            onClose={handleCloseConfirmPrompt}
+            onConfirm={handleDeleteNoteConfirmPrompt}
+            child={"Delete " + getSelectedNoteTitle()}
+        />
+                    </div>
+                    <div className="header-container">
+                        <div className="line"></div>
+                        <div className="header-text">MY NOTES</div>
+                        <div className="line"></div>
+                    </div>
+
+                    <div className="notes-section" onClick={() => setSelectedNoteIndex(-1)}>
+                    {/* List out all user's note */}
+                    <div className="notes-container"  onClick={() => setSelectedNoteIndex(-1)}>
+                        {listOfNotes.length === 0 ? (
+                            <p>No notes found</p>
+                        ) : (
+                            listOfNotes.map((note, index) => (
+                            <div
+                                key={note.note_id} 
+                                className={
+                                    selectedNoteIndex === index
+                                        ? "note-card note-card-selected"
+                                        : "note-card"
+                                }
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (index === selectedNoteIndex) { handleOpenNote(); }
+                                    setSelectedNoteIndex(index);
+                                }}
+                            >
+                                <img src={fileIcon} alt="fileIcon" className="file-img" />
+                                <div className="note-title-container">
+                                    <div className="note-title" data-full-title={note.title}>
+                                        {note.title}
+                                    </div>
+                                </div>
+                                {note.pin_by_owner && <img src={pinIcon} alt="pinIcon" className="pin-icon" />}
+                                {note.published && <img src={publishIcon} alt="publishIcon" className="publish-icon" />}
+                                <div className="tooltip" data-full-title={note.title}>{note.title}</div>
+                            </div>
+                            ))
+                        )}
+                    </div>
+                    </div>
+                    <br />
+                </div>
             </>
         ));
 }
