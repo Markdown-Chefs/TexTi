@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchNoteContent, fetchNotePermission, updateNotePermission } from "../api/notes";
 import useUser from "../hooks/useUser";
-
+import Loading from "./loading/loading";
 import Editor from "./editor/editor";
 
 function NoteEditor() {
@@ -63,7 +63,7 @@ function NoteEditor() {
 
     return (loading ? (
         <>
-            <h1>Loading...</h1>
+            <Loading/>
         </>
     ) : (
         <>

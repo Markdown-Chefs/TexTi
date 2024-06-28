@@ -5,6 +5,7 @@ import { unAuthenticateUser } from "../../redux/slices/authSlice";
 // import { onLogout } from "../api/auth";
 import Navbar from "../../components/navbar/navbar";
 import "./userSettings.css"
+import Loading from "../loading/loading";
 
 
 function UserSettings() {
@@ -175,7 +176,7 @@ function UserSettings() {
 
     return (loading ? (
         <>
-        <h1>Loading...</h1>
+        <Loading/>
         </>
     ) : (
         <>
