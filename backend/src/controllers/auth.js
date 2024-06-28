@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
     try {
         const token = await sign(payload, config.SECRET)
 
-        return res.status(200).cookie('token', token, { httpOnly: true, sameSite: 'strict', secure: config.NODE_ENV !== 'development' }).json({
+        return res.status(200).cookie('token', token, { httpOnly: true, sameSite:  config.NODE_ENV === 'development' ? 'strict' : 'none', secure: config.NODE_ENV !== 'development' }).json({
             success: true,
             message: 'Logged in succefully',
             userInfo: { username: user.username },
