@@ -8,7 +8,7 @@ exports.changeUserUsername = async (req, res) => {
     // newUsername = req.body.newUsername
     // email = req.user.email
     try {
-        await db.query('UPDATE users SET username = $1 WHERE username = $2 AND email = $3', [
+        await db.query('UPDATE public_note_template SET username = $1 WHERE username = $2 AND email = $3', [
             req.body.newUsername,
             req.user.username,
             req.user.email
