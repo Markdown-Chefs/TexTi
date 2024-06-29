@@ -93,11 +93,17 @@
     margin-left: 5px;
 }
 
+.btn-grp {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+}
+
 .update-btn {
     font-size: small;
     font-weight: 600;
     letter-spacing: 1.5px;
-    margin-top: 12px;
     margin-right: 20px;
     padding: 0px 20px;
     height: 40px;
@@ -123,7 +129,6 @@
     font-size: small;
     font-weight: 600;
     letter-spacing: 1.5px;
-    margin-top: 1px;
     padding: 0px 20px;
     height: 40px;
     background-color: #000;
@@ -134,7 +139,7 @@
 }
 
 .copy-url-button img {
-    width:12%;
+    width:11%;
 }
 
 .copy-url-button:hover {

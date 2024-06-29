@@ -4,7 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { authenticateUser } from '../../redux/slices/authSlice'
 import TexTiLogo from '../../components/assets/TexTiLogoWithText.jpg'
-import './login.css'
+import './login.css';
+import Loading from '../loading/loading';
 
 
 function Login() {
@@ -21,9 +22,14 @@ function Login() {
 
     const dispatch = useDispatch();
 
+    const loadLoading = () => {
+        <Loading/>
+    }
+
     const onSubmit = async (event) => {
         event.preventDefault();
         try {
+            loadLoading();
             const response = await onLogin(values);
             dispatch(authenticateUser());
             localStorage.setItem('isAuth', 'true');
