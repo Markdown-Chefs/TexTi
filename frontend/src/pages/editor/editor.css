@@ -122,5 +122,4 @@
 
 table { border-collapse: collapse; }
 tr { border-bottom: solid 1px black; border-left: solid 1px black; border-right: solid 1px black; border-top: solid 1px black;}
-
 tr:nth-child(even) { background-color: #f2f2f2; }
