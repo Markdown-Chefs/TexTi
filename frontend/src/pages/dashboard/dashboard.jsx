@@ -102,7 +102,7 @@ function Dashboard() {
             // console.log(response);
             if (response.status === 201) {
                 setListOfNotes([...listOfNotes, response.data.noteCreated]);
-                listOfUserNotes();
+                setSelectedNoteIndex(-1);
                 return response;
             }
         } catch (error) {
@@ -115,7 +115,8 @@ function Dashboard() {
         try {
             if (selectedNoteIndex !== -1) {
                 const response = await onDeleteNote(listOfNotes[selectedNoteIndex].note_id, listOfNotes[selectedNoteIndex].title);
-
+                setSelectedNoteIndex(-1);
+                
                 if (response.status === 200) {
                     listOfUserNotes();
                 }
