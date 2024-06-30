@@ -4,7 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { authenticateUser } from '../../redux/slices/authSlice'
 import TexTiLogo from '../../components/assets/TexTiLogoWithText.jpg'
-import './login.css'
+import './login.css';
+import Loading from '../loading/loading';
 
 
 function Login() {
@@ -14,6 +15,7 @@ function Login() {
         password: '',
     });
     const [error, setError] = useState(false);
+    const [loading, setLoading]  = useState(false);
 
     const onChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });
@@ -24,17 +26,21 @@ function Login() {
     const onSubmit = async (event) => {
         event.preventDefault();
         try {
+            setLoading(true);
             const response = await onLogin(values);
+            setLoading(false);
             dispatch(authenticateUser());
             localStorage.setItem('isAuth', 'true');
             localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
         } catch (error) {
+            setLoading(false);
             setError(error.response.data.errors[0].msg);
         }
     }
 
     return (
         <>
+        {loading ? <Loading/> :
         <div className='login-page'>
             <div className="login-tab">
                 <div className="login-container">
@@ -75,6 +81,7 @@ function Login() {
                     Home
                 </NavLink>
             </div>
+        }
     </>
     );
 }

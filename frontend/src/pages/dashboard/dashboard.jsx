@@ -18,7 +18,7 @@ import importIcom from "./../../components/assets/import.png"
 import trashIcon from "./../../components/assets/trash-2.png"
 import pinIcon2 from "./../../components/assets/pin.png"
 import unpinIcon from "./../../components/assets/pin-off.png"
-import Loading from "../loading/loading";
+import Loading from "../loading/loading"
 
 
 function Dashboard() {
@@ -102,6 +102,7 @@ function Dashboard() {
             // console.log(response);
             if (response.status === 201) {
                 setListOfNotes([...listOfNotes, response.data.noteCreated]);
+                setSelectedNoteIndex(-1);
                 return response;
             }
         } catch (error) {
@@ -114,7 +115,8 @@ function Dashboard() {
         try {
             if (selectedNoteIndex !== -1) {
                 const response = await onDeleteNote(listOfNotes[selectedNoteIndex].note_id, listOfNotes[selectedNoteIndex].title);
-
+                setSelectedNoteIndex(-1);
+                
                 if (response.status === 200) {
                     listOfUserNotes();
                 }
@@ -204,8 +206,10 @@ function Dashboard() {
         }
     }
 
+    const frontend_url = process.env.NODE_ENV === 'production' ? 'https://texti-client.onrender.com/note/' : 'http://localhost:3000/note/';
+
     const handleOpenNote = () => {
-        const noteWindow = window.open('http://localhost:3000/note/' + listOfNotes[selectedNoteIndex].note_id, '_blank', 'noopener,noreferrer');
+        const noteWindow = window.open(frontend_url + listOfNotes[selectedNoteIndex].note_id, '_blank', 'noopener,noreferrer');
         if (noteWindow) {noteWindow.opener = null;}
     }
 

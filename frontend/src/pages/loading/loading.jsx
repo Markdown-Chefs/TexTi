@@ -6,6 +6,7 @@ function Loading() {
     return (
         <div className="loading-page">
             <img src={LoadingGif} alt="Loading Gif" className="loading-gif"/>
+            <p className="loading-text"> Loading... If this takes longer than 30 seconds, please refresh the page.</p>
         </div>
     )
 }
