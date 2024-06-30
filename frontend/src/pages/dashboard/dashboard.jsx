@@ -102,6 +102,7 @@ function Dashboard() {
             // console.log(response);
             if (response.status === 201) {
                 setListOfNotes([...listOfNotes, response.data.noteCreated]);
+                listOfUserNotes();
                 return response;
             }
         } catch (error) {
