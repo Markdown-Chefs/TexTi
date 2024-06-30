@@ -15,6 +15,7 @@ function Login() {
         password: '',
     });
     const [error, setError] = useState(false);
+    const [loading, setLoading]  = useState(false);
 
     const onChange = (event) => {
         setValues({ ...values, [event.target.name]: event.target.value });
@@ -22,15 +23,12 @@ function Login() {
 
     const dispatch = useDispatch();
 
-    const loadLoading = () => {
-        <Loading/>
-    }
-
     const onSubmit = async (event) => {
         event.preventDefault();
         try {
-            loadLoading();
+            setLoading(true);
             const response = await onLogin(values);
+            setLoading(false);
             dispatch(authenticateUser());
             localStorage.setItem('isAuth', 'true');
             localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
@@ -41,6 +39,7 @@ function Login() {
 
     return (
         <>
+        {waiting ? <Loading/> :
         <div className='login-page'>
             <div className="login-tab">
                 <div className="login-container">
@@ -80,7 +79,7 @@ function Login() {
                 <NavLink to='/' className='toHomePage'>
                     Home
                 </NavLink>
-            </div>
+            </div>}
     </>
     );
 }
