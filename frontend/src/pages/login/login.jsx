@@ -33,6 +33,7 @@ function Login() {
             localStorage.setItem('isAuth', 'true');
             localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo));
         } catch (error) {
+            setLoading(false);
             setError(error.response.data.errors[0].msg);
         }
     }
