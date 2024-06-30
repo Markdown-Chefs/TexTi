@@ -40,7 +40,7 @@ function Login() {
 
     return (
         <>
-        {loading && <Loading/> }
+        {loading ? <Loading/> :
         <div className='login-page'>
             <div className="login-tab">
                 <div className="login-container">
@@ -81,6 +81,7 @@ function Login() {
                     Home
                 </NavLink>
             </div>
+        }
     </>
     );
 }
