@@ -305,12 +305,14 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
                     <div
                         id="previewer"
                         style={{
-                            textAlign: "center",
+                            textAlign: "left",
                             width: "100%",
-                            height: "100%",
+                            height: "auto",
                             overflowY: "auto",
-                            padding: "10px",
-                            margin: "10px"
+                            padding: "20px",
+                            margin: "20px auto",
+                            marginLeft: "15vw",
+                            marginRight: "15vw"
                         }}
                     >
                         {getMarkdownText()}
