@@ -124,6 +124,7 @@ const fetchNotePermCheck = check('noteID') // check for valid noteID and owner o
         }
 
         if (rows[0].username !== req.user.username) { // not owner
+            console.log("Not owner: ", rows[0].username, req.user.username);
             throw new Error('Access Denied.');
         }
     })
@@ -152,7 +153,7 @@ const publicDescriptionCheck = check('public_note_description').isLength({ min: 
 
 module.exports = {
     createNoteValidation: [noteTitle],
-    deleteNoteValidation: [fetchNotePermCheck, isPublishedNote],
+    deleteNoteValidation: [isPublishedNote, fetchNotePermCheck],
     fetchNoteContentValidation: [canViewCheck],
     saveNoteContentValidation: [canEditCheck, content],
     fetchNotePermValidation: [fetchNotePermCheck],
