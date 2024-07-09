@@ -3,7 +3,7 @@ const db = require('../config/db');
 const { compare } = require('bcryptjs');
 
 const newPassword = check('newPassword').isLength({ min: 6, max: 30 }).withMessage('Password must be between 6 and 30 characters.');
-const email = check('newEmail').isEmail().withMessage('Please provide valid email.');
+const email = check('newEmail').isEmail().withMessage('Please provide a valid email.');
 const username = check('newUsername')
     .isLength({ min: 4, max: 30 }).withMessage('Username must be between 4 and 30 characters.')
     .matches(/^[A-Za-z0-9]/).withMessage('Username must start with an alphanumeric character.')
