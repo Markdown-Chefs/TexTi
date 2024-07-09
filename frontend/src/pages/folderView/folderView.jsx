@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-// import { fetchProtectedInfo, onLogout } from "../api/auth";
 import { onLogout } from "../../api/auth";
 import { fetchListOfNotes, onCreateNote, onDeleteNote, updateNotePermission, onPinNote, updateNoteContent } from "../../api/notes";
 import { fetchListOfFolders, onCreateFolder, onDeleteFolder } from "../../api/folders";
 import { unAuthenticateUser } from "../../redux/slices/authSlice";
-import "./dashboard.css"
+import "./folderView.css"
 import Navbar from "../../components/navbar/navbar";
 import CustomPrompt from "../../components/customPrompt/customPrompt";
 import ConfirmPrompt from "../../components/customPrompt/confirmPrompt";
@@ -23,11 +22,11 @@ import unpinIcon from "./../../components/assets/pin-off.png"
 import Loading from "../loading/loading"
 
 
-function Dashboard() {
+function FolderView() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { folderID } = useParams();
     const [loading, setLoading] = useState(true);
-    // const [protectedData, setProtectedData] = useState(null);
     const [listOfNotes, setListOfNotes] = useState([]); // [{note_id: 1, title: 'example'}, ...]
     const [listOfFolders, setListOfFolders] = useState([]); // [{folder_id: 1, folder_name: 'example', created_at: DATE}, ...]
     const [selectedNoteIndex, setSelectedNoteIndex] = useState(-1);
@@ -90,7 +89,7 @@ function Dashboard() {
         const folder_name = prompt("Folder's Name");
         try {
             if (folder_name) {
-                const response = await onCreateFolder(folder_name, null);
+                const response = await onCreateFolder(folder_name, folderID);
                 if (response.status === 201) {
                     setListOfFolders([...listOfFolders, response.data.folderCreated]);
                     setSelectedNoteIndex(-1);
@@ -123,8 +122,7 @@ function Dashboard() {
 
     const createNote = async (title) => {
         try {
-            const response = await onCreateNote(title, null);
-            // console.log(response);
+            const response = await onCreateNote(title, folderID);
             if (response.status === 201) {
                 setListOfNotes([...listOfNotes, response.data.noteCreated]);
                 setSelectedNoteIndex(-1);
@@ -184,7 +182,7 @@ function Dashboard() {
                         alert('The file contains non-text character!');
                         return;
                     }
-                    const createFileResponse = await createNote(file.name);
+                    const createFileResponse = await createNote(file.name, folderID);
                     if (createFileResponse.status === 201) {
                         const note_id = createFileResponse.data.noteCreated.note_id;
                         // console.log(createFileResponse.data.noteCreated.note_id);
@@ -206,7 +204,7 @@ function Dashboard() {
 
     const listOfUserFolders = async () => {
         try {
-            const { data } = await fetchListOfFolders(null);
+            const { data } = await fetchListOfFolders(folderID);
 
             let foldersList = data.listOfFolders;
             foldersList.sort((a, b) => {
@@ -220,7 +218,7 @@ function Dashboard() {
 
     const listOfUserNotes = async () => {
         try {
-            const { data } = await fetchListOfNotes(null);
+            const { data } = await fetchListOfNotes(folderID);
             // data = JSON.parse(JSON.stringify(data));
 
             // sort data by pin_by_owner then last_modified
@@ -262,7 +260,7 @@ function Dashboard() {
     useEffect(() => {
         listOfUserFolders();
         listOfUserNotes();
-    }, []);
+    }, [folderID]);
     
     return (loading ? (
             <>
@@ -274,7 +272,7 @@ function Dashboard() {
                <div className="dashboard-page">
                     <div className="top">
                         <div className="new-note">
-                            <button onClick={toggleMenu} className="new-note-button"> 
+                             <button onClick={toggleMenu} className="new-note-button"> 
                                 <img src = {newIcon} alt="NewIcon" className="new-icon"></img>
                                 New 
                                 <img src = {chevronDown} alt="chevronDown" className="chevron-down"></img>
@@ -283,7 +281,7 @@ function Dashboard() {
                             <button onClick={createFolder}>Create Folder</button>
                             <button onClick={deleteFolder}>Delete Folder</button>
 
-                            {newNoteMenu && <div className="new-note-menu">
+                             {newNoteMenu && <div className="new-note-menu">
                                 <div className="menu-header"> New Note </div>
                                 <button onClick={handleOpenPrompt} className="new-note-menu-item">
                                     <img src={plusIcon} alt="Plus Icon" className="icon"></img>
@@ -408,4 +406,4 @@ function Dashboard() {
         ));
 }
 
-export default Dashboard;
+export default FolderView;

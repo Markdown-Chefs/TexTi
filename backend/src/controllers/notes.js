@@ -4,17 +4,29 @@ const db = require('../config/db');
 exports.getUserNotes = async (req, res) => {
     try {
         const userToSelect = req.user.username;
-        const { rows } = await db.query(
-            `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
-            FROM users
-            INNER JOIN notes
-            ON users.user_id = notes.user_id
-            WHERE users.username = $1;`, [userToSelect]
-        );
+        let response;
+        if (!req.query.folderID) {
+            response = await db.query(
+                `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
+                FROM users
+                INNER JOIN notes
+                ON users.user_id = notes.user_id
+                WHERE users.username = $1 AND notes.folder_id IS NULL;`, [userToSelect]
+            );
+        } else {
+            response = await db.query(
+                `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
+                FROM users
+                INNER JOIN notes
+                ON users.user_id = notes.user_id
+                WHERE users.username = $1 AND notes.folder_id = $2;`, [userToSelect, req.query.folderID]
+            );
+        }
+
         // const listOfNotes = rows.map(note => note.title); // [{ id: title }, { id:title }]
         return res.status(200).json({
             success: true,
-            listOfNotes: rows,
+            listOfNotes: response.rows,
         });
     } catch (err) {
         console.log(err.message);
@@ -27,22 +39,26 @@ exports.getUserNotes = async (req, res) => {
 exports.createUserNote = async (req, res) => {
     const { noteTitle } = req.body;
     try {
-        // let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
-        // const userID = response.rows[0].user_id;
-
-
-        const { rows } = await db.query(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3) RETURNING note_id, title;`, [
-            noteTitle,
-            "",
-            req.user.user_id,
-        ]);
-        
-        // let response = await db.query(`SELECT note_id, title FROM notes WHERE title = $1 and user_id = $2`, [noteTitle, req.user.user_id]);
-        
+        let response;
+        if (!req.body.folderID) {
+            response = await db.query(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3) RETURNING note_id, title;`, [
+                noteTitle,
+                "",
+                req.user.user_id,
+            ]);
+        } else {
+            response = await db.query(`INSERT INTO notes (title, content, user_id, folder_id) VALUES ($1, $2, $3, $4) RETURNING note_id, title;`, [
+                noteTitle,
+                "",
+                req.user.user_id,
+                req.body.folderID,
+            ]);
+        }
+                
         return res.status(201).json({
             success: true,
             message: 'Note created',
-            noteCreated: rows[0],
+            noteCreated: response.rows[0],
         });
     } catch (err) {
         console.log(err.message);
