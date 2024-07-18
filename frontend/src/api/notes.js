@@ -5,16 +5,26 @@ const backend_url = process.env.NODE_ENV === 'production'
     ? 'https://texti.onrender.com/api/'
     : 'http://localhost:8000/api/';
 
-export async function fetchListOfNotes() {
+export async function fetchListOfNotes(folder_id=null) {
     const api = 'user-notes';
-    return await axios.get(backend_url + api);
+    return await axios.get(
+        backend_url + api, 
+        {
+            params: {
+                folderID: folder_id,
+            }
+        }
+    );
 }
 
-export async function onCreateNote(noteTitle) {
+export async function onCreateNote(noteTitle, folder_id=null) {
     const api = 'create-notes';
     return await axios.post(
         backend_url + api, 
-        noteTitle
+        {
+            noteTitle: noteTitle,
+            folderID: folder_id
+        }
     );
 }
 

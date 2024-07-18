@@ -6,10 +6,6 @@ CREATE TABLE users (
   password_hash TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
--- ALTER TABLE users ALTER COLUMN created_at TYPE TIMESTAMP;
--- ALTER TABLE users ALTER COLUMN created_at SET DEFAULT CURRENT_TIMESTAMP;
--- ALTER TABLE users ADD UNIQUE (user_id);
--- ALTER TABLE users ADD UNIQUE (username);
 
 -- create notes table
 CREATE TABLE notes (
@@ -20,12 +16,15 @@ CREATE TABLE notes (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   published BOOLEAN DEFAULT FALSE,
+  folder_id INT DEFAULT NULL,
   user_id INT NOT NULL REFERENCES users(user_id) -- foreign key
+  CONSTRAINT fk_folder FOREIGN KEY(folder_id) REFERENCES folders(folder_id) ON DELETE SET NULL;
 );
--- ALTER TABLE notes ADD pin_by_owner BOOLEAN DEFAULT FALSE;
--- ALTER TABLE notes ADD last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
--- ALTER TABLE notes ADD published BOOLEAN DEFAULT FALSE;
--- ALTER TABLE notes ADD UNIQUE (note_id);
+/*
+ALTER TABLE notes
+  ADD COLUMN folder_id INT NULL,
+  ADD CONSTRAINT fk_folder FOREIGN KEY(folder_id) REFERENCES folders(folder_id) ON DELETE SET NULL;
+*/
 
 -- create permission table
 CREATE TABLE note_permission (
@@ -36,8 +35,8 @@ CREATE TABLE note_permission (
   can_view BOOLEAN NOT NULL DEFAULT FALSE,
   can_edit BOOLEAN NOT NULL DEFAULT FALSE
 );
--- ALTER TABLE note_permission ADD UNIQUE (perm_id);
 
+-- create public note table
 CREATE TABLE public_note_template (
   note_id INT UNIQUE NOT NULL REFERENCES notes(note_id),
   title VARCHAR(255) NOT NULL,
@@ -46,5 +45,13 @@ CREATE TABLE public_note_template (
   note_public_description VARCHAR(255),
   note_public_tags TEXT[]
 );
--- ALTER TABLE public_note_template ADD title VARCHAR(255) NOT NULL;
--- ALTER TABLE public_note_template DROP UNIQUE (col_name);
+
+-- create folders table
+CREATE TABLE folders (
+  folder_id SERIAL UNIQUE PRIMARY KEY,
+  folder_name VARCHAR(255) NOT NULL DEFAULT 'untitled_folder',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  parent_id INT DEFAULT NULL, -- for nested folders
+  user_id INT NOT NULL REFERENCES users(user_id),
+  CONSTRAINT fk_parent FOREIGN KEY(parent_id) REFERENCES folders(folder_id) ON DELETE CASCADE
+);

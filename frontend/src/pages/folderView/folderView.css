@@ -1,0 +1,275 @@
+
+.dashboard-page {
+    margin-left: 13%;
+    max-width: 87%;
+}
+.top {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 1%;
+    gap: 5px;
+}
+
+.new-note-button {
+    border: none;
+    width: 100px;
+    height: 25px;
+    margin-top: 15px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #000;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.new-note-button:hover {
+    background-color: #f2f2f2;
+    transform: scale(1.05);
+}
+
+.new-icon {
+    width: 25%;
+    margin-right: 8px;
+}
+
+.chevron-down {
+    width: 13%;
+    margin-left: 5px;
+}
+
+.new-note-menu {
+    position: absolute;
+    top: 50px;
+    left: 14%; 
+    width: 130px;
+    border: 1px solid black;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    z-index: 1000;
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.menu-header {
+    text-align: left;
+    margin: 10px;
+    margin-top: -5px;
+    margin-bottom: 0;
+    padding: 5px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    border-bottom: 1px solid black;
+}
+.new-note-menu-item {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #000;
+    text-align: left;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center; 
+}
+  
+.new-note-menu-item:hover {
+    background-color: #F2f2f2;
+}
+
+.new-note-menu-item .icon {
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+}
+
+.new-note-menu-item .text {
+    flex-grow: 1;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.divider {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+.function-button {
+    border: none;
+    background-color: transparent;
+    width: 33px;
+    height: 25px;
+    margin-top: 11px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.function-button:hover {
+    transform: scale(1.1);
+}
+
+.function-button img {
+    width: 100%;
+}
+
+.function-button:disabled img {
+    opacity: 0.2;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+.line {
+    flex: 1;
+    height: 1.5px;
+    background-color: #000; 
+    margin: 0 20px; 
+  }
+  
+.header-text {
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 3px;
+}
+
+.notes-section {
+    height: 80vh;
+    max-width: 100%;
+    margin-top: 25px;
+}
+
+ .file-img {
+    height: auto;
+    width: 20px;
+    max-width: 10vw;
+    max-height: auto;
+    margin-right: 5px;
+}
+
+ .notes-container {
+    margin-left: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px 25px;
+}
+
+.note-card {
+    width: 250px;
+    height: 60px;
+    padding: 15px;
+    flex-direction: row; 
+    align-items: flex-start; 
+    display: flex;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    background-color: white;
+    position: relative;
+}
+
+.note-card-selected {
+    background-color: black;
+}
+
+.note-card-selected .file-img {
+    filter: invert(1);
+}
+
+.note-card-selected .note-title {
+    color: white;
+}
+
+.note-card:hover {
+    transform: scale(1.05);
+}
+
+.note-title-container {
+    width: 100%;
+    overflow: hidden;
+    max-height: 3.6em; 
+}
+
+.note-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: black;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.pin-icon {
+    width: 8%;
+    position: absolute;
+    right: 1%;
+    bottom: 2%;
+}
+
+.publish-icon {
+    width: 8%;
+    position: absolute;
+    right: 8%;
+    bottom: 2%;
+}
+
+.note-card-selected .pin-icon {
+    filter: invert(1);
+}
+
+.note-card-selected .publish-icon {
+    filter: invert(1);
+}
+
+
+.tooltip {
+    position: absolute;
+    background: black; 
+    color: white; 
+    font-weight: 400;
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    z-index: 10;
+    top: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    font-size: 12px;
+    opacity: 0; 
+    transition: opacity 0.3s; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent black transparent; 
+}
+
+.note-card:hover .tooltip {
+    display: block;
+    opacity: 1; 
+}
