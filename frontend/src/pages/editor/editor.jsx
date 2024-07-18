@@ -20,6 +20,7 @@ import { exportMarkdown, exportPDF, exportStyledHTML, exportRawHTML } from "../.
 import './editor.css'
 import katex from "katex";
 import 'katex/dist/katex.min.css';
+import FloatingButton from "../../components/floatingButton/floatingButton";
 
 
 // TODO: use highlightJS instead for codemirror
@@ -254,6 +255,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
                 </form>
             </div>
         }
+        <FloatingButton/>
         <div style={{ display: "flex", overflow: "hidden", height: "100vh" }}>
         {mode === "both" ? (
                      <Split sizes={[50, 50]} minSize={100} gutterSize={10} direction="horizontal" className="split" style={{ display: 'flex', width: '100%' }}gutter={(index, direction) => {
