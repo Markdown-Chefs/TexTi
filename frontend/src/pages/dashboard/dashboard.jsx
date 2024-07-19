@@ -21,6 +21,7 @@ import trashIcon from "./../../components/assets/trash-2.png"
 import pinIcon2 from "./../../components/assets/pin.png"
 import unpinIcon from "./../../components/assets/pin-off.png"
 import Loading from "../loading/loading"
+import newFolder from "./../../components/assets/folder-plus.png"
 
 
 function Dashboard() {
@@ -52,7 +53,11 @@ function Dashboard() {
     };
 
     const handleDeleteNoteConfirmPrompt = () => {
-        deleteNote();
+        if (selectedNoteIndex !== -1 && listOfNotes[selectedNoteIndex]) {
+            deleteNote();
+        } else {
+            deleteFolder();
+        }
         setIsConfirmPromptOpen(false);
     }
 
@@ -68,9 +73,11 @@ function Dashboard() {
         setNewNoteMenu(!newNoteMenu);
     }
 
-    const getSelectedNoteTitle = () => {
+    const getSelectedNoteTitleOrFolderTitle = () => {
         if (selectedNoteIndex !== -1 && listOfNotes[selectedNoteIndex]) {
-            return listOfNotes[selectedNoteIndex].title;
+            return "note: " + listOfNotes[selectedNoteIndex].title;
+        } else if (selectedFolderIndex !== -1 && listOfFolders[selectedFolderIndex]) {
+            return "folder: " + listOfFolders[selectedFolderIndex].folder_name;
         }
         return "";
     }
@@ -279,10 +286,6 @@ function Dashboard() {
                                 New 
                                 <img src = {chevronDown} alt="chevronDown" className="chevron-down"></img>
                             </button>
-
-                            <button onClick={createFolder}>Create Folder</button>
-                            <button onClick={deleteFolder}>Delete Folder</button>
-
                             {newNoteMenu && <div className="new-note-menu">
                                 <div className="menu-header"> New Note </div>
                                 <button onClick={handleOpenPrompt} className="new-note-menu-item">
@@ -312,7 +315,7 @@ function Dashboard() {
                              </div>}
                         </div>
                         <div className = "divider"> | </div>
-                        <button onClick={handleOpenConfirmPrompt} className="function-button" disabled={selectedNoteIndex === -1}>
+                        <button onClick={handleOpenConfirmPrompt} className="function-button" disabled={selectedNoteIndex === -1 && selectedFolderIndex === -1}>
                             <img src={trashIcon} alt="Trash Icon"></img> </button>
                         <button onClick={handlePinNote}  className="function-button" disabled={selectedNoteIndex === -1 || listOfNotes[selectedNoteIndex].pin_by_owner}>
                             <img src={pinIcon2} alt="Pin Icon"></img>
@@ -320,13 +323,15 @@ function Dashboard() {
                         <button onClick={handlePinNote}  className="function-button" disabled={selectedNoteIndex === -1 || !listOfNotes[selectedNoteIndex].pin_by_owner}>
                             <img src={unpinIcon} alt="Pin-off Icon"></img>
                         </button>
-
-                       
+                        <button onClick={createFolder} className="function-button">
+                            <img src={newFolder} alt="New Folder"></img>
+                        </button>
+                        
                         <ConfirmPrompt
             open={isConfirmPromptOpen}
             onClose={handleCloseConfirmPrompt}
             onConfirm={handleDeleteNoteConfirmPrompt}
-            child={"Delete " + getSelectedNoteTitle()}
+            child={"Delete " + getSelectedNoteTitleOrFolderTitle()}
         />
                     </div>
                     <div className="header-container">
@@ -335,73 +340,59 @@ function Dashboard() {
                         <div className="line"></div>
                     </div>
 
-                    {/* List out all user's folder */}
-                    {listOfFolders.length && (
-                        <div className="notes-section" onClick={() => {setSelectedNoteIndex(-1);setSelectedFolderIndex(-1)}}>
-                        <div className="notes-container"  onClick={() => {setSelectedNoteIndex(-1);setSelectedFolderIndex(-1)}}>
-                            {listOfFolders.map((folder, index) => (
-                            <div
-                                key={folder.folder_id} 
-                                className={
-                                    selectedFolderIndex === index
-                                        ? "note-card note-card-selected"
-                                        : "note-card"
-                                }
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (index === selectedFolderIndex) { handleOpenFolder(); }
-                                    setSelectedFolderIndex(index);
-                                    setSelectedNoteIndex(-1);
-                                }}
-                            >
-                                <img src={"https://cdn-icons-png.flaticon.com/512/32/32527.png"} alt="fileIcon" className="file-img" />
-                                <div className="note-title-container">
-                                    <div className="note-title" data-full-title={folder.folder_name}>
-                                        {folder.folder_name}
-                                    </div>
-                                </div>
-                                <div className="tooltip" data-full-title={folder.folder_name}>{folder.folder_name}</div>
-                            </div>
-                            ))}
-                        </div>
-                        </div>
-                    )}
+                    <div className="notes-section" onClick={() => {setSelectedNoteIndex(-1); setSelectedFolderIndex(-1)}}>
+    <div className="notes-container">
+        {/* List out all user's folders */}
+        {listOfFolders.length > 0 && listOfFolders.map((folder, index) => (
+            <div
+                key={folder.folder_id}
+                className={selectedFolderIndex === index ? "note-card note-card-selected" : "note-card"}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    if (index === selectedFolderIndex) { handleOpenFolder(); }
+                    setSelectedFolderIndex(index);
+                    setSelectedNoteIndex(-1);   
+                }}
+            >
+                <img src={"https://cdn-icons-png.flaticon.com/512/32/32527.png"} alt="folderIcon" className="file-img" />
+                <div className="note-title-container">
+                    <div className="note-title" data-full-title={folder.folder_name}>
+                        {folder.folder_name}
+                    </div>
+                </div>
+                <div className="tooltip" data-full-title={folder.folder_name}>{folder.folder_name}</div>
+            </div>
+        ))}
 
-                    <div className="notes-section" onClick={() => {setSelectedNoteIndex(-1);setSelectedFolderIndex(-1)}}>
-                    {/* List out all user's note */}
-                    <div className="notes-container"  onClick={() => {setSelectedNoteIndex(-1);setSelectedFolderIndex(-1)}}>
-                        {listOfNotes.length === 0 ? (
-                            <p>No notes found</p>
-                        ) : (
-                            listOfNotes.map((note, index) => (
-                            <div
-                                key={note.note_id} 
-                                className={
-                                    selectedNoteIndex === index
-                                        ? "note-card note-card-selected"
-                                        : "note-card"
-                                }
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    if (index === selectedNoteIndex) { handleOpenNote(); }
-                                    setSelectedNoteIndex(index);
-                                    setSelectedFolderIndex(-1);
-                                }}
-                            >
-                                <img src={fileIcon} alt="fileIcon" className="file-img" />
-                                <div className="note-title-container">
-                                    <div className="note-title" data-full-title={note.title}>
-                                        {note.title}
-                                    </div>
-                                </div>
-                                {note.pin_by_owner && <img src={pinIcon} alt="pinIcon" className="pin-icon" />}
-                                {note.published && <img src={publishIcon} alt="publishIcon" className="publish-icon" />}
-                                <div className="tooltip" data-full-title={note.title}>{note.title}</div>
-                            </div>
-                            ))
-                        )}
+        {/* List out all user's notes */}
+        {listOfNotes.length === 0 ? (
+            <p>No notes found</p>
+        ) : (
+            listOfNotes.map((note, index) => (
+                <div
+                    key={note.note_id}
+                    className={selectedNoteIndex === index ? "note-card note-card-selected" : "note-card"}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (index === selectedNoteIndex) { handleOpenNote(); }
+                        setSelectedNoteIndex(index);
+                        setSelectedFolderIndex(-1);
+                    }}
+                >
+                    <img src={fileIcon} alt="fileIcon" className="file-img" />
+                    <div className="note-title-container">
+                        <div className="note-title" data-full-title={note.title}>
+                            {note.title}
+                        </div>
                     </div>
-                    </div>
+                    {note.pin_by_owner && <img src={pinIcon} alt="pinIcon" className="pin-icon" />}
+                    {note.published && <img src={publishIcon} alt="publishIcon" className="publish-icon" />}
+                    <div className="tooltip" data-full-title={note.title}>{note.title}</div>
+                </div>
+            ))
+        )}
+    </div>
+</div>
                     <br />
                 </div>
             </>
