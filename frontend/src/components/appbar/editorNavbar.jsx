@@ -82,22 +82,26 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
                     onClick={() => handleModeClick('edit')}
                 >
                     <img src={Edit} alt="Editor Mode" />
+                    <div className="tooltipp">Editor Only</div>
             </button>
             <button 
                 className={`mode-button ${activeMode === 'both' ? 'active' : ''}`} 
                 onClick={() => handleModeClick('both')}
             >
                 <img src={BothIcon} width="20px"alt="Both Mode" />
+                <div className="tooltipp">Editor + Previewer</div>
             </button>
             <button 
                 className={`mode-button ${activeMode === 'preview' ? 'active' : ''}`} 
                 onClick={() => handleModeClick('preview')}
             >
                 <img src={Preview} alt="Preview Mode" />
+                <div className="tooltipp">Previewer Only</div>
             </button>
             <div className="dropdown-button">
                 <button className="export-button" type="button" onClick={toggleMenu}>
                     <img src={ExportIcon} alt="Export" />
+                    <div className="tooltipp"> Export Note</div>
                 </button>
                 {showMenu && (
                     <ul className="dropdown-menu show">
@@ -109,20 +113,26 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
                     </ul>
                 )}
             </div>
-        <button className="permission-button" onClick={handlePermissionButtonClick}> 
+            <button className="permission-button" onClick={handlePermissionButtonClick}> 
             <img src={PermissionIcon} alt="Note Permission" /> 
-        </button>
-        <PermissionsTab
-        isOwner={isOwner}
-        showModal={showModal}
-        closeModal={closeModal}
-        noteID={noteID}
-        fetchUserNotePermission={fetchUserNotePermission}
-        updateNotePermission={updateNotePermission}
-        />
-        {isOwner && !isAPublicNote && <button className="publish-button" onClick={handlePublishNote}>
-            <img src={PublishIcon} alt = "Publish Icon"></img></button>}
-        {isOwner && isAPublicNote && <button className="publish-button unpublish-button" onClick={handleUnpublishNote}> <img src={PublishIcon} alt = "Publish Icon"></img></button>}
+            <div className="tooltipp"> Share Note </div>
+            </button>
+            <PermissionsTab
+            isOwner={isOwner}
+            showModal={showModal}
+            closeModal={closeModal}
+            noteID={noteID}
+            fetchUserNotePermission={fetchUserNotePermission}
+            updateNotePermission={updateNotePermission}
+            />
+            {isOwner && !isAPublicNote && <button className="publish-button" onClick={handlePublishNote}>
+                <img src={PublishIcon} alt = "Publish Icon"></img>
+                <div className="tooltipp"> Publish Note</div>
+                </button>}
+            {isOwner && isAPublicNote && <button className="publish-button unpublish-button" onClick={handleUnpublishNote}> 
+                <img src={PublishIcon} alt = "Publish Icon"></img>
+                <div className="tooltipp"> Unpublish Note</div>
+            </button>}
         </div>
     </div>
     
