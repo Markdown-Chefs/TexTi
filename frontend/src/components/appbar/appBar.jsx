@@ -12,7 +12,7 @@ const AppBar = () => {
       
         <div className="appbar-brand">
           <img src={TexTiLogo} alt="Logo" />
-          <span className='productName'>TexTi</span>
+          <span className="productName">TexTi</span>
         </div>
         <div className="appbar-nav flex-row">
           <a className="appbar-nav-link" href="#">

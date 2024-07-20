@@ -8,64 +8,55 @@
     display: flex;
     align-items: flex-start;
     padding: 20px;
+    gap: 35px;
+    margin-left: 20px;
 }
 
-.menu-container {
-    flex: 1;
-    margin-right: 20px;
-}
-
-.list-group {
-    width: 100%;
-    margin-left: 2%;
-}
-
-.list-group-item {
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f8f9fa;
-    transition: background-color 0.3s ease;
-}
-
-.list-group-item:hover,
-.list-group-item.active {
-    background-color: black;
-    color: white;
-}
-
-.form-container {
-    flex: 2;
-    width: 50%;
-}
-
-form {
+.setting-btn {
+    background-color: transparent;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    align-items: center;
     display: flex;
     flex-direction: column;
+    width: 250px;
+    height: 250px;
+    padding: 45px 20px;
+    border-radius: 5px;
 }
 
-form input {
+.setting-btn:hover {
+    background-color: black;
+    color: white
+}
+
+.setting-btn:hover img {
+    filter: invert(1);
+}
+
+.setting-btn .mail {
+    width: 120px;
+    height: auto;
     margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
 }
 
-form button {
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: black;
-    color: white;
-    cursor: pointer;
+.setting-btn .password {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
 }
 
-form button:hover {
-    background-color: black;
+.error-message {
+    color: red;
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: center;
 }
 
-form div {
-    margin-top: 10px;
+.success-message {
+    color: green;
+    margin: 10px 0;
+    font-weight: bold;
+    text-align: center;
 }

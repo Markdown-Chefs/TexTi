@@ -57,10 +57,10 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
 
     return (
     <div className="editor-navbar">
-        <div className="editor-navbar-brand">
+        <NavLink to ='/' className="editor-navbar-brand">
             <img src={TexTiLogo} alt="Logo" />
-            <span className='productName'>TexTi</span>
-        </div>
+            <span className='productName' >TexTi</span>
+        </NavLink>
         {trial == 'false' && 
         <>
             {canEdit && !isOwner &&
