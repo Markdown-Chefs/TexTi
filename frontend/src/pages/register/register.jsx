@@ -3,6 +3,7 @@ import { onRegistration } from '../../api/auth';
 import TexTiLogo from '../../components/assets/TexTiLogoWithText.jpg';
 import { NavLink } from 'react-router-dom';
 import './register.css';
+import Alert from '../../components/alert/alert';
 
 
 function Register() {
@@ -78,8 +79,8 @@ function Register() {
                                 required
                             />
                             <button type="submit">Sign Up</button>
-                            <div style={{ color: 'white', margin: '10px 0'}}>{error}</div>
-                            <div style={{ color: 'white', margin: '10px 0' }}>{success}</div>
+                            <Alert message={error} type="error" onClose={() => setError('')} />
+                            <Alert message={success} type="success" onClose={() => setSuccess('')} />
                         </form>
                     </div>
                 </div>
