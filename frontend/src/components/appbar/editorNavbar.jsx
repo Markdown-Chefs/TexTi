@@ -12,7 +12,7 @@ import EditIcon from "../assets/edit.png";
 import ExportIcon from "../assets/share.png";
 import PermissionIcon from "../assets/file-lock-2.png"
 import CopyIcon from "../assets/copy.png"
-import PermissionsTab from '../permissionTab/permissionTab';
+import PermissionTab from '../permissionTab/permissionTab';
 import PublishIcon from "../assets/published.png"
 
 
@@ -117,7 +117,7 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
             <img src={PermissionIcon} alt="Note Permission" /> 
             <div className="tooltipp"> Share Note </div>
             </button>
-            <PermissionsTab
+            <PermissionTab
             isOwner={isOwner}
             showModal={showModal}
             closeModal={closeModal}

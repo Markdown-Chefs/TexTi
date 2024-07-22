@@ -1,17 +1,17 @@
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import './navbar.css'
-import TexTi_logo from '../assets/TexTi-logo.jpg'
-import LogoutIcon from '../assets/log-out.png'
-import { useEffect, useState } from 'react'
+import './navbar.css';
+import TexTi_logo from '../assets/TexTi-logo.jpg';
+import LogoutIcon from '../assets/log-out.png';
+import { useEffect, useState } from 'react';
 import { onLogout } from "../../api/auth";
 import { useDispatch } from "react-redux";
 import { unAuthenticateUser } from "../../redux/slices/authSlice";
 import { onCreateNote } from "../../api/notes";
-import NotePoolIcon from "../assets/world_2.png"
-import NoteIcon from '../assets/user.png'
+import NotePoolIcon from "../assets/world_2.png";
+import NoteIcon from '../assets/user.png';
 import useUser from '../../hooks/useUser';
-import SettingIcon from '../assets/settings.png'
+import SettingIcon from '../assets/settings.png';
 
 const Navbar = ( {page}) => {
   // const [username, setUsername] = useState('');
