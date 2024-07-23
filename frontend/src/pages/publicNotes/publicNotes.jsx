@@ -63,15 +63,18 @@ function PublicNotes() {
                                 ))}
                             </div>
                         </div>
-                            <img src={importIcon} alt="Import Icon" className="import-note-icon" onClick={async (e) => {
-                            e.preventDefault();
-                            try {
-                                await handleImportPublicNote(item.note_id, item.title)
-                            } catch (error) {
-                                console.log(error.response);
-                                console.log("Failed to import public notes.");
-                            }
-                        }}></img>
+                            <div className="import">
+                                <img src={importIcon} alt="Import Icon" className="import-note-icon" onClick={async (e) => {
+                                e.preventDefault();
+                                try {
+                                    await handleImportPublicNote(item.note_id, item.title)
+                                } catch (error) {
+                                    console.log(error.response);
+                                    console.log("Failed to import public notes.");
+                                }
+                                }}></img>
+                                <div className="tooltipp"> Import</div>
+                            </div>
                     </div>
                 ))}
             </div>

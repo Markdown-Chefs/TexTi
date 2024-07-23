@@ -32,7 +32,7 @@ const AppBar = () => {
               Sign in
             </NavLink>
             <NavLink to='/register' className='registerButton'>
-              Sign Up
+              Sign up
             </NavLink>
         </div>
       

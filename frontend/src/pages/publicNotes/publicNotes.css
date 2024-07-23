@@ -113,3 +113,10 @@
 .import-note-icon:hover {
     transform: scale(1.1);
 }
+
+.import:hover .tooltipp {
+    visibility: visible;
+    opacity: 1;
+    top: 102%;
+    left: 100%;
+}
