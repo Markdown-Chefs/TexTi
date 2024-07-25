@@ -336,7 +336,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
         }
         
         <FloatingButton/>
-        <div style={{ display: "flex", overflow: "hidden", height: "100vh", paddingTop: "60px" }}>
+        <div style={{ display: "flex", overflow: "auto", height: "100vh", paddingTop: "60px" }}>
         {mode === "both" ? (
                      <Split sizes={[50, 50]} minSize={100} gutterSize={10} direction="horizontal" className="split" style={{ display: 'flex', width: '100%' }}gutter={(index, direction) => {
                         const gutterElement = document.createElement('div');
