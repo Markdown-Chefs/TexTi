@@ -12,12 +12,12 @@
     font-weight: 700;
     align-items: center;
     background-color: black;
-    z-index: 1000;
+    z-index: 1001;
     color: white;
     margin-top: 20px;
 }
 
-.alert-icon {
+.alert-icon1 {
     filter: invert(1);
     width: 15px;
     margin-right: 8px;

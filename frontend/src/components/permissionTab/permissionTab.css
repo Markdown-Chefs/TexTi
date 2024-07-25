@@ -1,14 +1,14 @@
 
 .modal {
     display: block; 
-    position: absolute; 
-    z-index: 1; 
+    z-index: 1001; 
     font-family: "Inter", Helvetica;
     left: 0;
     top: 0;
     width: 100%; 
     height: 100%; 
     overflow: auto;
+    position: fixed; 
     background-color: rgba(0,0,0,0.4); 
 }
 
