@@ -32,24 +32,26 @@ function FolderView() {
     const [listOfFolders, setListOfFolders] = useState([]); // [{folder_id: 1, folder_name: 'example', created_at: DATE}, ...]
     const [selectedNoteIndex, setSelectedNoteIndex] = useState(-1);
     const [selectedFolderIndex, setSelectedFolderIndex] = useState(-1);
-    const [isPromptOpen, setIsPromptOpen] = useState(false);
+    const [isNotePromptOpen, setIsNotePromptOpen] = useState(false);
+    const [isFolderPromptOpen, setIsFolderPromptOpen] = useState(false);
     const [isConfirmPromptOpen, setIsConfirmPromptOpen] = useState(false);
     const fileInputRef = useRef(null);
     const [newNoteMenu, setNewNoteMenu] = useState(false);
 
-    const handleOpenPrompt = () => {
-        setIsPromptOpen(true);
+    const handleOpenNotePrompt = () => {
+        setIsNotePromptOpen(true);
     };
   
-    const handleClosePrompt = () => {
-        setIsPromptOpen(false);
+    const handleCloseNotePrompt = () => {
+        setIsNotePromptOpen(false);
     };
 
     const handleCreateNoteConfirmPrompt = (noteTitle) => {
         createNote(noteTitle);
-        setIsPromptOpen(false);
+        setIsNotePromptOpen(false);
         setNewNoteMenu(false);
     };
+
 
     const handleDeleteNoteConfirmPrompt = () => {
         if (selectedNoteIndex !== -1 && listOfNotes[selectedNoteIndex]) {
@@ -92,11 +94,10 @@ function FolderView() {
         }
     }
 
-    const createFolder = async () => {
-        const folder_name = prompt("Folder's Name");
+    const createFolder = async (folder_name) => {
         try {
             if (folder_name) {
-                const response = await onCreateFolder(folder_name, folderID);
+                const response = await onCreateFolder(folder_name, null);
                 if (response.status === 201) {
                     setListOfFolders([...listOfFolders, response.data.folderCreated]);
                     setSelectedNoteIndex(-1);
@@ -111,6 +112,18 @@ function FolderView() {
         }
     }
 
+    const handleOpenFolderPrompt = () => {
+        setIsFolderPromptOpen(true);
+    }
+
+    const handleCloseFolderPrompt = () => {
+        setIsFolderPromptOpen(false);
+    }
+
+    const handleCreateFolderConfirmPrompt = (folderTitle) => {
+        createFolder(folderTitle);
+        setIsFolderPromptOpen(false);
+    }
     const deleteFolder = async () => {
         try {
             if (selectedFolderIndex !== -1) {
@@ -286,13 +299,13 @@ function FolderView() {
                             </button>
                              {newNoteMenu && <div className="new-note-menu">
                                 <div className="menu-header"> New Note </div>
-                                <button onClick={handleOpenPrompt} className="new-note-menu-item">
+                                <button onClick={handleOpenNotePrompt} className="new-note-menu-item">
                                     <img src={plusIcon} alt="Plus Icon" className="icon"></img>
                                     <span className="text">Create Note</span>
                                 </button>
                                 <CustomPrompt
-                                    open={isPromptOpen}
-                                    onClose={handleClosePrompt}
+                                    open={isNotePromptOpen}
+                                    onClose={handleCloseNotePrompt}
                                     onConfirm={handleCreateNoteConfirmPrompt}
                                     child="Create New Note"
                                     placeHolder="Enter note title"
@@ -314,16 +327,29 @@ function FolderView() {
                         </div>
                         <div className = "divider"> | </div>
                         <button onClick={handleOpenConfirmPrompt} className="function-button" disabled={selectedNoteIndex === -1 && selectedFolderIndex === -1}>
-                            <img src={trashIcon} alt="Trash Icon"></img> </button>
+                        <img src={trashIcon} alt="Trash Icon"></img> 
+                            <div className="tooltipp"> Delete </div>
+                        </button>
                         <button onClick={handlePinNote}  className="function-button" disabled={selectedNoteIndex === -1 || listOfNotes[selectedNoteIndex].pin_by_owner}>
                             <img src={pinIcon2} alt="Pin Icon"></img>
+                            <div className="tooltipp"> Pin </div>
                         </button>
                         <button onClick={handlePinNote}  className="function-button" disabled={selectedNoteIndex === -1 || !listOfNotes[selectedNoteIndex].pin_by_owner}>
                             <img src={unpinIcon} alt="Pin-off Icon"></img>
+                            <div className="tooltipp"> Unpin </div>
                         </button>
-                        <button onClick={createFolder} className="function-button">
+                        <button onClick={handleOpenFolderPrompt} className="function-button">
                             <img src={newFolder} alt="New Folder"></img>
+                            <div className="tooltipp"> New Folder </div>
                         </button>
+                        <CustomPrompt
+                                    open={isFolderPromptOpen}
+                                    onClose={handleCloseFolderPrompt}
+                                    onConfirm={handleCreateFolderConfirmPrompt}
+                                    child="Create New Folder"
+                                    placeHolder="Enter folder name"
+                                />
+                        
 
                        
                         <ConfirmPrompt

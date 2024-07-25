@@ -122,6 +122,12 @@
     transform: scale(1.1);
 }
 
+.function-button:hover .tooltipp {
+    opacity: 1;
+    visibility: visible;
+
+}
+
 .function-button img {
     width: 100%;
 }
