@@ -10,6 +10,9 @@ import hljs from "highlight.js";
 import parse from "html-react-parser"; // avoid using dangerouslySetInnerHTML
 import "highlight.js/styles/stackoverflow-light.css";
 // import "highlight.js/styles/atom-one-dark.css";
+import katex from "katex";
+import 'katex/dist/katex.min.css';
+import mermaid from 'mermaid';
 
 // for editor
 import CodeMirror from '@uiw/react-codemirror';
@@ -18,11 +21,9 @@ import { EditorView } from "@codemirror/view";
 import AppBar from "../../components/appbar/editorNavbar"
 import { exportMarkdown, exportPDF, exportStyledHTML, exportRawHTML } from "../../components/exportNote";
 import './editor.css'
-import katex from "katex";
-import 'katex/dist/katex.min.css';
 import FloatingButton from "../../components/floatingButton/floatingButton";
-import ImageUpload from "../../components/imageUpload";
-import mermaid from 'mermaid';
+import Alert from "../../components/alert/alert";
+import ConfirmPrompt from "../../components/customPrompt/confirmPrompt";
 
 
 // GFM alert
@@ -62,6 +63,10 @@ const preprocessMarkdown = (mdString) => {
     
     
 function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublished, trial, fetchUserNotePermission}) {
+
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertType, setAlertType] = useState('');
+    const [confirmPromptOpen, setConfirmPromptOpen] = useState(false);
     
     const marked = new Marked(
         markedHighlight({
@@ -189,25 +194,35 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
             if (response.status === 200) {
                 setSeePublishForm(false);
                 setIsAPublicNote(true);
+                setAlertMessage('Note is published.');
+                setAlertType('success');
             }
         } catch (error) {
             console.log(error.response);
-            alert(error.response.data.errors[0].msg);
+            setAlertMessage(error.response.data.errors[0].msg);
+            setAlertType('error');
             console.log("Failed to published note.");
         }
     }
 
     const handleUnpublishNote = async () => {
-        if (window.confirm('Are you sure you want to unpublish this note? \nNote: This action is irreversible.')) {
-            try {
-                const response = await onUnpublishNote(noteID);
-                if (response.status === 200) {
-                    setIsAPublicNote(false);
-                }
-            } catch (error) {
-                console.log(error.response);
-                console.log("Failed to unpublished note.");
+        setConfirmPromptOpen(true);
+    }
+
+    const handleConfirmUnpublish = async () => {
+        setConfirmPromptOpen(false);
+        try {
+            const response = await onUnpublishNote(noteID);
+            if (response.status === 200) {
+                setIsAPublicNote(false);
+                setAlertMessage('Note is unpublished.');
+                setAlertType('success');
             }
+        } catch (error) {
+            console.log(error.response);
+            console.log("Failed to unpublished note.");
+            setAlertMessage(error.response.data.errors[0].msg);
+            setAlertType('error');
         }
     }
 
@@ -267,7 +282,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
     useEffect(() => {
         const timer = setTimeout(() => {
             renderMermaidDiagrams();
-        }, 300); // Adjust the delay time as necessary
+        }, 300); 
     
         return () => clearTimeout(timer);
     }, [mdString]);
@@ -321,7 +336,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
         }
         
         <FloatingButton/>
-        <div style={{ display: "flex", overflow: "hidden", height: "100vh", paddingTop: "0px" }}>
+        <div style={{ display: "flex", overflow: "hidden", height: "100vh", paddingTop: "60px" }}>
         {mode === "both" ? (
                      <Split sizes={[50, 50]} minSize={100} gutterSize={10} direction="horizontal" className="split" style={{ display: 'flex', width: '100%' }}gutter={(index, direction) => {
                         const gutterElement = document.createElement('div');
@@ -385,6 +400,19 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
                         {getMarkdownText()}
                     </div>
                 )}
+                {alertMessage && (
+                <Alert 
+                    message={alertMessage} 
+                    type={alertType} 
+                    onClose={() => setAlertMessage('')} 
+                />
+                )}
+                <ConfirmPrompt 
+                open={confirmPromptOpen} 
+                onClose={() => setConfirmPromptOpen(false)} 
+                onConfirm={handleConfirmUnpublish}
+                child="Are you sure you want to unpublish this note?"
+            />
         </div>
         </>
     );

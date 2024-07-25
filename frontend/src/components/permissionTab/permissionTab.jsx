@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import CopyIcon from '../assets/copy.png'; 
 import './permissionTab.css';
+import Alert from '../alert/alert';
 
 const PermissionTab = ({ isOwner, showModal, closeModal, noteID, fetchUserNotePermission, updateNotePermission }) => {
     const [targetUsername, setTargetUsername] = useState('');
     const [activeTab, setActiveTab] = useState('can_edit');
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertType, setAlertType] = useState('');
 
     const handleUsernameChange = (event) => {
         setTargetUsername(event.target.value);
@@ -20,11 +23,13 @@ const PermissionTab = ({ isOwner, showModal, closeModal, noteID, fetchUserNotePe
             const response = await updateNotePermission(noteID, targetUsername, permission.can_view, permission.can_edit);
             if (response.status === 200) {
                 fetchUserNotePermission(); // Refresh permissions list
-                alert('Permissions updated successfully.');
+                setAlertMessage('Permissions updated successfully.');
+                setAlertType('success');
             }
         } catch (error) {
             console.error('Error updating permissions:', error);
-            alert(error.response.data.errors[0].msg);
+            setAlertMessage(error.response.data.errors[0].msg);
+            setAlertType('error');
         }
     };
 
@@ -35,9 +40,12 @@ const PermissionTab = ({ isOwner, showModal, closeModal, noteID, fetchUserNotePe
     const handleCopyUrl = () => {
         const url = window.location.href;
         navigator.clipboard.writeText(url).then(() => {
-            alert('URL copied to clipboard!');
+            setAlertMessage('URL copied to clipboard!');
+            setAlertType('success');
         }).catch((err) => {
             console.error('Error copying URL: ', err);
+            setAlertMessage('Failed to copy URL.');
+            setAlertType('error');
         });
     };
 
@@ -72,13 +80,19 @@ const PermissionTab = ({ isOwner, showModal, closeModal, noteID, fetchUserNotePe
                         </label>}
                         <div className="btn-grp">
                             <button type="submit" className="update-btn">Update Permissions</button>
-                            <button className="copy-url-button" onClick={handleCopyUrl}>
+                            <button type="button" className="copy-url-button" onClick={handleCopyUrl}>
                                 <img src={CopyIcon} alt="Copy URL" /> Copy Note URL
                             </button>
                         </div>
                     </form>
-                   
                 </div>
+                {alertMessage && (
+                    <Alert 
+                        message={alertMessage} 
+                        type={alertType} 
+                        onClose={() => setAlertMessage('')} 
+                    />
+                )}
             </div>
         )
     );
