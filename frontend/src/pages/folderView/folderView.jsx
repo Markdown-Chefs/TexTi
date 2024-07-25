@@ -20,6 +20,7 @@ import trashIcon from "./../../components/assets/trash-2.png"
 import pinIcon2 from "./../../components/assets/pin.png"
 import unpinIcon from "./../../components/assets/pin-off.png"
 import Loading from "../loading/loading"
+import ShortLoading from "../loading/shortloading";
 import newFolder from "./../../components/assets/folder-plus.png"
 
 
@@ -284,7 +285,7 @@ function FolderView() {
     
     return (loading ? (
             <>
-            <Loading/>
+            <ShortLoading/>
             </>
         ) : (
             <>
