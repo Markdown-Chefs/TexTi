@@ -6,6 +6,7 @@ import { unAuthenticateUser } from "../../redux/slices/authSlice";
 import Navbar from "../../components/navbar/navbar";
 import "./userSettings.css"
 import Loading from "../loading/loading";
+import ShortLoading from "../loading/shortloading";
 import Alert from "../../components/alert/alert";
 import Mail from "../../components/assets/mail.png";
 import Password from "../../components/assets/password.png"
@@ -153,7 +154,7 @@ function UserSettings() {
 
     return (loading ? (
         <>
-        <Loading/>
+        <ShortLoading/>
         </>
     ) : (
         <>

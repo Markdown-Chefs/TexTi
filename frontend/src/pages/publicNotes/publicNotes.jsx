@@ -7,6 +7,8 @@ import userIcon from "./../../components/assets/user.png"
 import importIcon from "./../../components/assets/Import1.png"
 import searchIcon from "./../../components/assets/search.png"
 import Loading from "../loading/loading";
+import ShortLoading from "../loading/shortloading";
+
 
 function PublicNotes() {
     const navigate = useNavigate();
@@ -102,7 +104,7 @@ function PublicNotes() {
 
     return (loading ? (
         <>
-           <Loading/>
+           <ShortLoading/>
         </>
     ) : (
         <>

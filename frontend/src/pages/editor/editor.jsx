@@ -21,32 +21,100 @@ import './editor.css'
 import katex from "katex";
 import 'katex/dist/katex.min.css';
 import FloatingButton from "../../components/floatingButton/floatingButton";
+import ImageUpload from "../../components/imageUpload";
+import mermaid from 'mermaid';
 
 
-// TODO: use highlightJS instead for codemirror
-// TODO: markedJS:
-    // hide meta info
-    // support for image render
-    // support for latex
-    // support for GFM alerts
+// GFM alert
+const preprocessMarkdown = (mdString) => {
+    const alertTypes = {
+        note: {
+            className: 'alert-note',
+            icon: '<i class="fas fa-info-circle"></i>' 
+        },
+        tip: {
+            className: 'alert-tip',
+            icon: '<i class="fas fa-lightbulb"></i>'
+        },
+        important: {
+            className: 'alert-important',
+            icon: '<i class="fas fa-exclamation-circle"></i>'
+        },
+        warning: {
+            className: 'alert-warning',
+            icon: '<i class="fas fa-exclamation-triangle"></i>' 
+        },
+        caution: {
+            className: 'alert-caution',
+            icon: '<i class="fas fa-exclamation"></i>' 
+        }
+    };
 
+    for (const [type, { className, icon }] of Object.entries(alertTypes)) {
+        const regex = new RegExp(`^>\\s*\\[!${type.toUpperCase()}\\]\\s*(.*)`, 'gm');
+        mdString = mdString.replace(regex, (match, p1) => {
+            return `<div class="${className}"><span class="alert-icon">${icon}</span><span class="alert-content"${p1.trim()}</span></div>`;
+        });
+    }
 
+    return mdString;
+};
+    
+    
 function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublished, trial, fetchUserNotePermission}) {
-
+    
     const marked = new Marked(
         markedHighlight({
             gfm: true,
             langPrefix: 'hljs language-',
-            // renderer: renderer,
             highlight(code, lang, info) {
+                if (lang === "mermaid" || lang === "flowchart") {
+                    return code;
+                  }
                 const language = hljs.getLanguage(lang) ? lang : 'plaintext';
                 return hljs.highlight(code, { language }).value;
             }
         }),
     );
 
+     // Custom renderer to support LaTeX
+     const renderer = new marked.Renderer();
+
+     renderer.code = function (code, lang, escaped) {
+        if (lang === 'math' || lang === 'latex') {
+            return `<div class="katex-block">${katex.renderToString(code, { throwOnError: false, displayMode: true })}</div>`;
+        } else if (lang === 'mermaid') {
+            if (code.trim() !== "") {
+                return `<div class="mermaid">${code}</div>`;
+            }
+        }
+        return marked.Renderer.prototype.code.apply(this, arguments);
+    };
+     
+     renderer.paragraph = function (text) {
+         const inlineLatex = /\$(.+?)\$/g;
+         const blockLatex = /\$\$([\s\S]+?)\$\$/g;
+     
+         // Handle block LaTeX
+         if (blockLatex.test(text)) {
+             return text.replace(blockLatex, (match, p1) => {
+                 return `<div class="katex-block">${katex.renderToString(p1, { throwOnError: false, displayMode: true })}</div>`;
+             });
+         }
+     
+         // Handle inline LaTeX
+         if (inlineLatex.test(text)) {
+             text = text.replace(inlineLatex, (match, p1) => {
+                 return katex.renderToString(p1, { throwOnError: false });
+             });
+         }
+     
+         return `<p>${text}</p>`;
+     };
+
+     
     marked.setOptions({
-        renderer: new marked.Renderer(),
+        renderer,
         highlight: function(code, lang) {
             const language = hljs.getLanguage(lang) ? lang : 'plaintext';
             return hljs.highlight(code, { language }).value;
@@ -57,41 +125,6 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
         smartypants: true
     });
 
-    // Custom renderer to support LaTeX
-    const renderer = new marked.Renderer();
-
-    
-    renderer.code = function (code, lang, escaped) {
-        if (lang === 'math' || lang === 'latex') {
-            return `<div class="katex-block">${katex.renderToString(code, { throwOnError: false, displayMode: true })}</div>`;
-        }
-        return marked.Renderer.prototype.code.apply(this, arguments);
-    };
-    
-    renderer.paragraph = function (text) {
-        const inlineLatex = /\$(.+?)\$/g;
-        const blockLatex = /\$\$([\s\S]+?)\$\$/g;
-    
-        // Handle block LaTeX
-        if (blockLatex.test(text)) {
-            return text.replace(blockLatex, (match, p1) => {
-                return `<div class="katex-block">${katex.renderToString(p1, { throwOnError: false, displayMode: true })}</div>`;
-            });
-        }
-    
-        // Handle inline LaTeX
-        if (inlineLatex.test(text)) {
-            text = text.replace(inlineLatex, (match, p1) => {
-                return katex.renderToString(p1, { throwOnError: false });
-            });
-        }
-    
-        return `<p>${text}</p>`;
-    };
-
-   
-    
-    
 
     marked.use({ renderer });
     
@@ -111,7 +144,8 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
     }
 
     const getMarkdownText = () => {
-        const rawMarkup = marked.parse(mdString);
+        const preprocessedMdString = preprocessMarkdown(mdString);
+        const rawMarkup = marked.parse(preprocessedMdString);
         return parse(rawMarkup);
     };
 
@@ -177,6 +211,11 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
         }
     }
 
+    const handleImageUpload = (url) => {
+        const imageMarkdown = `![uploaded image](${url})`;
+        setMdString(mdString + '\n' + imageMarkdown);
+      };
+
     useEffect(() => {
         document.title = noteTitle + ' - TexTi';
     });
@@ -208,6 +247,31 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
         }
     }, [isDirty]);
 
+
+
+    const renderMermaidDiagrams = () => {
+        const mermaidElements = document.querySelectorAll('.mermaid');
+        if (mermaidElements.length > 0) {
+            mermaid.initialize({ startOnLoad: false });
+            mermaidElements.forEach(element => {
+                try {
+                    mermaid.init(undefined, element);
+                } catch (error) {
+                    console.error("Mermaid initialization error:", error);
+                    element.innerHTML = `<div class="mermaid-error">Syntax error in Mermaid diagram.</div>`;
+                }
+            });
+        }
+    };
+    
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            renderMermaidDiagrams();
+        }, 300); // Adjust the delay time as necessary
+    
+        return () => clearTimeout(timer);
+    }, [mdString]);
+    
     const editorExtensions = [
         markdown({ base: markdownLanguage }),
         EditorView.lineWrapping,
@@ -237,7 +301,7 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
 
     return (
         <>
-        <AppBar noteTitle={noteTitle} setMode={setMode} trial = { trial } canEdit = {canEdit} isOwner = {isOwner} fetchUserNotePermission = {fetchUserNotePermission} handleExporting = {handleExporting} isAPublicNote={isAPublicNote} handlePublishNote={handlePublishNote} handleUnpublishNote={handleUnpublishNote} />
+        <AppBar noteTitle={noteTitle} setMode={setMode} trial = { trial } canEdit = {canEdit} isOwner = {isOwner} fetchUserNotePermission = {fetchUserNotePermission} handleExporting = {handleExporting} isAPublicNote={isAPublicNote} handlePublishNote={handlePublishNote} handleUnpublishNote={handleUnpublishNote} handleImageUpload={handleImageUpload} />
         {isOwner && !isAPublicNote && seePublishForm && 
             <div className="form">
                 <form onSubmit={handlePublishNoteForm}  className="note-publish-form">
@@ -255,8 +319,9 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
                 </form>
             </div>
         }
+        
         <FloatingButton/>
-        <div style={{ display: "flex", overflow: "hidden", height: "100vh" }}>
+        <div style={{ display: "flex", overflow: "hidden", height: "100vh", paddingTop: "0px" }}>
         {mode === "both" ? (
                      <Split sizes={[50, 50]} minSize={100} gutterSize={10} direction="horizontal" className="split" style={{ display: 'flex', width: '100%' }}gutter={(index, direction) => {
                         const gutterElement = document.createElement('div');

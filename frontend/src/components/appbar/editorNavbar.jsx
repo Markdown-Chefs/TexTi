@@ -12,18 +12,17 @@ import EditIcon from "../assets/edit.png";
 import ExportIcon from "../assets/share.png";
 import PermissionIcon from "../assets/file-lock-2.png"
 import CopyIcon from "../assets/copy.png"
-import PermissionTab from '../permissionTab/permissionTab';
+import PermissionsTab from '../permissionTab/permissionTab';
 import PublishIcon from "../assets/published.png"
+import ImageUpload from '../imageUpload';
+import ImageIcon from "../assets/image-plus.png"
 
-
-
-const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUserNotePermission, handleExporting, isAPublicNote, handlePublishNote, handleUnpublishNote}) => {
+const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUserNotePermission, handleExporting, isAPublicNote, handlePublishNote, handleUnpublishNote, handleImageUpload}) => {
 
     const [activeMode, setActiveMode] = useState('both');
     const { noteID } = useParams();
     const [showMenu, setShowMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    
    
     const handleModeClick = (mode) => {
         setActiveMode(mode);
@@ -50,9 +49,16 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
         
     };
 
-
     const closeModal = () => {
         setShowModal(false);
+    };
+
+    const handleFileUpload = async (imageUrl) => {
+        handleImageUpload(imageUrl);
+    };
+
+    const triggerFileInput = () => {
+        document.getElementById('imageUploadInput').click();
     };
 
     return (
@@ -98,6 +104,11 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
                 <img src={Preview} alt="Preview Mode" />
                 <div className="tooltipp">Previewer Only</div>
             </button>
+            <button className="publish-button" onClick={triggerFileInput}>
+                    <img src={ImageIcon} alt="Upload Image" />
+                    <div className="tooltipp">Upload Image</div>
+                </button>
+            <ImageUpload onUpload={handleFileUpload} />
             <div className="dropdown-button">
                 <button className="export-button" type="button" onClick={toggleMenu}>
                     <img src={ExportIcon} alt="Export" />
@@ -113,18 +124,18 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
                     </ul>
                 )}
             </div>
-            <button className="permission-button" onClick={handlePermissionButtonClick}> 
+            {isOwner && <button className="permission-button" onClick={handlePermissionButtonClick}> 
             <img src={PermissionIcon} alt="Note Permission" /> 
             <div className="tooltipp"> Share Note </div>
-            </button>
-            <PermissionTab
+            </button>}
+            <PermissionsTab
             isOwner={isOwner}
             showModal={showModal}
             closeModal={closeModal}
             noteID={noteID}
             fetchUserNotePermission={fetchUserNotePermission}
             updateNotePermission={updateNotePermission}
-            />
+            /> 
             {isOwner && !isAPublicNote && <button className="publish-button" onClick={handlePublishNote}>
                 <img src={PublishIcon} alt = "Publish Icon"></img>
                 <div className="tooltipp"> Publish Note</div>

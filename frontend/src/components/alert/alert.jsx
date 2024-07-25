@@ -18,7 +18,7 @@ const Alert = ({ message, type, onClose}) => {
 
     return (
         <div className={`alert ${type}`}>
-             <img src={ type === 'error' ? error : success } alt={type} className={`alert-icon ${type}`}/>
+             <img src={ type === 'error' ? error : success } alt={type} className={`alert-icon1 ${type}`}/>
             {message}
             <span className="close-btn" onClick={onClose}>×</span>
         </div>
