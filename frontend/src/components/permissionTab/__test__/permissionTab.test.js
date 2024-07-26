@@ -7,6 +7,11 @@ import PermissionTab from '../permissionTab';
 
 jest.mock('../../assets/copy.png', () => 'mocked-copy.png');
 
+// jest.mock('../../alert/alert', () => ({
+//     __esModule: true,
+//     default: jest.fn(() => <div data-testid="mocked-alert" />)
+// }));
+
 describe('PermissionTab Component', () => {
     let history;
     let closeModal, fetchUserNotePermission, updateNotePermission;
@@ -27,16 +32,17 @@ describe('PermissionTab Component', () => {
 
     test('renders PermissionTab component', () => {
         render(
-        <Router location={history.location} navigator={history}>
-            <PermissionTab
-                isOwner={true}
-                showModal={true}
-                closeModal={closeModal}
-                noteID={noteID}
-                fetchUserNotePermission={fetchUserNotePermission}
-                updateNotePermission={updateNotePermission}
-            />
-        </Router>);
+            <Router location={history.location} navigator={history}>
+                <PermissionTab
+                    isOwner={true}
+                    showModal={true}
+                    closeModal={closeModal}
+                    noteID={noteID}
+                    fetchUserNotePermission={fetchUserNotePermission}
+                    updateNotePermission={updateNotePermission}
+                />
+            </Router>
+        );
 
         expect(screen.getByText('Note Permission')).toBeInTheDocument();
         expect(screen.getByText('Can Edit')).toBeInTheDocument();
@@ -103,7 +109,8 @@ describe('PermissionTab Component', () => {
         await waitFor(() => {
             expect(fetchUserNotePermission).toHaveBeenCalled();
         });
-        expect(alert).toHaveBeenCalledWith('Permissions updated successfully.');
+        // expect(alert).toHaveBeenCalledWith('Permissions updated successfully.');
+        expect(screen.getByText('Permissions updated successfully.')).toBeInTheDocument();
     });
 
     test('handles form submission correctly for view permission', async () => {
@@ -133,7 +140,8 @@ describe('PermissionTab Component', () => {
         await waitFor(() => {
             expect(fetchUserNotePermission).toHaveBeenCalled();
         });
-        expect(alert).toHaveBeenCalledWith('Permissions updated successfully.');
+        // expect(alert).toHaveBeenCalledWith('Permissions updated successfully.');
+        expect(screen.getByText('Permissions updated successfully.')).toBeInTheDocument();
     });
 
     test('handles form submission error', async () => {
@@ -164,7 +172,8 @@ describe('PermissionTab Component', () => {
         fireEvent.click(submitButton);
 
         await waitFor(() => {
-            expect(alert).toHaveBeenCalledWith('An error occurred');
+            // expect(alert).toHaveBeenCalledWith('An error occurred');
+            expect(screen.getByText('An error occurred')).toBeInTheDocument();
         });
     });
 
@@ -187,7 +196,8 @@ describe('PermissionTab Component', () => {
       
         expect(global.navigator.clipboard.writeText).toHaveBeenCalledWith(window.location.href);
         await waitFor(() => {
-            expect(alert).toHaveBeenCalledWith('URL copied to clipboard!');
+            // expect(alert).toHaveBeenCalledWith('URL copied to clipboard!');
+            expect(screen.getByText('URL copied to clipboard!')).toBeInTheDocument();
         });
 
         global.navigator.clipboard = originalClipboard;

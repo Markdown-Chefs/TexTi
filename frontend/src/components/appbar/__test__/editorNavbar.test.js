@@ -15,6 +15,7 @@ jest.mock('../../assets/share.png', () => 'mocked-share.png');
 jest.mock('../../assets/file-lock-2.png', () => 'mocked-file-lock-2.png');
 jest.mock('../../assets/copy.png', () => 'mocked-copy.png');
 jest.mock('../../assets/published.png', () => 'mocked-published.png');
+jest.mock('../../assets/image-plus.png', () => 'mocked-image-plus.png');
 
 jest.mock('../../../api/notes', () => ({
     updateNotePermission: jest.fn()
@@ -23,6 +24,11 @@ jest.mock('../../../api/notes', () => ({
 jest.mock('../../permissionTab/permissionTab', () => ({
     __esModule: true,
     default: jest.fn(() => <div data-testid="mocked-permissions-tab" />)
+}));
+
+jest.mock('../../imageUpload', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div data-testid="mocked-image-upload" />)
 }));
 
 describe('EditorNavbar Component', () => {
@@ -183,8 +189,7 @@ describe('EditorNavbar Component', () => {
             </Router>
         );
       
-        fireEvent.click(screen.getByText('Share Note'));
-        expect(window.alert).toHaveBeenCalledWith("You don't have permission to do this.");
+        expect(screen.queryByText('Share Note')).toBeNull();
     });
     
     test('handles publish note button click correctly', () => {
