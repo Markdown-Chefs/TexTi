@@ -73,21 +73,30 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
             gfm: true,
             langPrefix: 'hljs language-',
             highlight(code, lang, info) {
-                if (lang === "mermaid" || lang === "flowchart") {
+                if (lang === "mermaid" || lang === 'latex' || lang === 'math') {
                     return code;
-                  }
+                }
                 const language = hljs.getLanguage(lang) ? lang : 'plaintext';
                 return hljs.highlight(code, { language }).value;
             }
         }),
     );
 
-     // Custom renderer to support LaTeX
-     const renderer = new marked.Renderer();
+    function decodeHTMLEntities(text) {
+        const textArea = document.createElement('textarea');
+        textArea.innerHTML = text;
+        return textArea.value;
+    }
 
-     renderer.code = function (code, lang, escaped) {
-        if (lang === 'math' || lang === 'latex') {
-            return `<div class="katex-block">${katex.renderToString(code, { throwOnError: false, displayMode: true })}</div>`;
+    // Custom renderer to support LaTeX
+    const renderer = new marked.Renderer();
+
+    renderer.code = function (code, lang, escaped) {
+        // console.log("Original code:", code); 
+        if (lang === "math" || lang === "latex") {
+            const decodedContent = decodeHTMLEntities(code);
+            // console.log("Decoded content:", decodedContent); 
+            return `<div class="katex-block">${katex.renderToString(decodedContent, { throwOnError: false, displayMode: true })}</div>`;
         } else if (lang === 'mermaid') {
             if (code.trim() !== "") {
                 return `<div class="mermaid">${code}</div>`;
@@ -95,27 +104,39 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
         }
         return marked.Renderer.prototype.code.apply(this, arguments);
     };
-     
-     renderer.paragraph = function (text) {
-         const inlineLatex = /\$(.+?)\$/g;
-         const blockLatex = /\$\$([\s\S]+?)\$\$/g;
-     
-         // Handle block LaTeX
-         if (blockLatex.test(text)) {
-             return text.replace(blockLatex, (match, p1) => {
-                 return `<div class="katex-block">${katex.renderToString(p1, { throwOnError: false, displayMode: true })}</div>`;
-             });
-         }
-     
-         // Handle inline LaTeX
-         if (inlineLatex.test(text)) {
-             text = text.replace(inlineLatex, (match, p1) => {
-                 return katex.renderToString(p1, { throwOnError: false });
-             });
-         }
-     
-         return `<p>${text}</p>`;
-     };
+
+    renderer.paragraph = function (text) {
+        const inlineLatex = /\$(.+?)\$/g;
+        const blockLatex = /\$\$([\s\S]+?)\$\$/g;
+
+        // console.log("Original text:", text); 
+
+        const latexEnvRegex = /\\begin\{([\s\S]+?)\}\\end\{([\s\S]+?)\}/g;
+
+        // Handle block LaTeX
+        if (blockLatex.test(text)) {
+            console.log("Block LaTeX detected:", text);
+            return text.replace(blockLatex, (match, p1) => {
+                const decodedContent = decodeHTMLEntities(p1);
+                // console.log("Decoded content:", decodedContent); 
+                return `<div class="katex-block">${katex.renderToString(decodedContent, { throwOnError: false, displayMode: true })}</div>`;
+            });
+        }
+
+        // Handle inline LaTeX
+        if (inlineLatex.test(text)) {
+            console.log("Inline LaTeX detected:", text);
+            text = text.replace(inlineLatex, (match, p1) => {
+                const decodedContent = decodeHTMLEntities(p1);
+                // console.log("Decoded content:", decodedContent); 
+                return katex.renderToString(decodedContent, { throwOnError: false });
+            });
+        }
+
+        console.log("Final processed paragraph:", text);
+        return `<p>${text}</p>`;
+    };
+
 
      
     marked.setOptions({
@@ -129,7 +150,6 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
         smartLists: true,
         smartypants: true
     });
-
 
     marked.use({ renderer });
     
