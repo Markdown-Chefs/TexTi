@@ -35,7 +35,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     try {
         const response = await axios.post('https://api.imgur.com/3/image', formData, {
             headers: {
-                Authorization: 'Bearer ff873c66dc6a288d0590850965d9c15b0ee895b5',
+                Authorization: 'Bearer ' + config.IMGUR_ACCESS_TOKEN, 
                 ...formData.getHeaders()
             }
         });
