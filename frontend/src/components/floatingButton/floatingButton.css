@@ -160,6 +160,24 @@
     display: inline-block;
     width: 150px;
   }
+  
+  .syntax-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .syntax-table th,
+  .syntax-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .syntax-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+  }
 
   .search-input.syntax {
     border: 1px solid black;

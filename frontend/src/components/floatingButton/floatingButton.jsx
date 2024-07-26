@@ -63,6 +63,7 @@ const FloatingButton = () => {
       { feature: 'Code Block', syntax: '```\ncode block\n```', example: '```\ncode block\n```' },
       { feature: 'Horizontal Rule', syntax: '---', example: '---' },
       { feature: 'Table', syntax: '| Header | Header |\n|--------|--------|\n| Cell   | Cell   |', example: '| Header | Header |\n|--------|--------|\n| Cell   | Cell   |' },
+      { feature: "Task List", syntax: "- [ ] Task 1\n- [x] Task 2", example: "- [ ] Task 1\n- [x] Task 2" },
     ],
 
     html: [
@@ -81,16 +82,40 @@ const FloatingButton = () => {
     latex: [
       { feature: 'Inline Math', syntax: '$ math $', example: '$ a^2 + b^2 = c^2 $' },
       { feature: 'Display Math', syntax: '$$ math $$', example: '$$ \int_{a}^{b} x \, dx $$' },
-      { feature: 'Fraction', syntax: '\\frac{a}{b}', example: '\\frac{1}{2}' },
-      { feature: 'Square Root', syntax: '\\sqrt{a}', example: '\\sqrt{2}' },
-      { feature: 'Exponent', syntax: 'a^{b}', example: 'x^{y}' },
-      { feature: 'Subscript', syntax: 'a_{b}', example: 'x_{i}' },
-      { feature: 'Integral', syntax: '\\int_{a}^{b} x \\, dx', example: '\\int_{0}^{1} x \\, dx' },
-      { feature: 'Matrix', syntax: '\\begin{matrix} a & b \\\\ c & d \\end{matrix}', example: '\\begin{matrix} 1 & 2 \\\\ 3 & 4 \\end{matrix}' },
-      { feature: 'Align Environment', syntax: '\\begin{align} a &= b \\\\ c &= d \\end{align}', example: '\\begin{align} x &= y \\\\ a &= b \\end{align}' },
-      { feature: 'Greek Letters', syntax: '\\alpha \\beta \\gamma', example: '\\alpha \\beta \\gamma' },
-      { feature: 'Text Formatting', syntax: '\\textbf{text} \\textit{text}', example: '\\textbf{bold} \\textit{italic}' },
-      { feature: 'Equations', syntax: '\\begin{equation} E = mc^2 \\end{equation}', example: '\\begin{equation} E = mc^2 \\end{equation}' },
+      { feature: 'Fraction', syntax: '\\frac{a}{b}', example: '$ \\frac{1}{2} $' },
+      { feature: 'Square Root', syntax: '\\sqrt{a}', example: '$ \\sqrt{2} $' },
+      { feature: 'Exponent', syntax: 'a^{b}', example: '$ x^{y} $' },
+      { feature: 'Subscript', syntax: 'a_{b}', example: '$ x_{i} $' },
+      { feature: 'Integral', syntax: '\\int_{a}^{b} x \\, dx', example: '$ \\int_{0}^{1} x \\, dx $' },
+      { feature: 'Matrix', syntax: '\\begin{matrix} a & b \\\\\\ c & d \\end{matrix}', example: '$ \\begin{matrix} 1 & 2 \\\\\\ 3 & 4 \\end{matrix} $' },
+      { feature: 'Align Environment', syntax: '\\begin{align} a &= b \\\\ c &= d \\end{align}', example: '$$ \\begin{align} x &= y \\\\\\ a &= b \\end{align} $$' },
+      { feature: 'Greek Letters', syntax: '\\alpha \\beta \\gamma', example: '$ \\alpha \\beta \\gamma $' },
+      { feature: 'Text Formatting', syntax: '\\textbf{text} \\textit{text}', example: '$ \\textbf{bold} \\textit{italic} $' },
+      { feature: 'Equations', syntax: '\\begin{equation} E = mc^2 \\end{equation}', example: '$$ \\begin{equation} E = mc^2 \\end{equation} $$' },
+      { feature: 'Not Equal', syntax: '\\neq', example: '$a \\neq b$' },
+      { feature: 'Less Than', syntax: '\\lt', example: '$a < b$' },
+      { feature: 'Greater Than', syntax: '\\gt', example: '$a > b$' },
+      { feature: 'Less Than or Equal', syntax: '\\leq', example: '$a \\leq b$' },
+      { feature: 'Greater Than or Equal', syntax: '\\geq', example: '$a \\geq b$' },
+      { feature: 'Approximately Equal', syntax: '\\approx', example: '$a \\approx b$' },
+      { feature: 'For All', syntax: '\\forall', example: '$\\forall x \\in X$' },
+      { feature: 'There Exists', syntax: '\\exists', example: '$\\exists x \\in X$' },
+      { feature: 'Such That', syntax: '\\mid or \\colon', example: '$x \\mid x > 0$' },
+      { feature: 'Subset', syntax: '\\subset', example: '$A \\subset B$' },
+      { feature: 'Superset', syntax: '\\supset', example: '$A \\supset B$' },
+      { feature: 'Subset or Equal', syntax: '\\subseteq', example: '$A \\subseteq B$' },
+      { feature: 'Superset or Equal', syntax: '\\supseteq', example: '$A \\supseteq B$' },
+      { feature: 'Union', syntax: '\\cup', example: '$A \\cup B$' },
+      { feature: 'Intersection', syntax: '\\cap', example: '$A \\cap B$' },
+      { feature: 'Element Of', syntax: '\\in', example: '$x \\in A$' },
+      { feature: 'Not Element Of', syntax: '\\notin', example: '$x \\notin A$' },
+      { feature: 'Set Difference', syntax: '\\setminus', example: '$A \\setminus B$' },
+      { feature: 'Cardinality', syntax: '\\lvert A \\rvert', example: '$\\lvert A \\rvert$' },
+      { feature: 'Logical And', syntax: '\\land', example: '$A \\land B$' },
+      { feature: 'Logical Or', syntax: '\\lor', example: '$A \\lor B$' },
+      { feature: 'Logical Not', syntax: '\\neg', example: '$\\neg A$' },
+      { feature: 'Implication', syntax: '\\Rightarrow', example: '$A \\Rightarrow B$' },
+      { feature: 'Biconditional', syntax: '\\Leftrightarrow', example: '$A \\Leftrightarrow B$' },
     ],
   };
 
@@ -158,27 +183,66 @@ const FloatingButton = () => {
         </div>
         <div className={`tab-content ${activeTab === 'markdown' ? 'active' : ''}`}>
           <h2>Markdown Syntax</h2>
-          <ul className="syntax-list">
-            {filteredMarkdown.map((item, index) => (
-              <li key={index}><strong>{item.feature}</strong>: {item.syntax}</li>
-            ))}
-          </ul>
+          <table className="syntax-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Syntax</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredMarkdown.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.feature}</td>
+                  <td>{item.syntax}</td>
+                  <td>{item.example}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <div className={`tab-content ${activeTab === 'html' ? 'active' : ''}`}>
           <h2>HTML Syntax</h2>
-          <ul className="syntax-list">
-            {filteredHtml.map((item, index) => (
-              <li key={index}><strong>{item.feature}</strong>: {item.syntax}</li>
-            ))}
-          </ul>
+          <table className="syntax-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Syntax</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredHtml.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.feature}</td>
+                  <td>{item.syntax}</td>
+                  <td>{item.example}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <div className={`tab-content ${activeTab === 'latex' ? 'active' : ''}`}>
           <h2>LaTeX Syntax</h2>
-          <ul className="syntax-list">
-          {filteredLatex.map((item, index) => (
-              <li key={index}><strong>{item.feature}</strong>: {item.syntax}</li>
-            ))}
-          </ul>
+          <table className="syntax-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Syntax</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredLatex.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.feature}</td>
+                  <td>{item.syntax}</td>
+                  <td>{item.example}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
