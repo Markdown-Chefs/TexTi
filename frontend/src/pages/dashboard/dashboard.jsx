@@ -397,7 +397,7 @@ function Dashboard() {
 
         {/* List out all user's notes */}
         {listOfNotes.length === 0 ? (
-            <p>No notes found</p>
+            null
         ) : (
             listOfNotes.map((note, index) => (
                 <div
