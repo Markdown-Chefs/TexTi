@@ -12,7 +12,7 @@ import "highlight.js/styles/stackoverflow-light.css";
 // import "highlight.js/styles/atom-one-dark.css";
 import katex from "katex";
 import 'katex/dist/katex.min.css';
-import mermaid from 'mermaid';
+// import mermaid from 'mermaid';
 
 // for editor
 import CodeMirror from '@uiw/react-codemirror';
@@ -97,10 +97,10 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
             const decodedContent = decodeHTMLEntities(code);
             // console.log("Decoded content:", decodedContent); 
             return `<div class="katex-block">${katex.renderToString(decodedContent, { throwOnError: false, displayMode: true })}</div>`;
-        } else if (lang === 'mermaid') {
-            if (code.trim() !== "") {
-                return `<div class="mermaid">${code}</div>`;
-            }
+        // } else if (lang === 'mermaid') {
+        //     if (code.trim() !== "") {
+        //         return `<div class="mermaid">${code}</div>`;
+        //     }
         }
         return marked.Renderer.prototype.code.apply(this, arguments);
     };
@@ -284,28 +284,28 @@ function Editor({ noteID, noteTitle="", content="", canEdit, isOwner, isPublishe
 
 
 
-    const renderMermaidDiagrams = () => {
-        const mermaidElements = document.querySelectorAll('.mermaid');
-        if (mermaidElements.length > 0) {
-            mermaid.initialize({ startOnLoad: false });
-            mermaidElements.forEach(element => {
-                try {
-                    mermaid.init(undefined, element);
-                } catch (error) {
-                    console.error("Mermaid initialization error:", error);
-                    element.innerHTML = `<div class="mermaid-error">Syntax error in Mermaid diagram.</div>`;
-                }
-            });
-        }
-    };
+    // const renderMermaidDiagrams = () => {
+    //     const mermaidElements = document.querySelectorAll('.mermaid');
+    //     if (mermaidElements.length > 0) {
+    //         mermaid.initialize({ startOnLoad: false });
+    //         mermaidElements.forEach(element => {
+    //             try {
+    //                 mermaid.init(undefined, element);
+    //             } catch (error) {
+    //                 console.error("Mermaid initialization error:", error);
+    //                 element.innerHTML = `<div class="mermaid-error">Syntax error in Mermaid diagram.</div>`;
+    //             }
+    //         });
+    //     }
+    // };
     
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            renderMermaidDiagrams();
-        }, 300); 
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         renderMermaidDiagrams();
+    //     }, 300); 
     
-        return () => clearTimeout(timer);
-    }, [mdString]);
+    //     return () => clearTimeout(timer);
+    // }, [mdString]);
     
     const editorExtensions = [
         markdown({ base: markdownLanguage }),
