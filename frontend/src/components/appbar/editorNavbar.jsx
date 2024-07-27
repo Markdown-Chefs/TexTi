@@ -14,16 +14,15 @@ import PermissionIcon from "../assets/file-lock-2.png"
 import CopyIcon from "../assets/copy.png"
 import PermissionsTab from '../permissionTab/permissionTab';
 import PublishIcon from "../assets/published.png"
+import ImageUpload from '../imageUpload';
+import ImageIcon from "../assets/image-plus.png"
 
-
-
-const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUserNotePermission, handleExporting, isAPublicNote, handlePublishNote, handleUnpublishNote}) => {
+const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUserNotePermission, handleExporting, isAPublicNote, handlePublishNote, handleUnpublishNote, handleImageUpload}) => {
 
     const [activeMode, setActiveMode] = useState('both');
     const { noteID } = useParams();
     const [showMenu, setShowMenu] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    
    
     const handleModeClick = (mode) => {
         setActiveMode(mode);
@@ -50,17 +49,24 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
         
     };
 
-
     const closeModal = () => {
         setShowModal(false);
     };
 
+    const handleFileUpload = async (imageUrl) => {
+        handleImageUpload(imageUrl);
+    };
+
+    const triggerFileInput = () => {
+        document.getElementById('imageUploadInput').click();
+    };
+
     return (
     <div className="editor-navbar">
-        <div className="editor-navbar-brand">
+        <NavLink to ='/' className="editor-navbar-brand">
             <img src={TexTiLogo} alt="Logo" />
-            <span className='productName'>TexTi</span>
-        </div>
+            <span className='productName' >TexTi</span>
+        </NavLink>
         {trial == 'false' && 
         <>
             {canEdit && !isOwner &&
@@ -82,22 +88,31 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
                     onClick={() => handleModeClick('edit')}
                 >
                     <img src={Edit} alt="Editor Mode" />
+                    <div className="tooltipp">Editor Only</div>
             </button>
             <button 
                 className={`mode-button ${activeMode === 'both' ? 'active' : ''}`} 
                 onClick={() => handleModeClick('both')}
             >
                 <img src={BothIcon} width="20px"alt="Both Mode" />
+                <div className="tooltipp">Editor + Previewer</div>
             </button>
             <button 
                 className={`mode-button ${activeMode === 'preview' ? 'active' : ''}`} 
                 onClick={() => handleModeClick('preview')}
             >
                 <img src={Preview} alt="Preview Mode" />
+                <div className="tooltipp">Previewer Only</div>
             </button>
+            <button className="publish-button" onClick={triggerFileInput}>
+                    <img src={ImageIcon} alt="Upload Image" />
+                    <div className="tooltipp">Upload Image</div>
+                </button>
+            <ImageUpload onUpload={handleFileUpload} />
             <div className="dropdown-button">
                 <button className="export-button" type="button" onClick={toggleMenu}>
                     <img src={ExportIcon} alt="Export" />
+                    <div className="tooltipp"> Export Note</div>
                 </button>
                 {showMenu && (
                     <ul className="dropdown-menu show">
@@ -109,20 +124,26 @@ const EditorNavbar = ( {noteTitle="", setMode, trial, canEdit, isOwner, fetchUse
                     </ul>
                 )}
             </div>
-        <button className="permission-button" onClick={handlePermissionButtonClick}> 
+            {isOwner && <button className="permission-button" onClick={handlePermissionButtonClick}> 
             <img src={PermissionIcon} alt="Note Permission" /> 
-        </button>
-        <PermissionsTab
-        isOwner={isOwner}
-        showModal={showModal}
-        closeModal={closeModal}
-        noteID={noteID}
-        fetchUserNotePermission={fetchUserNotePermission}
-        updateNotePermission={updateNotePermission}
-        />
-        {isOwner && !isAPublicNote && <button className="publish-button" onClick={handlePublishNote}>
-            <img src={PublishIcon} alt = "Publish Icon"></img></button>}
-        {isOwner && isAPublicNote && <button className="publish-button unpublish-button" onClick={handleUnpublishNote}> <img src={PublishIcon} alt = "Publish Icon"></img></button>}
+            <div className="tooltipp"> Share Note </div>
+            </button>}
+            <PermissionsTab
+            isOwner={isOwner}
+            showModal={showModal}
+            closeModal={closeModal}
+            noteID={noteID}
+            fetchUserNotePermission={fetchUserNotePermission}
+            updateNotePermission={updateNotePermission}
+            /> 
+            {isOwner && !isAPublicNote && <button className="publish-button" onClick={handlePublishNote}>
+                <img src={PublishIcon} alt = "Publish Icon"></img>
+                <div className="tooltipp"> Publish Note</div>
+                </button>}
+            {isOwner && isAPublicNote && <button className="publish-button unpublish-button" onClick={handleUnpublishNote}> 
+                <img src={PublishIcon} alt = "Publish Icon"></img>
+                <div className="tooltipp"> Unpublish Note</div>
+            </button>}
         </div>
     </div>
     

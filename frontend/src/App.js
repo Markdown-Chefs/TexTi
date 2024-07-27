@@ -13,6 +13,7 @@ import Editor from "./pages/editor/editor";
 import UserSettings from "./pages/userSettings/userSettings";
 import NoteEditor from "./pages/editNote";
 import PublicNotes from "./pages/publicNotes/publicNotes";
+import FolderView from "./pages/folderView/folderView";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = () => {
@@ -39,6 +40,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
                     <Route path="/settings" element={<UserSettings></UserSettings>}></Route>
                     <Route path="/note/:noteID" element={<NoteEditor></NoteEditor>} />
+                    <Route path="/folder/:folderID" element={<FolderView></FolderView>} />
                     <Route path="/public_notes" element={<PublicNotes></PublicNotes>} />
                 </Route>
 

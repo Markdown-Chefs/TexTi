@@ -6,7 +6,8 @@ module.exports = {
     CLIENT_URL: process.env.CLIENT_URL,
     SECRET: process.env.SECRET,
     NODE_ENV: process.env.NODE_ENV,
-
+    IMGUR_ACCESS_TOKEN: process.env.IMGUR_ACCESS_TOKEN,
+    
     DATABASE_USER: process.env.DATABASE_USER,
     DATABASE_HOST: process.env.DATABASE_HOST,
     DATABASE_NAME: process.env.DATABASE_NAME,

@@ -4,17 +4,29 @@ const db = require('../config/db');
 exports.getUserNotes = async (req, res) => {
     try {
         const userToSelect = req.user.username;
-        const { rows } = await db.query(
-            `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
-            FROM users
-            INNER JOIN notes
-            ON users.user_id = notes.user_id
-            WHERE users.username = $1;`, [userToSelect]
-        );
+        let response;
+        if (!req.query.folderID) {
+            response = await db.query(
+                `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
+                FROM users
+                INNER JOIN notes
+                ON users.user_id = notes.user_id
+                WHERE users.username = $1 AND notes.folder_id IS NULL;`, [userToSelect]
+            );
+        } else {
+            response = await db.query(
+                `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
+                FROM users
+                INNER JOIN notes
+                ON users.user_id = notes.user_id
+                WHERE users.username = $1 AND notes.folder_id = $2;`, [userToSelect, req.query.folderID]
+            );
+        }
+
         // const listOfNotes = rows.map(note => note.title); // [{ id: title }, { id:title }]
         return res.status(200).json({
             success: true,
-            listOfNotes: rows,
+            listOfNotes: response.rows,
         });
     } catch (err) {
         console.log(err.message);
@@ -27,22 +39,26 @@ exports.getUserNotes = async (req, res) => {
 exports.createUserNote = async (req, res) => {
     const { noteTitle } = req.body;
     try {
-        // let response = await db.query(`SELECT user_id FROM users WHERE username = $1`, [req.user.username]);
-        // const userID = response.rows[0].user_id;
-
-
-        const { rows } = await db.query(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3) RETURNING note_id, title;`, [
-            noteTitle,
-            "",
-            req.user.user_id,
-        ]);
-        
-        // let response = await db.query(`SELECT note_id, title FROM notes WHERE title = $1 and user_id = $2`, [noteTitle, req.user.user_id]);
-        
+        let response;
+        if (!req.body.folderID) {
+            response = await db.query(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3) RETURNING note_id, title;`, [
+                noteTitle,
+                "",
+                req.user.user_id,
+            ]);
+        } else {
+            response = await db.query(`INSERT INTO notes (title, content, user_id, folder_id) VALUES ($1, $2, $3, $4) RETURNING note_id, title;`, [
+                noteTitle,
+                "",
+                req.user.user_id,
+                req.body.folderID,
+            ]);
+        }
+                
         return res.status(201).json({
             success: true,
             message: 'Note created',
-            noteCreated: rows[0],
+            noteCreated: response.rows[0],
         });
     } catch (err) {
         console.log(err.message);
@@ -50,6 +66,88 @@ exports.createUserNote = async (req, res) => {
                 error: err.message,
         });
     }
+}
+
+exports.createNewUserDefaultNote = async (userID) => {
+    const defaultNoteTitle = "Welcome to TexTi!";
+    const defaultNoteContent = `
+# Welcome to TexTi!
+<br/>
+
+![TexTi_Logo](https://i.imgur.com/njs0IQ8.jpeg)
+
+**TexTi** is your powerful markdown note-taking application. Here's a quick guide to help you get started:
+
+## UI Overview
+At the top right corner of the editor page, you will find a series of buttons with the following functions:
+1. **Display Options**: (*You are currently in editor + previewer display!*)
+    - **Editor Only**: Displays only the editor.
+    - **Editor + Previewer**: Displays both the editor and the previewer side by side.
+    - **Previewer Only**: Displays only the previewer.
+2. **Image Upload and Embedding**: Allows you to upload images and embed them directly into your notes.
+
+3. **Exporting Options**: Export your notes to various formats such as PDF, Markdown, or HTML.
+
+4. **Sharing Note (Permissions)**: Share your notes by granting access to specific users. You can set permissions for viewing or editing.
+
+5. **Publish/Unpublish Note**: Publish your note to the public pool or unpublish it as needed.
+
+
+## Markdown Basics
+
+- **Bold**: \`**text**\` or \`__text__\`
+- **Italic**: \`*text*\` or \`_text_\`
+- **Strikethrough**: \`~~text~~\`
+- **Headers**: \`# H1\`, \`## H2\`, \`### H3\`, and so on.
+- **Lists**:
+    - Unordered: \`- item\`
+    - Ordered: \`1. item\`
+- **Links**: \`[title](http://)\`
+- **Images**: \`![alt text](url)\`
+- **Blockquote**: \`> text\`
+> TexTi is the best note-taking tool :)
+
+*You can find more syntax guides in the quick syntax reference tab! Simply click on the floating lightbulb button to check out more syntaxes.*
+
+### Github-Flavoured Alerts
+> [!NOTE]
+> This is a note.
+
+> [!TIP]
+> This is a tip.
+
+> [!IMPORTANT]
+> This is important information.
+
+> [!WARNING]
+> This is a warning.
+
+> [!CAUTION]
+> This is a caution.
+
+#### Important Notes
+- Latex Syntax for New Lines:
+  - Due to technical limitations, if you are using \`$...$\` or \`$$...$$\` for LaTeX, you need to add an extra backslash for new lines. For example, use \`\\\\\\\` instead of \`\\\\\`.
+    - If you are using \`\`\`math for LaTeX, you can use \`\\\\\` for new lines as usual.
+    - Examples:
+        - Using \`$...$\` or \`$$...$$\`:
+          
+        $$ \\begin{matrix} 1 & 2 \\\\\\ 3 & 4 \\end{matrix} $$
+      - Using \`\`\`math:
+      \`\`\`math
+      \\begin{matrix} 1 & 2 \\\\ 3 & 4 \\end{matrix}
+      \`\`\`
+---
+
+We hope you enjoy using TexTi. Happy note-taking!
+
+*Markdown Chefs*`;
+
+    await db.query(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3);`, [
+        defaultNoteTitle,
+        defaultNoteContent,
+        userID,
+    ]);
 }
 
 exports.deleteUserNote = async (req, res) => {

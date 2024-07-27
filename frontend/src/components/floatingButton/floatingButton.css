@@ -1,0 +1,186 @@
+.floating-button {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    background-color: black;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 2px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: left 0.2s, right 0.2s;
+  }
+
+  .floating-button img {
+    filter: invert(1);
+    width: 30px;
+  }
+
+  .floating-button:hover .tooltipp {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .tooltipp {
+    visibility: hidden;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    text-align: center;
+    padding: 3px 0px;
+    width: 70px;
+    font-size: 8px;
+    position: absolute;
+    z-index: 1001;
+    top: 115%; 
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  
+  .floating-button.right {
+    left: auto;
+    right: 0;
+  }
+  
+  .floating-button.dragging {
+    opacity: 0.5;
+  }
+
+  .floating-button.active {
+    display: none;
+  }
+  
+  .tab-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 750px; 
+    max-height: 60%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    padding: 20px;
+    overflow: auto;
+  }
+  
+  .tab-container.right {
+    left: auto;
+    right: 0;
+  }
+  
+  .tab-container.show {
+    display: block;
+  }
+
+  .tab-button {
+    letter-spacing: 1.5px;
+  }
+  
+  .tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .tab-header h2 {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0;
+  }
+  
+  .tab-header .close {
+    left: 8%;
+  }
+  .tab-buttons {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .tab-button {
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .tab-button.active {
+    background-color: #000;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 5px;
+  }
+
+  .tab-button:hover {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  .tab-content {
+    display: none;
+    padding: 10px 0;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+
+  .tab-content h2 {
+    letter-spacing: 1.5px;
+    font-size: 27px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  
+  .syntax-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .syntax-list li {
+    margin-bottom: 10px;
+  }
+  
+  .syntax-list li strong {
+    display: inline-block;
+    width: 150px;
+  }
+  
+  .syntax-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .syntax-table th,
+  .syntax-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .syntax-table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+  }
+
+  .search-input.syntax {
+    border: 1px solid black;
+    box-shadow: none;
+  }
+  

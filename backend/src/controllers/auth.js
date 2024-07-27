@@ -2,6 +2,8 @@ const db = require('../config/db');
 const { hash } = require('bcryptjs');
 const { sign } = require('jsonwebtoken');
 const config = require('../config/bucket');
+// import { createNewUserDefaultNote } from './notes';
+const { createNewUserDefaultNote } = require('./notes');
 
 // exports.getUsers = async (req, res) => {
 //     try {
@@ -22,11 +24,13 @@ exports.register = async (req, res) => {
     try {
         const hashedPassword = await hash(password, 10);
 
-        await db.query('INSERT INTO users (email, username, password_hash) VALUES ($1, $2, $3)', [
+        const { rows } = await db.query('INSERT INTO users (email, username, password_hash) VALUES ($1, $2, $3) RETURNING user_id;', [
             email.toLowerCase(),
             username.toLowerCase(),
             hashedPassword
         ])
+
+        createNewUserDefaultNote(rows[0].user_id);
 
         return res.status(201).json({
             success: true,

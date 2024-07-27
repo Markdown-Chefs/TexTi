@@ -12,11 +12,12 @@ const AppBar = () => {
       
         <div className="appbar-brand">
           <img src={TexTiLogo} alt="Logo" />
-          <span className='productName'>TexTi</span>
+          <span className="productName">TexTi</span>
         </div>
         <div className="appbar-nav flex-row">
           <a className="appbar-nav-link" href="#">
-            <NavLink to ='/' className="text-wrapper"> Home </NavLink> </a>
+              <NavLink to ='/' className="text-wrapper"> Home </NavLink> 
+          </a>
           {/* <div className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <div className="text-wrapper"> Links </div> 
@@ -28,11 +29,11 @@ const AppBar = () => {
               <li><a className="dropdown-item" href="#">Something else here</a></li>
             </ul> 
           </div> */}
-          <NavLink to='/login' className='loginButton'>
+            <NavLink to='/login' className='loginButton'>
               Sign in
             </NavLink>
             <NavLink to='/register' className='registerButton'>
-              Sign Up
+              Sign up
             </NavLink>
         </div>
       

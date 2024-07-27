@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { onLogin } from '../../api/auth';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { authenticateUser } from '../../redux/slices/authSlice'
-import TexTiLogo from '../../components/assets/TexTiLogoWithText.jpg'
+import { authenticateUser } from '../../redux/slices/authSlice';
+import TexTiLogo from '../../components/assets/TexTiLogoWithText.jpg';
 import './login.css';
 import Loading from '../loading/loading';
+import Alert from '../../components/alert/alert';
 
 
 function Login() {
@@ -63,7 +64,7 @@ function Login() {
                             required
                         />
                         <button type="submit">Sign In</button>
-                        {error && <div className="error-message">{error}</div>}
+                        <Alert message={error} type="error" onClose={() => setError('')} />
                     </form>
                 </div>
                 <div className="welcome-section">

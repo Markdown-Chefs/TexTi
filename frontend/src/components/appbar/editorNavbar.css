@@ -9,6 +9,10 @@
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1; 
   }
 
   .editor-navbar-brand {
@@ -25,6 +29,7 @@
     font-size: 18px;
     font-weight: 800;
     letter-spacing: 1.6px;
+    text-decoration: none;
   }
   
   .editor-navbar-brand img {
@@ -86,6 +91,11 @@
     background-color: black;
 }
 
+.mode-button:hover .tooltipp {
+    visibility: visible;
+    opacity: 1;
+  }
+
 .mode-button:hover img{
     filter: invert(1);
 }
@@ -109,7 +119,27 @@
     align-items: center;
     justify-content: center;
     display: flex;
+    margin-left: -15px;
 }
+
+.tooltipp {
+    visibility: hidden;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    text-align: center;
+    padding: 3px 0px;
+    width: 70px;
+    font-size: 8px;
+    position: absolute;
+    z-index: 1001;
+    top: 115%; 
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
 
 .export-button:hover {
     background-color: black;
@@ -117,6 +147,11 @@
 
 .export-button:hover img {
     filter: invert(1);
+}
+
+.export-button:hover .tooltipp {
+    visibility: visible;
+    opacity: 1;
 }
 
 .export-button img {
@@ -179,7 +214,9 @@
     align-items: center;
     justify-content: center;
     display: flex;
+    position: relative;
 }
+
 
 .permission-button:hover {
     background-color: black;
@@ -194,6 +231,17 @@
     filter: invert(1);
 }
 
+.export-button:hover .tooltipp {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.permission-button:hover .tooltipp {
+    visibility: visible;
+    opacity: 1 ;
+}
+
 .publish-button {
     background-color: white;
     border: none;
@@ -205,6 +253,7 @@
     align-items: center;
     justify-content: center;
     display: flex;
+    position: relative;
 }
 
 .publish-button img {
@@ -213,6 +262,11 @@
 
 .publish-button:hover {
     background-color: black;
+}
+
+.publish-button:hover .tooltipp {
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .publish-button:hover img {

@@ -8,64 +8,44 @@
     display: flex;
     align-items: flex-start;
     padding: 20px;
+    gap: 35px;
+    margin-left: 20px;
 }
 
-.menu-container {
-    flex: 1;
-    margin-right: 20px;
-}
-
-.list-group {
-    width: 100%;
-    margin-left: 2%;
-}
-
-.list-group-item {
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f8f9fa;
-    transition: background-color 0.3s ease;
-}
-
-.list-group-item:hover,
-.list-group-item.active {
-    background-color: black;
-    color: white;
-}
-
-.form-container {
-    flex: 2;
-    width: 50%;
-}
-
-form {
+.setting-btn {
+    background-color: transparent;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    align-items: center;
     display: flex;
     flex-direction: column;
+    width: 250px;
+    height: 250px;
+    padding: 45px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
 }
 
-form input {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-form button {
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
+.setting-btn:hover {
     background-color: black;
     color: white;
-    cursor: pointer;
+    transform: scale(1.05);
 }
 
-form button:hover {
-    background-color: black;
+.setting-btn:hover img {
+    filter: invert(1);
 }
 
-form div {
-    margin-top: 10px;
+.setting-btn .mail {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.setting-btn .password {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
 }
