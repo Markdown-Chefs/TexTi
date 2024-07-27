@@ -23,6 +23,7 @@ import unpinIcon from "./../../components/assets/pin-off.png"
 import Loading from "../loading/loading"
 import ShortLoading from "../loading/shortloading";
 import newFolder from "./../../components/assets/folder-plus.png"
+import BackIcon from "./../../components/assets/arrow-left-circle.png"
 
 
 function Dashboard() {
@@ -359,6 +360,10 @@ function Dashboard() {
             onConfirm={handleDeleteNoteConfirmPrompt}
             child={"Delete " + getSelectedNoteTitleOrFolderTitle()}
         />
+        <button onClick={() => navigate(-1)} className="function-button" disabled={true}> 
+            <img src={BackIcon} alt="Navigate Back"/>
+            <div className="tooltipp"> Navigate Back </div>
+        </button> 
                     </div>
                     <div className="header-container">
                         <div className="line"></div>

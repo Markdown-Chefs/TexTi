@@ -22,7 +22,7 @@ import unpinIcon from "./../../components/assets/pin-off.png"
 import Loading from "../loading/loading"
 import ShortLoading from "../loading/shortloading";
 import newFolder from "./../../components/assets/folder-plus.png"
-
+import BackIcon from "./../../components/assets/arrow-left-circle.png"
 
 function FolderView() {
     const dispatch = useDispatch();
@@ -98,7 +98,7 @@ function FolderView() {
     const createFolder = async (folder_name) => {
         try {
             if (folder_name) {
-                const response = await onCreateFolder(folder_name, null);
+                const response = await onCreateFolder(folder_name, folderID);
                 if (response.status === 201) {
                     setListOfFolders([...listOfFolders, response.data.folderCreated]);
                     setSelectedNoteIndex(-1);
@@ -111,8 +111,7 @@ function FolderView() {
         } catch (error) {
             console.log(error.response);
         }
-    }
-
+    };
     const handleOpenFolderPrompt = () => {
         setIsFolderPromptOpen(true);
     }
@@ -359,6 +358,10 @@ function FolderView() {
             onConfirm={handleDeleteNoteConfirmPrompt}
             child={"Delete " + getSelectedNoteTitleOrFolderTitle()}
         />
+         <button onClick={() => navigate(-1)} className="function-button"> 
+            <img src={BackIcon} alt="Navigate Back"/>
+            <div className="tooltipp"> Navigate Back </div>
+        </button> 
                     </div>
                     <div className="header-container">
                         <div className="line"></div>
