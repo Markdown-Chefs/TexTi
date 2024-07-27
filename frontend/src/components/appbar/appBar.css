@@ -49,7 +49,7 @@
   }
   
   .appbar-nav-link {
-    font-weight: bold;
+    color: black;
     display: flex;
     text-decoration: none;
   }
