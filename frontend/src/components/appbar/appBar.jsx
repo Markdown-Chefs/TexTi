@@ -15,7 +15,7 @@ const AppBar = () => {
           <span className="productName">TexTi</span>
         </div>
         <div className="appbar-nav flex-row">
-          <a href="https://drive.google.com/file/d/1LaQCdkCzO5zuisAWRGwQlhmQZ2qgxoDJ/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="appbar-nav-link">
+          <a href="https://drive.google.com/file/d/1Qf0WQBjSbKZqz-RO0z8Q2d5Nqu7LvQdG/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="appbar-nav-link">
             Demo
           </a>
           {/* <div className="nav-item dropdown">
