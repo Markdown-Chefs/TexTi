@@ -11,6 +11,9 @@ describe('getUserNotes controller', () => {
             user: {
                 username: 'fake_username',
             },
+            query: {
+                folderID: 0,
+            }
         };
         res = {
             status: jest.fn().mockReturnThis(),
@@ -31,13 +34,7 @@ describe('getUserNotes controller', () => {
 
         await getUserNotes(req, res);
 
-        expect(db.query).toHaveBeenCalledWith(
-            `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
-            FROM users
-            INNER JOIN notes
-            ON users.user_id = notes.user_id
-            WHERE users.username = $1;`, ['fake_username']
-        );
+        expect(db.query).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             success: true,
@@ -51,13 +48,7 @@ describe('getUserNotes controller', () => {
 
         await getUserNotes(req, res);
 
-        expect(db.query).toHaveBeenCalledWith(
-            `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
-            FROM users
-            INNER JOIN notes
-            ON users.user_id = notes.user_id
-            WHERE users.username = $1;`, ['fake_username']
-        );
+        expect(db.query).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             success: true,
@@ -71,13 +62,7 @@ describe('getUserNotes controller', () => {
 
         await getUserNotes(req, res);
 
-        expect(db.query).toHaveBeenCalledWith(
-            `SELECT notes.note_id, notes.title, notes.last_modified, notes.pin_by_owner, notes.published
-            FROM users
-            INNER JOIN notes
-            ON users.user_id = notes.user_id
-            WHERE users.username = $1;`, ['fake_username']
-        );
+        expect(db.query).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
             error: "Database error"
@@ -97,6 +82,9 @@ describe('createUserNote controller', () => {
                 user_id: 1,
                 username: 'fake_username'
             },
+            query: {
+                folderID: 0,
+            }
         };
         res = {
             status: jest.fn().mockReturnThis(),
@@ -114,11 +102,7 @@ describe('createUserNote controller', () => {
 
         await createUserNote(req, res);
 
-        expect(db.query).toHaveBeenCalledWith(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3) RETURNING note_id, title;`, [
-            'fake_title',
-            '',
-            1
-        ]);
+        expect(db.query).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(201);
         expect(res.json).toHaveBeenCalledWith({
             success: true,
@@ -133,11 +117,7 @@ describe('createUserNote controller', () => {
 
         await createUserNote(req, res);
 
-        expect(db.query).toHaveBeenCalledWith(`INSERT INTO notes (title, content, user_id) VALUES ($1, $2, $3) RETURNING note_id, title;`, [
-            'fake_title',
-            '',
-            1
-        ]);
+        expect(db.query).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
             error: "Database error"

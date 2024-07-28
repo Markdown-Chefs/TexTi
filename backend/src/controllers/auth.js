@@ -28,7 +28,7 @@ exports.register = async (req, res) => {
             email.toLowerCase(),
             username.toLowerCase(),
             hashedPassword
-        ])
+        ]);
 
         createNewUserDefaultNote(rows[0].user_id);
 

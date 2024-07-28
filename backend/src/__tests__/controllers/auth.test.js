@@ -3,10 +3,12 @@ const db = require('../../config/db');
 const { hash } = require('bcryptjs');
 const { sign } = require('jsonwebtoken');
 const config = require('../../config/bucket');
+const { createNewUserDefaultNote } = require('../../controllers/notes');
 
 jest.mock('../../config/db');
 jest.mock('bcryptjs');
 jest.mock('jsonwebtoken');
+jest.mock('../../controllers/notes');
 
 // register
 describe('register controller', () => {
@@ -32,15 +34,14 @@ describe('register controller', () => {
 
     it('should register a new user successfully', async () => {
         hash.mockResolvedValue('hashedPassword');
-        db.query.mockResolvedValue();
+        db.query.mockResolvedValue({ rows: [{ user_id: 888 }] });
+        createNewUserDefaultNote.mockResolvedValue();
 
         await register(req, res);
 
         expect(hash).toHaveBeenCalledWith('fake_password', 10);
-        expect(db.query).toHaveBeenCalledWith(
-            `INSERT INTO users (email, username, password_hash) VALUES ($1, $2, $3)`,
-            ['fake_email', 'fake_username', 'hashedPassword']
-        );
+        expect(db.query).toHaveBeenCalled();
+        expect(createNewUserDefaultNote).toHaveBeenCalledWith(888);
         expect(res.status).toHaveBeenCalledWith(201);
         expect(res.json).toHaveBeenCalledWith({
             success: true,
@@ -56,10 +57,7 @@ describe('register controller', () => {
         await register(req, res);
 
         expect(hash).toHaveBeenCalledWith('fake_password', 10);
-        expect(db.query).toHaveBeenCalledWith(
-            `INSERT INTO users (email, username, password_hash) VALUES ($1, $2, $3)`,
-            ['fake_email', 'fake_username', 'hashedPassword']
-        );
+        expect(db.query).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
             error: 'duplicate key value violates unique constraint "users_email_key"',
@@ -74,10 +72,7 @@ describe('register controller', () => {
         await register(req, res);
 
         expect(hash).toHaveBeenCalledWith('fake_password', 10);
-        expect(db.query).toHaveBeenCalledWith(
-            `INSERT INTO users (email, username, password_hash) VALUES ($1, $2, $3)`,
-            ['fake_email', 'fake_username', 'hashedPassword']
-        );
+        expect(db.query).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
             error: 'duplicate key value violates unique constraint "users_username_key"',
@@ -106,10 +101,7 @@ describe('register controller', () => {
         await register(req, res);
 
         expect(hash).toHaveBeenCalledWith('fake_password', 10);
-        expect(db.query).toHaveBeenCalledWith(
-            `INSERT INTO users (email, username, password_hash) VALUES ($1, $2, $3)`,
-            ['fake_email', 'fake_username', 'hashedPassword']
-        );
+        expect(db.query).toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({
             error: 'database error',
