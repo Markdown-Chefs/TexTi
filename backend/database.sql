@@ -17,8 +17,8 @@ CREATE TABLE notes (
   last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   published BOOLEAN DEFAULT FALSE,
   folder_id INT DEFAULT NULL,
-  user_id INT NOT NULL REFERENCES users(user_id) -- foreign key
-  CONSTRAINT fk_folder FOREIGN KEY(folder_id) REFERENCES folders(folder_id) ON DELETE SET NULL;
+  user_id INT NOT NULL REFERENCES users(user_id), -- foreign key
+  CONSTRAINT fk_folder FOREIGN KEY(folder_id) REFERENCES folders(folder_id) ON DELETE SET NULL
 );
 /*
 ALTER TABLE notes
